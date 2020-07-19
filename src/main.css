@@ -19,9 +19,6 @@ html {
  */
 body {
   margin: 0;
-}
-
-#body-selection::selection {
   background-color: #8e44ad;
   color: white;
 }

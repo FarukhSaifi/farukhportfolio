@@ -1,0 +1,41 @@
+{
+  "name": "Farukh",
+  "avatar": "./assets/images/Farukh.jpg",
+  "jobTitle": "Front-end Developer",
+  "socials": [
+    {
+      "appname": "Facebook",
+      "appicon": "fa-facebook-f",
+      "url": "https://www.facebook.com/mdfarukh.saifi"
+    },
+    {
+      "appname": "Instagram",
+      "appicon": "fa-instagram",
+      "url": "https://www.instagram.com/mdfarukhxaifi"
+    },
+    {
+      "appname": "GitHub",
+      "appicon": "fa-github",
+      "url": "https://github.com/Farukh1x95"
+    },
+    {
+      "appname": "Twitter",
+      "appicon": "fa-twitter",
+      "url": "https://twitter.com/iamfarukh1"
+    },
+    {
+      "appname": "Linkedin",
+      "appicon": "fa-linkedin-in",
+      "url": "https://www.linkedin.com/in/farukh-saifi"
+    }
+  ],
+  "info": [
+    { "title": "Phone", "value": "tel:9810844673", "text": "OK Let's Talk !" },
+    { "title": "Web", "value": "http://www.farukh.me", "text": "farukh.me" },
+    {
+      "title": "Email",
+      "value": "mailto:farook1x95@gmail.com",
+      "text": "farook1x95@gmail.com"
+    }
+  ]
+}
