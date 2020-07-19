@@ -11,4 +11,4 @@ const SocialIcons = (props) => {
   );
 };
 
-export default SocialIcons;
+export default React.memo(SocialIcons);

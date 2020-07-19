@@ -7,6 +7,10 @@ body {
   color: #979899;
 }
 
+body::selection {
+  background-color: #8e44ad;
+  color: white;
+}
 /* Heading */
 h1,
 h2,

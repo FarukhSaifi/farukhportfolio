@@ -16,4 +16,4 @@ const ContactBlock = (props) => {
   );
 };
 
-export default ContactBlock;
+export default React.memo(ContactBlock);

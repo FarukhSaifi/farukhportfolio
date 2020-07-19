@@ -12,9 +12,6 @@ function App() {
         className="c-main-container  js-main-container"
         style={{ display: "block" }}
       >
-        {/*   ################################  
-          ############ HEADER ############  
-          ################################   */}
         <section className="o-section o-section--header  t-section  t-section--header">
           <div className="c-header">
             <div className="o-section__header-bg  t-section__header"></div>
@@ -126,4 +123,4 @@ function App() {
   );
 }
 
-export default App;
+export default React.memo(App);
