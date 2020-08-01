@@ -8,12 +8,12 @@ body {
 }
 
 ::-moz-selection {
-background-color: #8e44ad;
+background-color: ##7d2ae8;
 color: #fff;
 }
 
 ::selection {
-background-color: #8e44ad;
+background-color: ##7d2ae8;
 color: #fff;
 }
 
