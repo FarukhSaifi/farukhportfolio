@@ -7,7 +7,7 @@ function App() {
   const { name, avatar, jobTitle, socials, info } = data;
 
   return (
-    <div className="App">
+    <>
       <div
         className="c-main-container  js-main-container"
         style={{ display: "block" }}
@@ -119,7 +119,7 @@ function App() {
           </div>
         </section>
       </div>
-    </div>
+    </>
   );
 }
 
