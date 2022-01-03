@@ -3,18 +3,20 @@
  */
 /* Body */
 body {
+  width: 100vw;
+  height: 100vh;
   background: #000;
   color: #979899;
 }
 
 ::-moz-selection {
-background-color: #7d2ae8;
-color: #fff;
+  background-color: #7d2ae8;
+  color: #fff;
 }
 
 ::selection {
-background-color: #7d2ae8;
-color: #fff;
+  background-color: #7d2ae8;
+  color: #fff;
 }
 
 /* Heading */
