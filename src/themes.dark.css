@@ -3,10 +3,18 @@
  */
 /* Body */
 body {
-  width: 100vw;
-  height: 100vh;
+  /* width: 100vw;
+  height: 100vh; */
   background: #000;
   color: #979899;
+}
+
+.center {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 ::-moz-selection {
