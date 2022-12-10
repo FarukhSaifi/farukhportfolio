@@ -9,6 +9,10 @@ body {
   color: #979899;
 }
 
+.root {
+  height: 100%;
+}
+
 .center {
   width: 100vw;
   height: 100vh;
