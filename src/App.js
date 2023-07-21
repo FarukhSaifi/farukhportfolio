@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import data from "./data.json";
-import SocialIcons from "./components/SocialIcons";
 import ContactBlock from "./components/ContactBlock";
 import Loader from "./components/Loader";
+import SocialIcons from "./components/SocialIcons";
+import data from "./data.json";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -24,11 +24,7 @@ function App() {
               <div className="c-header__inner-header">
                 <div className="c-header__avatar">
                   <div className="a-header  c-avatar in-view" data-sr-id="2">
-                    <img
-                      className="c-avatar__img dense-image dense-ready animate__animated animate__backInLeft"
-                      src={avatar}
-                      alt={name}
-                    />
+                    <img className="c-avatar__img dense-image dense-ready animate__animated animate__backInLeft" src={avatar} alt={name} />
                   </div>
                 </div>
               </div>
@@ -41,30 +37,18 @@ function App() {
                     <div className="c-brand">
                       <h1 className="c-brand__title  t-title animate__animated animate__fadeInDown animate__delay-1s">
                         <span className="c-brand__sizer ">
-                          <span
-                            className="a-header c-brand__first-word  t-title__first-word in-view"
-                            data-sr-id="3"
-                          >
+                          <span className="a-header c-brand__first-word  t-title__first-word in-view" data-sr-id="3">
                             Hey I'm
                           </span>
 
-                          <span
-                            className="a-header  c-brand__second-word  t-title__second-word in-view"
-                            data-sr-id="4"
-                          >
+                          <span className="a-header  c-brand__second-word  t-title__second-word in-view" data-sr-id="4">
                             {name}
                           </span>
                         </span>
                       </h1>
 
-                      <h2
-                        className="a-header  c-brand__sub-title  t-sub-title in-view  animate__animated animate__fadeInUp animate__delay-2s"
-                        data-sr-id="5"
-                      >
-                        <span
-                          className="c-brand__sizer"
-                          style={{ fontFamily: "Fira Code" }}
-                        >
+                      <h2 className="a-header  c-brand__sub-title  t-sub-title in-view  animate__animated animate__fadeInUp animate__delay-2s" data-sr-id="5">
+                        <span className="c-brand__sizer" style={{ fontFamily: "Fira Code" }}>
                           {jobTitle}
                         </span>
                       </h2>
@@ -74,26 +58,16 @@ function App() {
                   {/* Social Icons */}
                   <ul className="c-header__social-buttons  c-social-buttons animate__animated animate__backInRight">
                     {socials.map((social) => (
-                      <SocialIcons
-                        key={social.appname}
-                        url={social.url}
-                        icon={social.appicon}
-                      />
+                      <SocialIcons key={social.appname} url={social.url} icon={social.appicon} />
                     ))}
                   </ul>
                 </div>
                 <div className="c-header__contact animate__animated animate__fadeInRight">
-                  <hr
-                    className="a-header  c-header__contact-divider in-view"
-                    data-sr-id="11"
-                  />
+                  <hr className="a-header  c-header__contact-divider in-view" data-sr-id="11" />
 
                   <div className="o-grid">
                     <div className="o-grid__col-md-3 o-grid__col-sm-6">
-                      <div
-                        className="a-header  o-content in-view"
-                        data-sr-id="12"
-                      >
+                      <div className="a-header  o-content in-view" data-sr-id="12">
                         <div className="o-content__body">
                           <h4>Location</h4>
                           <address>New Delhi - IN</address>
@@ -102,12 +76,7 @@ function App() {
                     </div>
 
                     {info.map((ck) => (
-                      <ContactBlock
-                        key={ck.title}
-                        title={ck.title}
-                        value={ck.value}
-                        text={ck.text}
-                      />
+                      <ContactBlock key={ck.title} title={ck.title} value={ck.value} text={ck.text} />
                     ))}
                   </div>
                 </div>
