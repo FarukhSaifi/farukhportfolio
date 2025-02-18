@@ -1,15 +1,11 @@
-{
+module.exports = {
   "env": {
     "browser": true,
     "commonjs": true,
     "es2021": true,
     "node": true
   },
-  "extends": [
-    "eslint:recommended",
-    "plugin:react/recommended",
-    "plugin:prettier/recommended"
-  ],
+  "extends": ["eslint:recommended", "plugin:react/recommended", "plugin:prettier/recommended"],
   "parserOptions": {
     "ecmaVersion": "latest",
     "sourceType": "module",
@@ -17,10 +13,7 @@
       "jsx": true
     }
   },
-  "plugins": [
-    "react",
-    "prettier"
-  ],
+  "plugins": ["react", "prettier"],
   "rules": {
     "prettier/prettier": [
       "error",
@@ -40,10 +33,7 @@
     "react/jsx-filename-extension": [
       "warn",
       {
-        "extensions": [
-          ".js",
-          ".jsx"
-        ]
+        "extensions": [".js", ".jsx"]
       }
     ],
     "no-console": "warn",
