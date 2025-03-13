@@ -1,68 +1,84 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# **Build your portfolio with Once UI's Magic Portfolio**
 
-## Available Scripts
+View the [demo here](https://demo.magic-portfolio.com).
 
-In the project directory, you can run:
+![Magic Portfolio](public/images/cover.png)
 
-### `npm start`
+# **Getting started**
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Magic Portfolio was built with [Once UI](https://once-ui.com) for [Next.js](https://nextjs.org). It requires Node.js v18.17+.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+**1. Clone the repository**
 
-### `npm test`
+```
+git clone https://github.com/once-ui-system/magic-portfolio.git
+```
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+**2. Install dependencies**
 
-### `npm run build`
+```
+npm install
+```
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+**3. Run dev server**
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+```
+npm run dev
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+**4. Edit config**
 
-### `npm run eject`
+```
+src/app/resources/config
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+**5. Edit content**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```
+src/app/resources/content
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+**6. Create blog posts / projects**
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+```
+Add a new .mdx file to src/app/blog/posts or src/app/work/projects
+```
 
-## Learn More
+# **Features**
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## **Once UI**
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- All tokens, components & features of [Once UI](https://once-ui.com)
 
-### Code Splitting
+## **SEO**
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+- Automatic open-graph and X image generation with next/og
+- Automatic schema and metadata generation based on the content file
 
-### Analyzing the Bundle Size
+## **Design**
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+- Responsive layout optimized for all screen sizes
+- Timeless design without heavy animations and motion
+- Endless customization options through [data attributes](https://once-ui.com/docs/theming)
 
-### Making a Progressive Web App
+## **Content**
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+- Render sections conditionally based on the content file
+- Enable or disable pages for blog, work, gallery and about / CV
+- Generate and display social links automatically
+- Set up password protection for URLs
 
-### Advanced Configuration
+## **Localization**
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+- A localized version of Magic Portfolio is available with the next-intl library
+- To use localization, switch to the 'i18n' branch
 
-### Deployment
+# **Authors**
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+Connect with us on Threads or LinkedIn.
 
-### `npm run build` fails to minify
+Farukh Saifi: [Threads](https://www.threads.net/@farukh1x95), [LinkedIn](https://www.linkedin.com/in/farukh-saifi/)
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+# **Deploy with Vercel**
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fonce-ui-system%2Fmagic-portfolio&project-name=portfolio&repository-name=portfolio&redirect-url=https%3A%2F%2Fgithub.com%2Fonce-ui-system%2Fmagic-portfolio&demo-title=Magic%20Portfolio&demo-description=Showcase%20your%20designers%20or%20developer%20portfolio&demo-url=https%3A%2F%2Fdemo.magic-portfolio.com&demo-image=%2F%2Fraw.githubusercontent.com%2Fonce-ui-system%2Fmagic-portfolio%2Fmain%2Fpublic%2Fimages%2Fcover.png)
