@@ -1,6 +1,8 @@
 # **Build your portfolio with Once UI's Magic Portfolio**
 
-View the [demo here](https://farukh.me).
+<<<<<<< HEAD View the [demo here](https://farukh.me). ======= View the [demo here](https://demo.magic-portfolio.com).
+
+> > > > > > > 8abfa9c (Magic portfolio (#9))
 
 ![Magic Portfolio](public/images/cover.png)
 
