@@ -27,14 +27,14 @@ class MyDocument extends Document {
           />
 
           {/* Twitter Card Meta Tags */}
-          <meta name="twitter:card" content="summary_large_image" />
+          {/* <meta name="twitter:card" content="summary_large_image" />
           <meta name="twitter:title" content={home.title} />
           <meta name="twitter:description" content={home.description} />
           <meta
             name="twitter:image"
             content={`https://${baseURL}/images/${person.cover}`}
           />
-          <meta name="twitter:url" content={`https://${baseURL}`} />
+          <meta name="twitter:url" content={`https://${baseURL}`} /> */}
 
           {/* Other meta tags */}
           <link
