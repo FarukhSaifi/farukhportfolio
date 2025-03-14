@@ -1,20 +1,21 @@
 // import a pre-defined template for config and content options
 export {
-  routes,
-  protectedRoutes,
-  effects,
-  style,
-  display,
-  mailchimp,
   baseURL,
+  display,
+  effects,
+  mailchimp,
+  protectedRoutes,
+  routes,
+  style,
 } from "@/app/resources/config";
 export {
+  about,
+  admin,
+  blog,
+  gallery,
+  home,
+  newsletter,
   person,
   social,
-  newsletter,
-  home,
-  about,
-  blog,
   work,
-  gallery,
 } from "@/app/resources/content";
