@@ -1,36 +1,38 @@
 import { IconType } from "react-icons";
 
 import {
-  HiChevronUp,
-  HiChevronDown,
-  HiChevronRight,
-  HiChevronLeft,
+  HiArrowRight,
+  HiArrowTopRightOnSquare,
   HiArrowUpRight,
-  HiOutlineArrowPath,
+  HiCalendarDays,
   HiCheck,
-  HiMiniQuestionMarkCircle,
-  HiMiniXMark,
-  HiOutlineLink,
+  HiCheckCircle,
+  HiChevronDown,
+  HiChevronLeft,
+  HiChevronRight,
+  HiChevronUp,
+  HiClipboard,
+  HiEnvelope,
+  HiExclamationCircle,
   HiExclamationTriangle,
   HiInformationCircle,
-  HiExclamationCircle,
-  HiCheckCircle,
   HiMiniGlobeAsiaAustralia,
-  HiArrowTopRightOnSquare,
-  HiEnvelope,
-  HiCalendarDays,
-  HiClipboard,
-  HiArrowRight,
+  HiMiniQuestionMarkCircle,
+  HiMiniXMark,
+  HiOutlineArrowPath,
   HiOutlineEye,
   HiOutlineEyeSlash,
+  HiOutlineLink,
+  HiOutlineMoon,
+  HiOutlineSun,
 } from "react-icons/hi2";
 
 import {
-  PiHouseDuotone,
-  PiUserCircleDuotone,
-  PiGridFourDuotone,
   PiBookBookmarkDuotone,
+  PiGridFourDuotone,
+  PiHouseDuotone,
   PiImageDuotone,
+  PiUserCircleDuotone,
 } from "react-icons/pi";
 
 import { FaDiscord, FaGithub, FaLinkedin, FaXTwitter } from "react-icons/fa6";
@@ -67,4 +69,6 @@ export const iconLibrary: Record<string, IconType> = {
   x: FaXTwitter,
   clipboard: HiClipboard,
   arrowUpRightFromSquare: HiArrowTopRightOnSquare,
+  sun: HiOutlineSun,
+  moon: HiOutlineMoon,
 };

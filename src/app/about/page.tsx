@@ -119,6 +119,7 @@ export default function About() {
               <Icon onBackground="accent-weak" name="globe" />
               {person.location}
             </Flex>
+            {/* <NowPlaying /> */}
             {person.languages.length > 0 && (
               <Flex wrap gap="8">
                 {person.languages.map((language, index) => (

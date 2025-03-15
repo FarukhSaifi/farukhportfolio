@@ -8,8 +8,8 @@ const person = {
   },
   role: "Software Engineer",
   avatar: "/images/avatar.jpg",
-  location: "Asia/India", // Expecting the IANA time zone identifier, e.g., 'Europe/Vienna'
-  languages: ["English", "Hindi", "Arabic"], // optional: Leave the array empty if you don't want to display languages
+  location: "New Delhi, India", // Expecting the IANA time zone identifier, e.g., 'Europe/Vienna'
+  languages: [], // optional: Leave the array empty if you don't want to display languages
 };
 
 const newsletter = {
@@ -52,7 +52,7 @@ const home = {
   label: "Home",
   title: `${person.name}'s Portfolio`,
   description: `Portfolio website showcasing my work as a ${person.role}`,
-  headline: <>Software Engineer and builder</>,
+  headline: <>I am a Software Engineer and enthusiastic towards Technology. </>,
   subline: (
     <>
       I'm Farukh, a Software Engineer at <InlineCode>Earth 🌏</InlineCode>,
@@ -75,7 +75,7 @@ const about = {
   },
   calendar: {
     display: true,
-    link: "https://cal.com",
+    link: "https://cal.com/farukh-saifi",
   },
   intro: {
     display: true,
@@ -162,7 +162,7 @@ const about = {
     title: "Technical skills",
     skills: [
       {
-        title: "React Js",
+        title: "React",
         description: (
           <>
             React is the library for web and native user interfaces. Build user
@@ -180,6 +180,25 @@ const about = {
           // },
           // {
           //   src: "/images/projects/project-01/cover-03.jpg",
+          //   alt: "Project image",
+          //   width: 16,
+          //   height: 9,
+          // },
+        ],
+      },
+      {
+        title: "Node.js",
+        description: (
+          <>
+            Node.js® is a free, open-source, cross-platform JavaScript runtime
+            environment that lets developers create servers, web apps, command
+            line tools and scripts.
+          </>
+        ),
+        // optional: leave the array empty if you don't want to display images
+        images: [
+          // {
+          //   src: "/images/projects/project-01/cover-04.jpg",
           //   alt: "Project image",
           //   width: 16,
           //   height: 9,
