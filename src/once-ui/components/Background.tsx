@@ -86,7 +86,7 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
     const dotsColor = dots.color ?? "brand-on-background-weak";
     const dotsSize = "var(--static-space-" + (dots.size ?? "24") + ")";
 
-    const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
+    const [cursorPosition, setCursorPosition] = useState({ x: 500, y: 500 });
     const [smoothPosition, setSmoothPosition] = useState({ x: 0, y: 0 });
     const backgroundRef = useRef<HTMLDivElement>(null);
 
