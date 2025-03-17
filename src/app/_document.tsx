@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/react";
 import Document, { Head, Html, Main, NextScript } from "next/document";
 import { baseURL, home, person } from "./resources";
 
@@ -50,6 +51,7 @@ class MyDocument extends Document {
         <body>
           <Main />
           <NextScript />
+          <Analytics />
         </body>
       </Html>
     );
