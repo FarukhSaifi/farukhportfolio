@@ -77,7 +77,7 @@ Add a new .mdx file to src/app/blog/posts or src/app/work/projects
 
 Connect with us on Threads or LinkedIn.
 
-**Farukh Saifi :** [Threads](https://www.threads.net/@farukh1x95), [LinkedIn](https://www.linkedin.com/in/farukh-saifi/)
+**Farukh Saifi :** [Threads](https://www.threads.net/@FarukhSaifi), [LinkedIn](https://www.linkedin.com/in/farukh-saifi/)
 
 <!-- # **Deploy with Vercel** -->
 
