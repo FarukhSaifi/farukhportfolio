@@ -1,15 +1,15 @@
 import { InlineCode } from "@/once-ui/components";
 
 const person = {
-  firstName: "Farukh",
-  lastName: "Saifi",
+  firstName: "Selene",
+  lastName: "Yu",
   get name() {
     return `${this.firstName} ${this.lastName}`;
   },
-  role: "Software Engineer",
+  role: "Design Engineer",
   avatar: "/images/avatar.jpg",
-  location: "Asia/India", // Expecting the IANA time zone identifier, e.g., 'Europe/Vienna'
-  languages: ["English", "Hindi", "Arabic"], // optional: Leave the array empty if you don't want to display languages
+  location: "Asia/Jakarta", // Expecting the IANA time zone identifier, e.g., 'Europe/Vienna'
+  languages: ["English", "Bahasa"], // optional: Leave the array empty if you don't want to display languages
 };
 
 const newsletter = {
@@ -17,8 +17,8 @@ const newsletter = {
   title: <>Subscribe to {person.firstName}'s Newsletter</>,
   description: (
     <>
-      I occasionally write about design, technology, and share thoughts on the
-      intersection of creativity and engineering.
+      I occasionally write about design, technology, and share thoughts on the intersection of
+      creativity and engineering.
     </>
   ),
 };
@@ -29,22 +29,22 @@ const social = [
   {
     name: "GitHub",
     icon: "github",
-    link: "https://github.com/farukh1x95",
+    link: "https://github.com/once-ui-system/nextjs-starter",
   },
   {
     name: "LinkedIn",
     icon: "linkedin",
-    link: "https://www.linkedin.com/in/farukh-saifi",
+    link: "https://www.linkedin.com/company/once-ui/",
   },
   {
     name: "X",
     icon: "x",
-    link: "", // "https://x.com/iamfarukh1",
+    link: "",
   },
   {
     name: "Email",
     icon: "email",
-    link: "mailto:farook1x95@gmail.com",
+    link: "mailto:example@gmail.com",
   },
 ];
 
@@ -52,11 +52,10 @@ const home = {
   label: "Home",
   title: `${person.name}'s Portfolio`,
   description: `Portfolio website showcasing my work as a ${person.role}`,
-  headline: <>Software Engineer and builder</>,
+  headline: <>Design engineer and builder</>,
   subline: (
     <>
-      I'm Farukh, a Software Engineer at <InlineCode>Earth 🌏</InlineCode>,
-      where I craft intuitive
+      I'm Selene, a design engineer at <InlineCode>FLY</InlineCode>, where I craft intuitive
       <br /> user experiences. After hours, I build my own projects.
     </>
   ),
@@ -82,10 +81,9 @@ const about = {
     title: "Introduction",
     description: (
       <>
-        Farukh is a Software Engineer with a passion for transforming complex
-        challenges into simple, elegant design solutions. Her work spans digital
-        interfaces, interactive experiences, and the convergence of design and
-        technology.
+        Selene is a Jakarta-based design engineer with a passion for transforming complex challenges
+        into simple, elegant design solutions. Her work spans digital interfaces, interactive
+        experiences, and the convergence of design and technology.
       </>
     ),
   },
@@ -94,53 +92,41 @@ const about = {
     title: "Work Experience",
     experiences: [
       {
-        company: "Xebia",
-        timeframe: "2021 - Present",
-        role: "Senior Consultant",
+        company: "FLY",
+        timeframe: "2022 - Present",
+        role: "Senior Design Engineer",
         achievements: [
           <>
-            Implemented cost-effective solutions, resulting in a 20% reduction
-            in project expenses.
+            Redesigned the UI/UX for the FLY platform, resulting in a 20% increase in user
+            engagement and 30% faster load times.
           </>,
           <>
-            Streamlined project workflows, enhancing overall efficiency by 25%.
-          </>,
-          <>
-            Collaborated with designers to translate UI/UX wireframes into
-            high-quality code, ensuring a seamless user experience.
-          </>,
-          <>
-            Optimized web applications for maximum speed and scalability,
-            implementing best practices for performance improvement.
+            Spearheaded the integration of AI tools into design workflows, enabling designers to
+            iterate 50% faster.
           </>,
         ],
         images: [
           // optional: leave the array empty if you don't want to display images
-          // {
-          //   src: "/images/projects/project-01/cover-01.jpg",
-          //   alt: "Once UI Project",
-          //   width: 16,
-          //   height: 9,
-          // },
+          {
+            src: "/images/projects/project-01/cover-01.jpg",
+            alt: "Once UI Project",
+            width: 16,
+            height: 9,
+          },
         ],
       },
       {
-        company: "Etelligens Technologies",
-        timeframe: "2020 - 2021",
-        role: "Software Developer",
+        company: "Creativ3",
+        timeframe: "2018 - 2022",
+        role: "Lead Designer",
         achievements: [
           <>
-            Skilled in using Frontend frameworks like React and Vue to build
-            products and integrate features according to client needs.
+            Developed a design system that unified the brand across multiple platforms, improving
+            design consistency by 40%.
           </>,
           <>
-            Proven proficiency as a backend developer utilizing Node.js with
-            Express.js, Socket.io, and WebRTC to create API endpoints.
-          </>,
-          <>
-            Able to manage multiple software projects simultaneously, actively
-            participating in the entire software development process from
-            inception to delivery.
+            Led a cross-functional team to launch a new product line, contributing to a 15% increase
+            in overall company revenue.
           </>,
         ],
         images: [],
@@ -152,8 +138,12 @@ const about = {
     title: "Studies",
     institutions: [
       {
-        name: "Jamia Millia Islamia",
-        description: <>Computer Science Engineering.</>,
+        name: "University of Jakarta",
+        description: <>Studied software engineering.</>,
+      },
+      {
+        name: "Build the Future",
+        description: <>Studied online marketing and personal branding.</>,
       },
     ],
   },
@@ -162,46 +152,35 @@ const about = {
     title: "Technical skills",
     skills: [
       {
-        title: "React Js",
-        description: (
-          <>
-            React is the library for web and native user interfaces. Build user
-            interfaces out of individual pieces called components written in
-            JavaScript.
-          </>
-        ),
+        title: "Figma",
+        description: <>Able to prototype in Figma with Once UI with unnatural speed.</>,
         // optional: leave the array empty if you don't want to display images
         images: [
-          // {
-          //   src: "/images/projects/project-01/cover-02.jpg",
-          //   alt: "Project image",
-          //   width: 16,
-          //   height: 9,
-          // },
-          // {
-          //   src: "/images/projects/project-01/cover-03.jpg",
-          //   alt: "Project image",
-          //   width: 16,
-          //   height: 9,
-          // },
+          {
+            src: "/images/projects/project-01/cover-02.jpg",
+            alt: "Project image",
+            width: 16,
+            height: 9,
+          },
+          {
+            src: "/images/projects/project-01/cover-03.jpg",
+            alt: "Project image",
+            width: 16,
+            height: 9,
+          },
         ],
       },
       {
         title: "Next.js",
-        description: (
-          <>
-            Built on a foundation of fast, production-grade tooling. Powered By.
-            React The library for web and native user interfaces.{" "}
-          </>
-        ),
+        description: <>Building next gen apps with Next.js + Once UI + Supabase.</>,
         // optional: leave the array empty if you don't want to display images
         images: [
-          // {
-          //   src: "/images/projects/project-01/cover-04.jpg",
-          //   alt: "Project image",
-          //   width: 16,
-          //   height: 9,
-          // },
+          {
+            src: "/images/projects/project-01/cover-04.jpg",
+            alt: "Project image",
+            width: 16,
+            height: 9,
+          },
         ],
       },
     ],
@@ -303,4 +282,4 @@ const gallery = {
   ],
 };
 
-export { about, blog, gallery, home, newsletter, person, social, work };
+export { person, social, newsletter, home, about, blog, work, gallery };

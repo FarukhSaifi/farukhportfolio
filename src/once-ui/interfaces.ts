@@ -48,8 +48,7 @@ export interface FlexProps extends HTMLAttributes<HTMLDivElement> {
   flex?: flex;
 }
 
-export interface TextProps<T extends ElementType = "span">
-  extends HTMLAttributes<T> {
+export interface TextProps<T extends ElementType = "span"> extends HTMLAttributes<T> {
   as?: T;
   variant?: TextVariant;
   wrap?: CSSProperties["textWrap"];
