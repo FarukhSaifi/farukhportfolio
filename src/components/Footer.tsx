@@ -1,5 +1,5 @@
-import { Flex, IconButton, SmartLink, Text } from "@/once-ui/components";
 import { person, social } from "@/app/resources/content";
+import { Flex, IconButton, SmartLink, Text } from "@/once-ui/components";
 import styles from "./Footer.module.scss";
 
 export const Footer = () => {
@@ -49,7 +49,7 @@ export const Footer = () => {
                   size="s"
                   variant="ghost"
                 />
-              ),
+              )
           )}
         </Flex>
       </Flex>

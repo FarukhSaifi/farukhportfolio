@@ -1,3 +1,10 @@
+<<<<<<< HEAD
+=======
+import { baseURL } from "@/app/resources";
+import { about, person, social } from "@/app/resources/content";
+import TableOfContents from "@/components/about/TableOfContents";
+import styles from "@/components/about/about.module.scss";
+>>>>>>> origin/master
 import {
   Avatar,
   Button,
@@ -10,10 +17,13 @@ import {
   Tag,
   Text,
 } from "@/once-ui/components";
+<<<<<<< HEAD
 import { baseURL } from "@/app/resources";
 import TableOfContents from "@/components/about/TableOfContents";
 import styles from "@/components/about/about.module.scss";
 import { person, about, social } from "@/app/resources/content";
+=======
+>>>>>>> origin/master
 
 export async function generateMetadata() {
   const title = about.title;
@@ -119,6 +129,10 @@ export default function About() {
               <Icon onBackground="accent-weak" name="globe" />
               {person.location}
             </Flex>
+<<<<<<< HEAD
+=======
+            {/* <NowPlaying /> */}
+>>>>>>> origin/master
             {person.languages.length > 0 && (
               <Flex wrap gap="8">
                 {person.languages.map((language, index) => (
@@ -153,7 +167,15 @@ export default function About() {
                 marginBottom="m"
                 vertical="center"
               >
+<<<<<<< HEAD
                 <Icon paddingLeft="12" name="calendar" onBackground="brand-weak" />
+=======
+                <Icon
+                  paddingLeft="12"
+                  name="calendar"
+                  onBackground="brand-weak"
+                />
+>>>>>>> origin/master
                 <Flex paddingX="8">Schedule a call</Flex>
                 <IconButton
                   href={about.calendar.link}
@@ -174,6 +196,7 @@ export default function About() {
               {person.role}
             </Text>
             {social.length > 0 && (
+<<<<<<< HEAD
               <Flex className={styles.blockAlign} paddingTop="20" paddingBottom="8" gap="8" wrap horizontal="center" fitWidth>
                 {social.map(
                   (item) =>
@@ -198,24 +221,77 @@ export default function About() {
                             />
                         </>
                     ),
+=======
+              <Flex
+                className={styles.blockAlign}
+                paddingTop="20"
+                paddingBottom="8"
+                gap="8"
+                wrap
+                horizontal="center"
+                fitWidth
+              >
+                {social.map(
+                  (item, index) =>
+                    item.link && (
+                      <>
+                        <Button
+                          className="s-flex-hide"
+                          key={item.name}
+                          href={item.link}
+                          prefixIcon={item.icon}
+                          label={item.name}
+                          size="s"
+                          variant="secondary"
+                        />
+                        <IconButton
+                          className="s-flex-show"
+                          size="l"
+                          key={`${item.name}-icon`}
+                          href={item.link}
+                          icon={item.icon}
+                          variant="secondary"
+                        />
+                      </>
+                    )
+>>>>>>> origin/master
                 )}
               </Flex>
             )}
           </Column>
 
           {about.intro.display && (
+<<<<<<< HEAD
             <Column textVariant="body-default-l" fillWidth gap="m" marginBottom="xl">
+=======
+            <Column
+              textVariant="body-default-l"
+              fillWidth
+              gap="m"
+              marginBottom="xl"
+            >
+>>>>>>> origin/master
               {about.intro.description}
             </Column>
           )}
 
           {about.work.display && (
             <>
+<<<<<<< HEAD
               <Heading as="h2" id={about.work.title} variant="display-strong-s" marginBottom="m">
+=======
+              <Heading
+                as="h2"
+                id={about.work.title}
+                variant="display-strong-s"
+                marginBottom="m"
+              >
+>>>>>>> origin/master
                 {about.work.title}
               </Heading>
               <Column fillWidth gap="l" marginBottom="40">
                 {about.work.experiences.map((experience, index) => (
+<<<<<<< HEAD
                   <Column key={`${experience.company}-${experience.role}-${index}`} fillWidth>
                     <Flex fillWidth horizontal="space-between" vertical="end" marginBottom="4">
                       <Text id={experience.company} variant="heading-strong-l">
@@ -238,6 +314,47 @@ export default function About() {
                           {achievement}
                         </Text>
                       ))}
+=======
+                  <Column
+                    key={`${experience.company}-${experience.role}-${index}`}
+                    fillWidth
+                  >
+                    <Flex
+                      fillWidth
+                      horizontal="space-between"
+                      vertical="end"
+                      marginBottom="4"
+                    >
+                      <Text id={experience.company} variant="heading-strong-l">
+                        {experience.company}
+                      </Text>
+                      <Text
+                        variant="heading-default-xs"
+                        onBackground="neutral-weak"
+                      >
+                        {experience.timeframe}
+                      </Text>
+                    </Flex>
+                    <Text
+                      variant="body-default-s"
+                      onBackground="brand-weak"
+                      marginBottom="m"
+                    >
+                      {experience.role}
+                    </Text>
+                    <Column as="ul" gap="16">
+                      {experience.achievements.map(
+                        (achievement: JSX.Element, index: number) => (
+                          <Text
+                            as="li"
+                            variant="body-default-m"
+                            key={`${experience.company}-${index}`}
+                          >
+                            {achievement}
+                          </Text>
+                        )
+                      )}
+>>>>>>> origin/master
                     </Column>
                     {experience.images.length > 0 && (
                       <Flex fillWidth paddingTop="m" paddingLeft="40" wrap>
@@ -273,16 +390,40 @@ export default function About() {
 
           {about.studies.display && (
             <>
+<<<<<<< HEAD
               <Heading as="h2" id={about.studies.title} variant="display-strong-s" marginBottom="m">
+=======
+              <Heading
+                as="h2"
+                id={about.studies.title}
+                variant="display-strong-s"
+                marginBottom="m"
+              >
+>>>>>>> origin/master
                 {about.studies.title}
               </Heading>
               <Column fillWidth gap="l" marginBottom="40">
                 {about.studies.institutions.map((institution, index) => (
+<<<<<<< HEAD
                   <Column key={`${institution.name}-${index}`} fillWidth gap="4">
                     <Text id={institution.name} variant="heading-strong-l">
                       {institution.name}
                     </Text>
                     <Text variant="heading-default-xs" onBackground="neutral-weak">
+=======
+                  <Column
+                    key={`${institution.name}-${index}`}
+                    fillWidth
+                    gap="4"
+                  >
+                    <Text id={institution.name} variant="heading-strong-l">
+                      {institution.name}
+                    </Text>
+                    <Text
+                      variant="heading-default-xs"
+                      onBackground="neutral-weak"
+                    >
+>>>>>>> origin/master
                       {institution.description}
                     </Text>
                   </Column>

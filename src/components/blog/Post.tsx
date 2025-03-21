@@ -1,8 +1,16 @@
 "use client";
 
-import { Column, Flex, Heading, SmartImage, SmartLink, Tag, Text } from "@/once-ui/components";
-import styles from "./Posts.module.scss";
 import { formatDate } from "@/app/utils/formatDate";
+import {
+  Column,
+  Flex,
+  Heading,
+  SmartImage,
+  SmartLink,
+  Tag,
+  Text,
+} from "@/once-ui/components";
+import styles from "./Posts.module.scss";
 
 interface PostProps {
   post: any;
@@ -47,12 +55,15 @@ export default function Post({ post, thumbnail }: PostProps) {
             {post.metadata.title}
           </Heading>
           <Text variant="label-default-s" onBackground="neutral-weak">
-            {post.metadata.publishedAt && formatDate(post.metadata.publishedAt, false)}
+            {post.metadata.publishedAt &&
+              formatDate(post.metadata.publishedAt, false)}
           </Text>
           {tags.length > 0 && (
             <Flex gap="8">
               {tags.map((tag: string, index: number) =>
-                index < 3 ? <Tag key={index} label={tag} variant="neutral" /> : null
+                index < 3 ? (
+                  <Tag key={index} label={tag} variant="neutral" />
+                ) : null
               )}
             </Flex>
           )}
