@@ -1,4 +1,4 @@
-const baseURL = "farukh.me";
+const baseURL = "demo.magic-portfolio.com";
 
 const routes = {
   "/": true,
@@ -106,4 +106,4 @@ const mailchimp = {
   },
 };
 
-export { baseURL, display, effects, mailchimp, protectedRoutes, routes, style };
+export { routes, protectedRoutes, effects, style, display, mailchimp, baseURL };
