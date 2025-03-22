@@ -10,7 +10,6 @@ export {
 } from "@/app/resources/config";
 export {
   about,
-  admin,
   blog,
   gallery,
   home,
