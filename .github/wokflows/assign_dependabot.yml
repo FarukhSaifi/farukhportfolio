@@ -1,25 +1,27 @@
-name: Auto-Assign Dependabot PRs
+name: Request Review for Dependabot PRs
 
 on:
-  pull_request:
-    types:
-      - opened
+  pull_request_target:
+    types: [opened]
+
+permissions:
+  pull-requests: write
 
 jobs:
-  assign:
+  auto-request-review:
     runs-on: ubuntu-latest
     steps:
-      - name: Assign PR to User
+      - name: Request review from FarukhSaifi
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const pr = context.payload.pull_request;
-            if (pr.user.login === 'dependabot[bot]') {
-              github.rest.issues.addAssignees({
+            if (pr.user.login === "dependabot[bot]") {
+              await github.rest.pulls.requestReviewers({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                issue_number: pr.number,
-                assignees: ['FarukhSaifi']
+                pull_number: pr.number,
+                reviewers: ["FarukhSaifi"]
               });
             }
