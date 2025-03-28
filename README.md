@@ -2,7 +2,7 @@
 
 View the [demo here](https://farukh.me)
 
-![Magic Portfolio](public/images/cover.png)
+![Farukh Portfolio](public/images/cover.png)
 
 # **Getting started**
 
