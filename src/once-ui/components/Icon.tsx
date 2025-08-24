@@ -1,11 +1,11 @@
 "use client";
 
-import React, { forwardRef, useState, useEffect, ReactNode } from "react";
 import classNames from "classnames";
+import React, { forwardRef, ReactNode, useEffect, useState } from "react";
 import { IconType } from "react-icons";
+import { Flex, Tooltip } from ".";
 import { iconLibrary } from "../icons";
 import { ColorScheme, ColorWeight } from "../types";
-import { Flex, Tooltip } from ".";
 import styles from "./Icon.module.scss";
 import iconStyles from "./IconButton.module.scss";
 
@@ -31,7 +31,7 @@ const Icon = forwardRef<HTMLDivElement, IconProps>(
       tooltipPosition = "top",
       ...rest
     },
-    ref,
+    ref
   ) => {
     const IconComponent: IconType | undefined = iconLibrary[name];
 
@@ -42,7 +42,7 @@ const Icon = forwardRef<HTMLDivElement, IconProps>(
 
     if (onBackground && onSolid) {
       console.warn(
-        "You cannot use both 'onBackground' and 'onSolid' props simultaneously. Only one will be applied.",
+        "You cannot use both 'onBackground' and 'onSolid' props simultaneously. Only one will be applied."
       );
     }
 
@@ -75,9 +75,9 @@ const Icon = forwardRef<HTMLDivElement, IconProps>(
     return (
       <Flex
         inline
-        fit
+        fitHeight
         position="relative"
-        as="div"
+        as="span"
         ref={ref}
         className={classNames(colorClass, styles.icon, styles[size])}
         role={decorative ? "presentation" : undefined}
@@ -95,7 +95,7 @@ const Icon = forwardRef<HTMLDivElement, IconProps>(
         )}
       </Flex>
     );
-  },
+  }
 );
 
 Icon.displayName = "Icon";

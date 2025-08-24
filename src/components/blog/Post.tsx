@@ -1,15 +1,7 @@
 "use client";
 
 import { formatDate } from "@/app/utils/formatDate";
-import {
-  Column,
-  Flex,
-  Heading,
-  SmartImage,
-  SmartLink,
-  Tag,
-  Text,
-} from "@/once-ui/components";
+import { Flex, Heading, SmartImage, SmartLink, Tag, Text } from "@/once-ui/components";
 import styles from "./Posts.module.scss";
 
 interface PostProps {
@@ -18,13 +10,14 @@ interface PostProps {
 }
 
 export default function Post({ post, thumbnail }: PostProps) {
-  const tags = post.metadata.tag.split(",").map((tag: string) => tag.trim());
-
   return (
     <SmartLink
-      fillWidth
       className={styles.hover}
-      unstyled
+      style={{
+        textDecoration: "none",
+        margin: "0",
+        height: "fit-content",
+      }}
       key={post.slug}
       href={`/blog/${post.slug}`}
     >
@@ -37,37 +30,32 @@ export default function Post({ post, thumbnail }: PostProps) {
         gap="32"
       >
         {post.metadata.image && thumbnail && (
-          <SmartImage
-            priority
-            maxWidth={20}
-            className={styles.image}
-            sizes="640px"
-            border="neutral-alpha-weak"
-            cursor="interactive"
-            radius="m"
-            src={post.metadata.image}
-            alt={"Thumbnail of " + post.metadata.title}
-            aspectRatio="16 / 9"
-          />
+          <Flex maxWidth={20} fillWidth className={styles.image}>
+            <SmartImage
+              priority
+              sizes="640px"
+              style={{
+                cursor: "pointer",
+                border: "1px solid var(--neutral-alpha-weak)",
+              }}
+              radius="m"
+              src={post.metadata.image}
+              alt={"Thumbnail of " + post.metadata.title}
+              aspectRatio="16 / 9"
+            />
+          </Flex>
         )}
-        <Column position="relative" fillWidth gap="8" vertical="center">
+        <Flex position="relative" fillWidth gap="8" direction="column" justifyContent="center">
           <Heading as="h2" variant="heading-strong-l" wrap="balance">
             {post.metadata.title}
           </Heading>
           <Text variant="label-default-s" onBackground="neutral-weak">
-            {post.metadata.publishedAt &&
-              formatDate(post.metadata.publishedAt, false)}
+            {formatDate(post.metadata.publishedAt, false)}
           </Text>
-          {tags.length > 0 && (
-            <Flex gap="8">
-              {tags.map((tag: string, index: number) =>
-                index < 3 ? (
-                  <Tag key={index} label={tag} variant="neutral" />
-                ) : null
-              )}
-            </Flex>
+          {post.metadata.tag && (
+            <Tag className="mt-8" label={post.metadata.tag} variant="neutral" />
           )}
-        </Column>
+        </Flex>
       </Flex>
     </SmartLink>
   );

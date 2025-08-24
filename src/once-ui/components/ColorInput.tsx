@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useRef, forwardRef } from "react";
-import { Flex, Input, InputProps, IconButton, Icon } from ".";
+import React, { forwardRef, useRef } from "react";
+import { Flex, Icon, IconButton, Input, InputProps } from ".";
 
 interface ColorInputProps extends Omit<InputProps, "onChange" | "value"> {
   value: string;
@@ -103,7 +103,7 @@ const ColorInput = forwardRef<HTMLInputElement, ColorInputProps>(
         onChange={onChange}
       />
     );
-  },
+  }
 );
 
 ColorInput.displayName = "ColorInput";

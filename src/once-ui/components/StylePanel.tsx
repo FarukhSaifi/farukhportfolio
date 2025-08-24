@@ -1,11 +1,11 @@
 "use client";
 
-import { forwardRef, useState, useEffect } from "react";
-import { Flex, Text, SegmentedControl, IconButton, Scroller, Column } from ".";
+import { forwardRef, useEffect, useState } from "react";
+import { Column, Flex, IconButton, Scroller, SegmentedControl, Text } from ".";
 
-import styles from "./StylePanel.module.scss";
 import classNames from "classnames";
-import { style } from "@/app/resources";
+import { style } from "../resources/config";
+import styles from "./StylePanel.module.scss";
 
 interface StylePanelProps extends React.ComponentProps<typeof Flex> {
   style?: React.CSSProperties;
@@ -98,8 +98,8 @@ const StylePanel = forwardRef<HTMLDivElement, StylePanelProps>(({ ...rest }, ref
       <Column fillWidth border="neutral-alpha-medium" radius="l-4">
         <Flex
           borderBottom="neutral-alpha-medium"
-          horizontal="space-between"
-          vertical="center"
+          justifyContent="space-between"
+          alignItems="center"
           fillWidth
           paddingX="24"
           paddingY="16"
@@ -109,25 +109,36 @@ const StylePanel = forwardRef<HTMLDivElement, StylePanelProps>(({ ...rest }, ref
           <SegmentedControl
             maxWidth={22}
             buttons={[
-              { size: "l", label: "Light", value: "light", prefixIcon: "light" },
+              {
+                size: "l",
+                label: "Light",
+                value: "light",
+                prefixIcon: "light",
+              },
               { size: "l", label: "Dark", value: "dark", prefixIcon: "dark" },
             ]}
             onToggle={(value) => setTheme(value as "light" | "dark")}
             selected={theme}
           />
         </Flex>
-        <Flex horizontal="space-between" vertical="center" fillWidth paddingX="24" paddingY="16">
+        <Flex
+          justifyContent="space-between"
+          alignItems="center"
+          fillWidth
+          paddingX="24"
+          paddingY="16"
+        >
           <Text variant="label-default-s">Shape</Text>
           <Flex gap="4">
             {shapes.map((radius, index) => (
               <Flex
                 data-border={shapes[index]}
                 key={radius}
-                horizontal="center"
-                vertical="center"
+                justifyContent="center"
+                alignItems="center"
                 className={classNames(
                   styles.select,
-                  selectedShape === radius ? styles.selected : "",
+                  selectedShape === radius ? styles.selected : ""
                 )}
                 onClick={() => {
                   setSelectedShape(radius);
@@ -151,8 +162,8 @@ const StylePanel = forwardRef<HTMLDivElement, StylePanelProps>(({ ...rest }, ref
       <Column fillWidth border="neutral-alpha-medium" radius="l-4">
         <Flex
           borderBottom="neutral-alpha-medium"
-          horizontal="space-between"
-          vertical="center"
+          justifyContent="space-between"
+          alignItems="center"
           fillWidth
           paddingX="24"
           paddingY="16"
@@ -166,8 +177,8 @@ const StylePanel = forwardRef<HTMLDivElement, StylePanelProps>(({ ...rest }, ref
               <Flex
                 marginRight="2"
                 key={color}
-                horizontal="center"
-                vertical="center"
+                justifyContent="center"
+                alignItems="center"
                 className={classNames(styles.select, brandColor === color ? styles.selected : "")}
                 onClick={() => {
                   setBrandColor(color);
@@ -183,8 +194,8 @@ const StylePanel = forwardRef<HTMLDivElement, StylePanelProps>(({ ...rest }, ref
 
         <Flex
           borderBottom="neutral-alpha-medium"
-          horizontal="space-between"
-          vertical="center"
+          justifyContent="space-between"
+          alignItems="center"
           fillWidth
           paddingX="24"
           paddingY="16"
@@ -198,8 +209,8 @@ const StylePanel = forwardRef<HTMLDivElement, StylePanelProps>(({ ...rest }, ref
               <Flex
                 marginRight="2"
                 key={color}
-                horizontal="center"
-                vertical="center"
+                justifyContent="center"
+                alignItems="center"
                 className={classNames(styles.select, accentColor === color ? styles.selected : "")}
                 onClick={() => {
                   setAccentColor(color);
@@ -214,8 +225,8 @@ const StylePanel = forwardRef<HTMLDivElement, StylePanelProps>(({ ...rest }, ref
         </Flex>
 
         <Flex
-          horizontal="space-between"
-          vertical="center"
+          justifyContent="space-between"
+          alignItems="center"
           fillWidth
           paddingX="24"
           paddingY="16"
@@ -229,8 +240,8 @@ const StylePanel = forwardRef<HTMLDivElement, StylePanelProps>(({ ...rest }, ref
               <Flex
                 marginRight="2"
                 key={color}
-                horizontal="center"
-                vertical="center"
+                justifyContent="center"
+                alignItems="center"
                 className={classNames(styles.select, neutralColor === color ? styles.selected : "")}
                 onClick={() => {
                   setNeutralColor(color);
@@ -254,8 +265,8 @@ const StylePanel = forwardRef<HTMLDivElement, StylePanelProps>(({ ...rest }, ref
       <Column fillWidth border="neutral-alpha-medium" radius="l-4">
         <Flex
           borderBottom="neutral-alpha-medium"
-          horizontal="space-between"
-          vertical="center"
+          justifyContent="space-between"
+          alignItems="center"
           fillWidth
           paddingX="24"
           paddingY="16"
@@ -269,7 +280,7 @@ const StylePanel = forwardRef<HTMLDivElement, StylePanelProps>(({ ...rest }, ref
               {
                 size: "l",
                 label: (
-                  <Flex vertical="center" gap="12">
+                  <Flex alignItems="center" gap="12">
                     <Flex
                       data-solid="color"
                       border="brand-strong"
@@ -287,7 +298,7 @@ const StylePanel = forwardRef<HTMLDivElement, StylePanelProps>(({ ...rest }, ref
               {
                 size: "l",
                 label: (
-                  <Flex vertical="center" gap="12">
+                  <Flex alignItems="center" gap="12">
                     <Flex
                       data-solid="inverse"
                       border="brand-strong"
@@ -305,7 +316,7 @@ const StylePanel = forwardRef<HTMLDivElement, StylePanelProps>(({ ...rest }, ref
               {
                 size: "l",
                 label: (
-                  <Flex vertical="center" gap="12">
+                  <Flex alignItems="center" gap="12">
                     <Flex
                       data-solid="contrast"
                       border="brand-strong"
@@ -326,8 +337,8 @@ const StylePanel = forwardRef<HTMLDivElement, StylePanelProps>(({ ...rest }, ref
           />
         </Flex>
         <Flex
-          horizontal="space-between"
-          vertical="center"
+          justifyContent="space-between"
+          alignItems="center"
           fillWidth
           paddingX="24"
           paddingY="16"
@@ -341,7 +352,7 @@ const StylePanel = forwardRef<HTMLDivElement, StylePanelProps>(({ ...rest }, ref
               {
                 size: "l",
                 label: (
-                  <Flex vertical="center" gap="12">
+                  <Flex alignItems="center" gap="12">
                     <Flex
                       border="brand-strong"
                       solid="brand-weak"
@@ -358,7 +369,7 @@ const StylePanel = forwardRef<HTMLDivElement, StylePanelProps>(({ ...rest }, ref
               {
                 size: "l",
                 label: (
-                  <Flex vertical="center" gap="12">
+                  <Flex alignItems="center" gap="12">
                     <Flex
                       border="brand-strong"
                       style={{
@@ -391,8 +402,8 @@ const StylePanel = forwardRef<HTMLDivElement, StylePanelProps>(({ ...rest }, ref
       <Column fillWidth border="neutral-alpha-medium" radius="l-4">
         <Flex
           borderBottom="neutral-alpha-medium"
-          horizontal="space-between"
-          vertical="center"
+          justifyContent="space-between"
+          alignItems="center"
           fillWidth
           paddingX="24"
           paddingY="16"
@@ -420,8 +431,8 @@ const StylePanel = forwardRef<HTMLDivElement, StylePanelProps>(({ ...rest }, ref
         </Flex>
         <Flex
           borderBottom="neutral-alpha-medium"
-          horizontal="space-between"
-          vertical="center"
+          justifyContent="space-between"
+          alignItems="center"
           fillWidth
           paddingX="24"
           paddingY="16"
@@ -463,8 +474,8 @@ const StylePanel = forwardRef<HTMLDivElement, StylePanelProps>(({ ...rest }, ref
           />
         </Flex>
         <Flex
-          horizontal="space-between"
-          vertical="center"
+          justifyContent="space-between"
+          alignItems="center"
           fillWidth
           paddingX="24"
           paddingY="16"

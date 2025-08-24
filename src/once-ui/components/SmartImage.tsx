@@ -1,7 +1,7 @@
 "use client";
 
-import React, { CSSProperties, useState, useRef, useEffect } from "react";
 import Image from "next/image";
+import React, { CSSProperties, useEffect, useRef, useState } from "react";
 
 import { Flex, Skeleton } from "@/once-ui/components";
 
@@ -91,7 +91,7 @@ const SmartImage: React.FC<SmartImageProps> = ({
 
   const getYouTubeEmbedUrl = (url: string) => {
     const match = url.match(
-      /(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/,
+      /(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
     );
     return match
       ? `https://www.youtube.com/embed/${match[1]}?controls=0&rel=0&modestbranding=1`
@@ -166,8 +166,8 @@ const SmartImage: React.FC<SmartImageProps> = ({
 
       {isEnlarged && enlarge && (
         <Flex
-          horizontal="center"
-          vertical="center"
+          justifyContent="center"
+          alignItems="center"
           position="fixed"
           background="overlay"
           onClick={handleClick}

@@ -1,9 +1,9 @@
 "use client";
 
-import React, { forwardRef, ReactNode } from "react";
 import classNames from "classnames";
-import { ElementType } from "./ElementType";
+import React, { forwardRef, ReactNode } from "react";
 import { Flex, Icon } from ".";
+import { ElementType } from "./ElementType";
 import styles from "./ToggleButton.module.scss";
 
 interface CommonProps {
@@ -55,7 +55,7 @@ const ToggleButton = forwardRef<HTMLElement, ToggleButtonProps>(
       href,
       ...props
     },
-    ref,
+    ref
   ) => {
     return (
       <ElementType
@@ -79,7 +79,7 @@ const ToggleButton = forwardRef<HTMLElement, ToggleButtonProps>(
             ["fit-width"]: !fillWidth,
             ["justify-" + justifyContent]: justifyContent,
           },
-          className,
+          className
         )}
         style={style}
         {...props}
@@ -98,7 +98,7 @@ const ToggleButton = forwardRef<HTMLElement, ToggleButtonProps>(
         {suffixIcon && <Icon name={suffixIcon} size={size === "l" ? "m" : "s"} />}
       </ElementType>
     );
-  },
+  }
 );
 
 ToggleButton.displayName = "ToggleButton";

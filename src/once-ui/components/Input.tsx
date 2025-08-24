@@ -1,17 +1,17 @@
 "use client";
 
+import classNames from "classnames";
 import React, {
-  useState,
-  useEffect,
   forwardRef,
   InputHTMLAttributes,
-  useCallback,
   ReactNode,
+  useCallback,
+  useEffect,
+  useState,
 } from "react";
-import classNames from "classnames";
 import { Flex, Text } from ".";
-import styles from "./Input.module.scss";
 import useDebounce from "../hooks/useDebounce";
+import styles from "./Input.module.scss";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   id: string;
@@ -59,7 +59,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       validate,
       ...props
     },
-    ref,
+    ref
   ) => {
     const [isFocused, setIsFocused] = useState(false);
     const [isFilled, setIsFilled] = useState(!!props.value);
@@ -137,7 +137,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           background="neutral-alpha-weak"
           position="relative"
           overflow="hidden"
-          vertical="stretch"
+          alignItems="stretch"
           className={classNames(
             styles.base,
             {
@@ -146,7 +146,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             {
               [styles.m]: height === "m",
             },
-            radius === "none" ? "radius-none" : radius ? `radius-l-${radius}` : "radius-l",
+            radius === "none" ? "radius-none" : radius ? `radius-l-${radius}` : "radius-l"
           )}
         >
           {hasPrefix && (
@@ -207,7 +207,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         )}
       </Flex>
     );
-  },
+  }
 );
 
 Input.displayName = "Input";
