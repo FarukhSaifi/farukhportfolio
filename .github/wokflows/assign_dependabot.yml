@@ -1,0 +1,27 @@
+name: Request Review for Dependabot PRs
+
+on:
+  pull_request_target:
+    types: [opened]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  auto-request-review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Request review from FarukhSaifi
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const pr = context.payload.pull_request;
+            if (pr.user.login === "dependabot[bot]") {
+              await github.rest.pulls.requestReviewers({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: pr.number,
+                reviewers: ["FarukhSaifi"]
+              });
+            }
