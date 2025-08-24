@@ -20,7 +20,11 @@ import {
   HiMiniQuestionMarkCircle,
   HiMiniXMark,
   HiOutlineArrowPath,
+  HiOutlineEye,
+  HiOutlineEyeSlash,
   HiOutlineLink,
+  HiOutlineMoon,
+  HiOutlineSun,
 } from "react-icons/hi2";
 
 import {
@@ -58,9 +62,13 @@ export const iconLibrary: Record<string, IconType> = {
   home: PiHouseDuotone,
   gallery: PiImageDuotone,
   discord: FaDiscord,
+  eye: HiOutlineEye,
+  eyeOff: HiOutlineEyeSlash,
   github: FaGithub,
   linkedin: FaLinkedin,
   x: FaXTwitter,
   clipboard: HiClipboard,
   arrowUpRightFromSquare: HiArrowTopRightOnSquare,
+  sun: HiOutlineSun,
+  moon: HiOutlineMoon,
 };
