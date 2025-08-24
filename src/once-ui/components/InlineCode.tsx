@@ -1,8 +1,8 @@
 "use client";
 
 import React, { forwardRef, ReactNode } from "react";
-import styles from "./InlineCode.module.scss";
 import { Flex } from "./Flex";
+import styles from "./InlineCode.module.scss";
 
 interface InlineCodeProps extends React.ComponentProps<typeof Flex> {
   children: ReactNode;
@@ -16,7 +16,7 @@ const InlineCode = forwardRef<HTMLDivElement, InlineCodeProps>(({ children, ...r
       fit
       ref={ref}
       radius="s"
-      vertical="center"
+      alignItems="center"
       paddingX="4"
       paddingY="1"
       textType="code"

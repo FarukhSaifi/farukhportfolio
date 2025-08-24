@@ -1,11 +1,11 @@
-import { notFound } from "next/navigation";
-import { CustomMDX } from "@/components/mdx";
-import { getPosts } from "@/app/utils/utils";
-import { AvatarGroup, Button, Column, Heading, Row, Text } from "@/once-ui/components";
 import { baseURL } from "@/app/resources";
 import { person } from "@/app/resources/content";
 import { formatDate } from "@/app/utils/formatDate";
+import { getPosts } from "@/app/utils/utils";
+import { CustomMDX } from "@/components/mdx";
 import ScrollToHash from "@/components/ScrollToHash";
+import { AvatarGroup, Button, Flex, Heading, Text } from "@/once-ui/components";
+import { notFound } from "next/navigation";
 
 interface BlogParams {
   params: {
@@ -74,7 +74,7 @@ export default function Blog({ params }: BlogParams) {
     })) || [];
 
   return (
-    <Column as="section" maxWidth="xs" gap="l">
+    <Flex as="section" fillWidth maxWidth="xs" direction="column" gap="l">
       <script
         type="application/ld+json"
         suppressHydrationWarning
@@ -101,16 +101,16 @@ export default function Blog({ params }: BlogParams) {
         Posts
       </Button>
       <Heading variant="display-strong-s">{post.metadata.title}</Heading>
-      <Row gap="12" vertical="center">
+      <Flex gap="12" alignItems="center">
         {avatars.length > 0 && <AvatarGroup size="s" avatars={avatars} />}
         <Text variant="body-default-s" onBackground="neutral-weak">
-          {post.metadata.publishedAt && formatDate(post.metadata.publishedAt)}
+          {formatDate(post.metadata.publishedAt)}
         </Text>
-      </Row>
-      <Column as="article" fillWidth>
+      </Flex>
+      <Flex as="article" direction="column" fillWidth>
         <CustomMDX source={post.content} />
-      </Column>
+      </Flex>
       <ScrollToHash />
-    </Column>
+    </Flex>
   );
 }

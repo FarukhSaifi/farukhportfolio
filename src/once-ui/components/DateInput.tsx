@@ -1,14 +1,13 @@
 "use client";
 
-import React, { useState, useCallback, useEffect } from "react";
-import { Input, DropdownWrapper, Flex, DatePicker } from ".";
+import React, { useCallback, useEffect, useState } from "react";
+import { DatePicker, DropdownWrapper, Flex, Input } from ".";
 
 interface DateInputProps extends Omit<React.ComponentProps<typeof Input>, "onChange" | "value"> {
   id: string;
   label: string;
   value?: Date;
   onChange?: (date: Date) => void;
-  minHeight?: number;
   className?: string;
   style?: React.CSSProperties;
   timePicker?: boolean;
@@ -35,7 +34,6 @@ export const DateInput: React.FC<DateInputProps> = ({
   value,
   onChange,
   error,
-  minHeight,
   className,
   style,
   timePicker = false,
@@ -58,7 +56,7 @@ export const DateInput: React.FC<DateInputProps> = ({
         setIsOpen(false);
       }
     },
-    [onChange, timePicker],
+    [onChange, timePicker]
   );
 
   const handleInputClick = useCallback(() => {
@@ -91,7 +89,6 @@ export const DateInput: React.FC<DateInputProps> = ({
     <DropdownWrapper
       fillWidth
       trigger={trigger}
-      minHeight={minHeight}
       dropdown={dropdown}
       isOpen={isOpen}
       onOpenChange={setIsOpen}
