@@ -283,4 +283,3 @@ const gallery = {
 };
 
 export { about, blog, gallery, home, newsletter, person, social, work };
-

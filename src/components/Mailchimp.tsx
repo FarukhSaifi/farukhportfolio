@@ -1,7 +1,7 @@
 "use client";
 
 import { mailchimp } from "@/app/resources";
-import { Button, Flex, Heading, Input, Text, Background, Column } from "@/once-ui/components";
+import { Background, Button, Flex, Heading, Input, Text } from "@/once-ui/components";
 import { useState } from "react";
 
 function debounce<T extends (...args: any[]) => void>(func: T, delay: number): T {
@@ -53,14 +53,15 @@ export const Mailchimp = ({ newsletter }: { newsletter: NewsletterProps }) => {
   };
 
   return (
-    <Column
-      overflow="hidden"
+    <Flex
+      style={{ overflow: "hidden" }}
       position="relative"
       fillWidth
       padding="xl"
       radius="l"
       marginBottom="m"
-      horizontal="center"
+      direction="column"
+      alignItems="center"
       align="center"
       background="surface"
       border="neutral-medium"
@@ -180,7 +181,7 @@ export const Mailchimp = ({ newsletter }: { newsletter: NewsletterProps }) => {
             />
           </div>
           <div className="clear">
-            <Flex height="48" vertical="center">
+            <Flex height="48" alignItems="center">
               <Button id="mc-embedded-subscribe" value="Subscribe" size="m" fillWidth>
                 Subscribe
               </Button>
@@ -188,6 +189,6 @@ export const Mailchimp = ({ newsletter }: { newsletter: NewsletterProps }) => {
           </div>
         </Flex>
       </form>
-    </Column>
+    </Flex>
   );
 };

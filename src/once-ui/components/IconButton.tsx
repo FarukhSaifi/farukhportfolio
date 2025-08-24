@@ -1,11 +1,11 @@
 "use client";
 
-import React, { forwardRef, useState, useEffect, ReactNode } from "react";
-import { ElementType } from "./ElementType";
+import classNames from "classnames";
+import React, { forwardRef, ReactNode, useEffect, useState } from "react";
 import { Flex, Icon, Tooltip } from ".";
 import buttonStyles from "./Button.module.scss";
+import { ElementType } from "./ElementType";
 import iconStyles from "./IconButton.module.scss";
-import classNames from "classnames";
 
 interface CommonProps {
   icon?: string;
@@ -49,7 +49,7 @@ const IconButton = forwardRef<HTMLButtonElement, IconButtonProps | AnchorProps>(
       style,
       ...props
     },
-    ref,
+    ref
   ) => {
     const [isTooltipVisible, setTooltipVisible] = useState(false);
     const [isHover, setIsHover] = useState(false);
@@ -98,7 +98,7 @@ const IconButton = forwardRef<HTMLButtonElement, IconButtonProps | AnchorProps>(
           "text-decoration-none",
           "button",
           "cursor-interactive",
-          className,
+          className
         )}
         style={style}
         onMouseEnter={() => setIsHover(true)}
@@ -106,12 +106,12 @@ const IconButton = forwardRef<HTMLButtonElement, IconButtonProps | AnchorProps>(
         aria-label={tooltip || icon}
         {...props}
       >
-        <Flex fill center>
+        <Flex fill justifyContent="center" alignItems="center">
           {content}
         </Flex>
       </ElementType>
     );
-  },
+  }
 );
 
 IconButton.displayName = "IconButton";

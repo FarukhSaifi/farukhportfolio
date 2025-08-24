@@ -2,9 +2,9 @@
 
 import React, { forwardRef } from "react";
 
+import classNames from "classnames";
 import { Avatar, AvatarProps, Flex } from ".";
 import styles from "./AvatarGroup.module.scss";
-import classNames from "classnames";
 
 interface AvatarGroupProps extends React.ComponentProps<typeof Flex> {
   avatars: AvatarProps[];
@@ -23,7 +23,7 @@ const AvatarGroup = forwardRef<HTMLDivElement, AvatarGroupProps>(
     return (
       <Flex
         position="relative"
-        vertical="center"
+        alignItems="center"
         ref={ref}
         className={classNames(styles.avatarGroup, className)}
         style={style}
@@ -56,7 +56,7 @@ const AvatarGroup = forwardRef<HTMLDivElement, AvatarGroupProps>(
         )}
       </Flex>
     );
-  },
+  }
 );
 
 AvatarGroup.displayName = "AvatarGroup";

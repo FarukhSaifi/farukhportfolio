@@ -1,8 +1,8 @@
 import classNames from "classnames";
-import { Flex, Text } from ".";
-import styles from "./Option.module.scss";
-import { ElementType } from "./ElementType";
 import React, { forwardRef } from "react";
+import { Flex, Text } from ".";
+import { ElementType } from "./ElementType";
+import styles from "./Option.module.scss";
 
 export interface OptionProps {
   label: React.ReactNode;
@@ -34,24 +34,18 @@ const Option = forwardRef<HTMLDivElement, OptionProps>(
       onClick,
       ...props
     },
-    ref,
+    ref
   ) => {
     if (href && onClick) {
       console.warn("Option should not have both `href` and `onClick` props.");
     }
 
     return (
-      <ElementType
-        tabIndex={tabIndex}
-        ref={ref}
-        href={href}
-        className="reset-button-styles"
-        style={{ width: "100%" }}
-      >
+      <ElementType tabIndex={tabIndex} ref={ref} href={href} className="reset-button-styles">
         <Flex
           {...props}
           fillWidth
-          vertical="center"
+          alignItems="center"
           paddingX="12"
           paddingY="8"
           gap="12"
@@ -73,7 +67,7 @@ const Option = forwardRef<HTMLDivElement, OptionProps>(
         >
           {hasPrefix && <Flex className={styles.prefix}>{hasPrefix}</Flex>}
           <Flex
-            horizontal="start"
+            alignItems="flex-start"
             style={{
               whiteSpace: "nowrap",
             }}
@@ -93,7 +87,7 @@ const Option = forwardRef<HTMLDivElement, OptionProps>(
         </Flex>
       </ElementType>
     );
-  },
+  }
 );
 
 Option.displayName = "Option";

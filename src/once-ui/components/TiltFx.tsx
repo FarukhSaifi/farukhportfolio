@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useRef } from "react";
-import styles from "./TiltFx.module.scss";
 import { Flex } from ".";
+import styles from "./TiltFx.module.scss";
 
 interface TiltFxProps extends React.ComponentProps<typeof Flex> {
   children: React.ReactNode;
