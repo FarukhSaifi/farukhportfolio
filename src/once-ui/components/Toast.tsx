@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useEffect, useState, forwardRef } from "react";
-import { IconButton, Icon, Flex, Text } from ".";
 import classNames from "classnames";
+import React, { forwardRef, useEffect, useState } from "react";
+import { Flex, Icon, IconButton, Text } from ".";
 import styles from "./Toast.module.scss";
 
 interface ToastProps {
@@ -50,7 +50,7 @@ const Toast = forwardRef<HTMLDivElement, ToastProps>(
           [styles.hidden]: !visible,
         })}
       >
-        <Flex fillWidth vertical="center" gap="8">
+        <Flex fillWidth alignItems="center" gap="8">
           {icon && <Icon size="l" onBackground={`${variant}-medium`} name={iconMap[variant]} />}
           <Text variant="body-default-s" style={{ width: "100%" }} as="div">
             {children}
@@ -69,7 +69,7 @@ const Toast = forwardRef<HTMLDivElement, ToastProps>(
         </Flex>
       </Flex>
     );
-  },
+  }
 );
 
 Toast.displayName = "Toast";

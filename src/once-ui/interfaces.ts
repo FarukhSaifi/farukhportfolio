@@ -27,29 +27,13 @@ export interface FlexProps extends HTMLAttributes<HTMLDivElement> {
   direction?: "row" | "column" | "row-reverse" | "column-reverse";
   tabletDirection?: "row" | "column" | "row-reverse" | "column-reverse";
   mobileDirection?: "row" | "column" | "row-reverse" | "column-reverse";
-  horizontal?:
-    | "start"
-    | "center"
-    | "end"
-    | "space-between"
-    | "space-around"
-    | "space-evenly"
-    | "stretch";
-  vertical?:
-    | "start"
-    | "center"
-    | "end"
-    | "space-between"
-    | "space-around"
-    | "space-evenly"
-    | "stretch";
-  center?: boolean;
+  justifyContent?: CSSProperties["justifyContent"];
+  alignItems?: CSSProperties["alignItems"];
   wrap?: boolean;
   flex?: flex;
 }
 
-export interface TextProps<T extends ElementType = "span">
-  extends HTMLAttributes<T> {
+export interface TextProps<T extends ElementType = "span"> extends HTMLAttributes<T> {
   as?: T;
   variant?: TextVariant;
   wrap?: CSSProperties["textWrap"];

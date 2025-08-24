@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useEffect, useState, forwardRef } from "react";
-import styles from "./GlitchFx.module.scss";
-import { Flex } from "./Flex";
 import classNames from "classnames";
+import React, { forwardRef, useEffect, useState } from "react";
+import { Flex } from "./Flex";
+import styles from "./GlitchFx.module.scss";
 
 interface GlitchFxProps extends React.ComponentProps<typeof Flex> {
   children: React.ReactNode;
@@ -23,7 +23,7 @@ const GlitchFx = forwardRef<HTMLDivElement, GlitchFxProps>(
       continuous = true,
       ...rest
     },
-    ref,
+    ref
   ) => {
     const [isGlitching, setIsGlitching] = useState(continuous || trigger === "instant");
 
@@ -103,7 +103,7 @@ const GlitchFx = forwardRef<HTMLDivElement, GlitchFxProps>(
         </Flex>
       </Flex>
     );
-  },
+  }
 );
 
 GlitchFx.displayName = "GlitchFx";

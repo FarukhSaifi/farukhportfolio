@@ -1,7 +1,7 @@
 "use client";
 
-import React, { forwardRef, ReactNode } from "react";
 import classNames from "classnames";
+import React, { forwardRef, ReactNode } from "react";
 
 import { Flex, Icon } from ".";
 
@@ -24,7 +24,7 @@ const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
           userSelect: "none",
           ...style,
         }}
-        vertical="center"
+        alignItems="center"
         gap="4"
         zIndex={1}
         background="surface"
@@ -38,7 +38,7 @@ const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
         {prefixIcon && <Icon name={prefixIcon} size="xs" />}
         <Flex
           paddingX="2"
-          vertical="center"
+          alignItems="center"
           textVariant="body-default-xs"
           onBackground="neutral-strong"
         >
@@ -47,7 +47,7 @@ const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
         {suffixIcon && <Icon name={suffixIcon} size="xs" />}
       </Flex>
     );
-  },
+  }
 );
 
 Tooltip.displayName = "Tooltip";

@@ -1,10 +1,10 @@
 "use client";
 
+import classNames from "classnames";
 import React, { ReactNode, forwardRef } from "react";
 import { ElementType } from "./ElementType";
-import classNames from "classnames";
 
-import { Spinner, Icon, Arrow, Flex } from ".";
+import { Arrow, Flex, Icon, Spinner } from ".";
 import styles from "./Button.module.scss";
 
 interface CommonProps {
@@ -59,7 +59,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps | AnchorProps>(
       style,
       ...props
     },
-    ref,
+    ref
   ) => {
     const iconSize = size === "l" ? "s" : size === "m" ? "s" : "xs";
     const radiusSize = size === "s" || size === "m" ? "m" : "l";
@@ -86,7 +86,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps | AnchorProps>(
             ["fit-width"]: !fillWidth,
             ["justify-" + justifyContent]: justifyContent,
           },
-          className,
+          className
         )}
         style={style}
         {...props}
@@ -117,7 +117,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps | AnchorProps>(
         {suffixIcon && <Icon name={suffixIcon} size={iconSize} />}
       </ElementType>
     );
-  },
+  }
 );
 
 Button.displayName = "Button";

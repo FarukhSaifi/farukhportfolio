@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useEffect, forwardRef } from "react";
 import classNames from "classnames";
+import React, { forwardRef, useEffect, useState } from "react";
 import { Flex, InteractiveDetails, InteractiveDetailsProps } from ".";
 import styles from "./SharedInteractiveStyles.module.scss";
 
@@ -22,7 +22,7 @@ const generateId = () => `radio-${Math.random().toString(36).substring(2, 9)}`;
 const RadioButton: React.FC<RadioButtonProps> = forwardRef<HTMLInputElement, RadioButtonProps>(
   (
     { style, className, isChecked: controlledIsChecked, name, value, onToggle, disabled, ...props },
-    ref,
+    ref
   ) => {
     const [isChecked, setIsChecked] = useState(controlledIsChecked || false);
     const [radioId] = useState(generateId());
@@ -52,7 +52,7 @@ const RadioButton: React.FC<RadioButtonProps> = forwardRef<HTMLInputElement, Rad
 
     return (
       <Flex
-        vertical="center"
+        alignItems="center"
         gap="16"
         zIndex={1}
         className={classNames(styles.container, className, {
@@ -78,8 +78,8 @@ const RadioButton: React.FC<RadioButtonProps> = forwardRef<HTMLInputElement, Rad
           aria-labelledby={radioId}
           aria-disabled={disabled}
           position="relative"
-          horizontal="center"
-          vertical="center"
+          justifyContent="center"
+          alignItems="center"
           radius="full"
           onClick={toggleItem}
           onKeyDown={handleKeyDown}
@@ -104,7 +104,7 @@ const RadioButton: React.FC<RadioButtonProps> = forwardRef<HTMLInputElement, Rad
         {props.label && <InteractiveDetails id={radioId} {...props} onClick={toggleItem} />}
       </Flex>
     );
-  },
+  }
 );
 
 RadioButton.displayName = "RadioButton";

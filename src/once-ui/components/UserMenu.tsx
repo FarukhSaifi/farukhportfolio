@@ -1,10 +1,10 @@
 "use client";
 
-import React from "react";
 import classNames from "classnames";
-import { Flex, DropdownWrapper, User, UserProps } from ".";
-import styles from "./UserMenu.module.scss";
+import React from "react";
+import { DropdownWrapper, Flex, User, UserProps } from ".";
 import { DropdownWrapperProps } from "./DropdownWrapper";
+import styles from "./UserMenu.module.scss";
 
 interface UserMenuProps
   extends UserProps,

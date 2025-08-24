@@ -1,13 +1,7 @@
 "use client";
 
 import classNames from "classnames";
-import React, {
-  CSSProperties,
-  forwardRef,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { CSSProperties, forwardRef, useEffect, useRef, useState } from "react";
 import { DisplayProps } from "../interfaces";
 import { SpacingToken } from "../types";
 import styles from "./Background.module.scss";
@@ -173,16 +167,11 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
       outputMin: number,
       outputMax: number
     ) => {
-      return (
-        ((value - inputMin) / (inputMax - inputMin)) * (outputMax - outputMin) +
-        outputMin
-      );
+      return ((value - inputMin) / (inputMax - inputMin)) * (outputMax - outputMin) + outputMin;
     };
 
-    const adjustedX =
-      gradient.x != null ? remap(gradient.x, 0, 100, 37.5, 62.5) : 50;
-    const adjustedY =
-      gradient.y != null ? remap(gradient.y, 0, 100, 37.5, 62.5) : 50;
+    const adjustedX = gradient.x != null ? remap(gradient.x, 0, 100, 37.5, 62.5) : 50;
+    const adjustedY = gradient.y != null ? remap(gradient.y, 0, 100, 37.5, 62.5) : 50;
 
     return (
       <Flex
@@ -213,8 +202,7 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
                 gradient.width != null ? `${gradient.width / 4}%` : "25%",
               ["--gradient-height" as string]:
                 gradient.height != null ? `${gradient.height / 4}%` : "25%",
-              ["--gradient-tilt" as string]:
-                gradient.tilt != null ? `${gradient.tilt}deg` : "0deg",
+              ["--gradient-tilt" as string]: gradient.tilt != null ? `${gradient.tilt}deg` : "0deg",
               ["--gradient-color-start" as string]: gradient.colorStart
                 ? `var(--${gradient.colorStart})`
                 : "var(--brand-solid-strong)",
@@ -275,18 +263,14 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
                   var(--${grid.color || "brand-on-background-weak"}) 0,
                   var(--${grid.color || "brand-on-background-weak"}) 1px,
                   var(--static-transparent) 1px,
-                  var(--static-transparent) ${
-                    grid.width || "var(--static-space-32)"
-                  }
+                  var(--static-transparent) ${grid.width || "var(--static-space-32)"}
                 ),
                 linear-gradient(
                   0deg,
                   var(--${grid.color || "brand-on-background-weak"}) 0,
                   var(--${grid.color || "brand-on-background-weak"}) 1px,
                   var(--static-transparent) 1px,
-                  var(--static-transparent) ${
-                    grid.height || "var(--static-space-32)"
-                  }
+                  var(--static-transparent) ${grid.height || "var(--static-space-32)"}
                 )
               `,
             }}

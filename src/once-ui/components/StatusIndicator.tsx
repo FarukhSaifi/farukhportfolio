@@ -1,9 +1,9 @@
 "use client";
 
-import React, { forwardRef } from "react";
 import classNames from "classnames";
-import styles from "./StatusIndicator.module.scss";
+import React, { forwardRef } from "react";
 import { Flex } from "./Flex";
+import styles from "./StatusIndicator.module.scss";
 
 interface StatusIndicatorProps extends React.ComponentProps<typeof Flex> {
   size: "s" | "m" | "l";
@@ -39,7 +39,7 @@ const StatusIndicator = forwardRef<HTMLDivElement, StatusIndicatorProps>(
         {...rest}
       />
     );
-  },
+  }
 );
 
 StatusIndicator.displayName = "StatusIndicator";

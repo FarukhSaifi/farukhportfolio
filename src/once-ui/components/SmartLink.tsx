@@ -1,7 +1,7 @@
 "use client";
 
-import React, { forwardRef, ReactNode } from "react";
 import classNames from "classnames";
+import React, { forwardRef, ReactNode } from "react";
 import { Icon } from ".";
 import { ElementType } from "./ElementType";
 
@@ -35,7 +35,7 @@ const SmartLink = forwardRef<HTMLAnchorElement, SmartLinkProps>(
       children,
       ...props
     },
-    ref,
+    ref
   ) => {
     const content = (
       <>
@@ -71,7 +71,7 @@ const SmartLink = forwardRef<HTMLAnchorElement, SmartLinkProps>(
         {content}
       </ElementType>
     );
-  },
+  }
 );
 
 SmartLink.displayName = "SmartLink";

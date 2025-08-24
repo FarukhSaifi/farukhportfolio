@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useEffect, forwardRef } from "react";
 import classNames from "classnames";
+import React, { forwardRef, useEffect, useState } from "react";
 import { Flex, Icon, InteractiveDetails, InteractiveDetailsProps } from ".";
 import styles from "./SharedInteractiveStyles.module.scss";
 
@@ -26,7 +26,7 @@ const Checkbox: React.FC<CheckboxProps> = forwardRef<HTMLInputElement, CheckboxP
       disabled,
       ...props
     },
-    ref,
+    ref
   ) => {
     const [isChecked, setIsChecked] = useState(controlledIsChecked || false);
     const [checkboxId] = useState(generateId());
@@ -56,7 +56,7 @@ const Checkbox: React.FC<CheckboxProps> = forwardRef<HTMLInputElement, CheckboxP
 
     return (
       <Flex
-        vertical="center"
+        alignItems="center"
         gap="16"
         className={classNames(styles.container, className, {
           [styles.disabled]: disabled,
@@ -87,8 +87,8 @@ const Checkbox: React.FC<CheckboxProps> = forwardRef<HTMLInputElement, CheckboxP
           role="checkbox"
           position="relative"
           tabIndex={0}
-          horizontal="center"
-          vertical="center"
+          justifyContent="center"
+          alignItems="center"
           radius="xs"
           aria-checked={
             isIndeterminate
@@ -123,7 +123,7 @@ const Checkbox: React.FC<CheckboxProps> = forwardRef<HTMLInputElement, CheckboxP
         {props.label && <InteractiveDetails id={checkboxId} {...props} onClick={toggleItem} />}
       </Flex>
     );
-  },
+  }
 );
 
 Checkbox.displayName = "Checkbox";

@@ -11,17 +11,18 @@ export const Footer = () => {
       position="relative"
       fillWidth
       padding="8"
-      horizontal="center"
+      justifyContent="center"
       mobileDirection="column"
     >
       <Flex
         className={styles.mobile}
+        fillWidth
         maxWidth="m"
         paddingY="8"
         paddingX="16"
         gap="16"
-        horizontal="space-between"
-        vertical="center"
+        justifyContent="space-between"
+        alignItems="center"
       >
         <Text variant="body-default-s" onBackground="neutral-strong">
           <Text onBackground="neutral-weak">© {currentYear} /</Text>

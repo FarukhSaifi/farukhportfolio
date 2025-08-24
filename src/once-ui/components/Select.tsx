@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useState, useRef, useEffect, forwardRef, ReactNode } from "react";
+import { Placement } from "@floating-ui/react-dom";
 import classNames from "classnames";
+import React, { forwardRef, ReactNode, useEffect, useRef, useState } from "react";
 import { DropdownWrapper, Flex, Icon, IconButton, Input, InputProps, Option } from ".";
+import type { DropdownWrapperProps } from "./DropdownWrapper";
 import inputStyles from "./Input.module.scss";
 import type { OptionProps } from "./Option";
-import type { DropdownWrapperProps } from "./DropdownWrapper";
-import { Placement } from "@floating-ui/react-dom";
 
 type SelectOptionType = Omit<OptionProps, "selected">;
 
@@ -39,7 +39,7 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
       style,
       ...rest
     },
-    ref,
+    ref
   ) => {
     const [isFocused, setIsFocused] = useState(false);
     const [isFilled, setIsFilled] = useState(!!value);
@@ -220,7 +220,7 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
             <Flex fillWidth padding="4" direction="column" gap="2">
               {options
                 .filter((option) =>
-                  option.label?.toString().toLowerCase().includes(searchQuery.toLowerCase()),
+                  option.label?.toString().toLowerCase().includes(searchQuery.toLowerCase())
                 )
                 .map((option, index) => (
                   <Option
@@ -237,9 +237,15 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
                 ))}
               {searchQuery &&
                 options.filter((option) =>
-                  option.label?.toString().toLowerCase().includes(searchQuery.toLowerCase()),
+                  option.label?.toString().toLowerCase().includes(searchQuery.toLowerCase())
                 ).length === 0 && (
-                  <Flex fillWidth vertical="center" horizontal="center" paddingX="16" paddingY="32">
+                  <Flex
+                    fillWidth
+                    alignItems="center"
+                    justifyContent="center"
+                    paddingX="16"
+                    paddingY="32"
+                  >
                     {emptyState}
                   </Flex>
                 )}
@@ -248,7 +254,7 @@ const Select = forwardRef<HTMLDivElement, SelectProps>(
         }
       />
     );
-  },
+  }
 );
 
 Select.displayName = "Select";

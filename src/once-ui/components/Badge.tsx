@@ -23,7 +23,7 @@ const Badge = forwardRef<HTMLDivElement | HTMLAnchorElement, BadgeProps>(
         paddingY="12"
         fitWidth
         className={effect ? styles.animation : undefined}
-        vertical="center"
+        alignItems="center"
         radius="full"
         background="neutral-weak"
         border="brand-alpha-medium"
@@ -59,7 +59,7 @@ const Badge = forwardRef<HTMLDivElement | HTMLAnchorElement, BadgeProps>(
     return React.cloneElement(content, {
       ref: ref as React.Ref<HTMLDivElement>,
     });
-  },
+  }
 );
 
 Badge.displayName = "Badge";

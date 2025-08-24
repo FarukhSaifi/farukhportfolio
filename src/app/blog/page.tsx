@@ -1,8 +1,8 @@
-import { Column, Flex, Heading } from "@/once-ui/components";
+import { baseURL } from "@/app/resources";
+import { blog, newsletter, person } from "@/app/resources/content";
 import { Mailchimp } from "@/components";
 import { Posts } from "@/components/blog/Posts";
-import { baseURL } from "@/app/resources";
-import { blog, person, newsletter } from "@/app/resources/content";
+import { Column, Heading } from "@/once-ui/components";
 
 export async function generateMetadata() {
   const title = blog.title;
