@@ -32,9 +32,9 @@ export const Footer = () => {
             / Build your portfolio with{" "}
             <SmartLink
               style={{ marginLeft: "-0.125rem" }}
-              href="https://once-ui.com/templates/magic-portfolio"
+              href="https://farukh.me/about"
             >
-              Once UI
+             Farukh
             </SmartLink>
           </Text>
         </Text>
