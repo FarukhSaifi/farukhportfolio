@@ -1,0 +1,163 @@
+---
+title: "Migrating from Create React App (CRA) to Vite: A Step-by-Step Guide"
+publishedAt: "2025-03-23"
+summary: "If you're still using Create React App (CRA) for your React projects, it's time to consider switching to Vite. Vite is a modern build tool that significantly improves development speed and performance. This guide will walk you through the migration process from CRA to Vite."
+tag: "Journal"
+---
+
+# Migrating from Create React App (CRA) to Vite: A Step-by-Step Guide
+
+## Introduction
+
+If you're still using Create React App (CRA) for your React projects, it's time to consider switching to Vite. Vite is a modern build tool that significantly improves development speed and performance. This guide will walk you through the migration process from CRA to Vite.
+
+## Why Migrate to Vite?
+
+1. **Faster Development**: Vite uses native ES modules and an optimized Hot Module Replacement (HMR) mechanism, making it much faster than CRA.
+2. **Optimized Build**: Vite leverages Rollup for production builds, resulting in smaller and faster output.
+3. **Better DX (Developer Experience)**: Features like instant server start, fast refresh, and better debugging make development smoother.
+
+## Steps to Migrate from CRA to Vite
+
+### 1. Create a New Vite Project
+
+Instead of modifying an existing CRA project, the recommended approach is to create a fresh Vite project and move your code over.
+
+Run the following command to create a new Vite project:
+
+```sh
+npm create vite@latest my-vite-app --template react
+cd my-vite-app
+npm install
+```
+
+Alternatively, if you're using Yarn:
+
+```sh
+yarn create vite@latest my-vite-app --template react
+yarn
+```
+
+### 2. Copy Your Source Files
+
+Now, move your `src/` directory and any other necessary files (like `public/`) from your CRA project to the new Vite project.
+
+### 3. Update Package.json Dependencies
+
+Vite does not include Webpack, Babel, or React Scripts. You'll need to uninstall CRA-specific packages and install necessary dependencies:
+
+```sh
+npm uninstall react-scripts
+npm install -D vite @vitejs/plugin-react
+```
+
+### 4. Replace `index.html`
+
+CRA manages `index.html` internally, but in Vite, it should be in the root directory.
+
+Create an `index.html` in the root folder with:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Vite App</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
+```
+
+### 5. Update `package.json` Scripts
+
+Replace the CRA scripts with the following:
+
+```json
+"scripts": {
+  "dev": "vite",
+  "build": "vite build",
+  "serve": "vite preview"
+}
+```
+
+Run `npm run dev` to start the development server.
+
+### 6. Configure ESLint and Prettier (Optional but Recommended)
+
+If you were using ESLint and Prettier in CRA, you'll need to set them up manually in Vite. Install the required dependencies:
+
+```sh
+npm install -D eslint prettier eslint-plugin-react eslint-config-prettier
+```
+
+Create an `.eslintrc.cjs` file:
+
+```js
+module.exports = {
+  env: {
+    browser: true,
+    es2021: true,
+  },
+  extends: ["eslint:recommended", "plugin:react/recommended", "prettier"],
+  parserOptions: {
+    ecmaVersion: "latest",
+    sourceType: "module",
+  },
+  plugins: ["react"],
+  rules: {
+    "prettier/prettier": ["error"],
+    "react/react-in-jsx-scope": "off",
+  },
+};
+```
+
+### 7. Migrate CSS and Assets
+
+Vite supports CSS Modules, Tailwind CSS, and other styling solutions. If you were using Tailwind, reinstall it with:
+
+```sh
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init -p
+```
+
+Update `tailwind.config.js` to include your files:
+
+```js
+module.exports = {
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+};
+```
+
+### 8. Verify and Test
+
+Run the development server:
+
+```sh
+npm run dev
+```
+
+Test all features, routing, API calls, and styling to ensure everything works as expected.
+
+## Automating the Migration with an NPM Package
+
+If you want to automate the migration process, you can use the `cra-to-vite` package. This tool helps convert CRA projects to Vite quickly by handling dependency changes, configuration updates, and script modifications.
+
+To use it, run:
+
+```sh
+npx cra-to-vite
+```
+
+Follow the prompts, and your CRA project will be converted to Vite automatically.
+
+## Conclusion
+
+Migrating from CRA to Vite enhances your development workflow with better performance, faster builds, and an improved developer experience. By following these steps, you can quickly transition your React project and start leveraging Vite’s benefits!
