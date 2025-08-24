@@ -1,49 +1,61 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
 
 import styles from "@/components/Header.module.scss";
-import { Fade, Flex, ToggleButton } from "@/once-ui/components";
+import { Fade, Flex, IconButton, ToggleButton } from "@/once-ui/components";
 
-import { display, routes } from "@/app/resources";
+import { display, routes, style } from "@/app/resources";
 import { about, blog, gallery, home, person, work } from "@/app/resources/content";
+import { useEffect, useState } from "react";
 
-type TimeDisplayProps = {
-  timeZone: string;
-  locale?: string; // Optionally allow locale, defaulting to 'en-GB'
-};
+// type TimeDisplayProps = {
+//   timeZone: string;
+//   locale?: string; // Optionally allow locale, defaulting to 'en-GB'
+// };
 
-const TimeDisplay: React.FC<TimeDisplayProps> = ({ timeZone, locale = "en-GB" }) => {
-  const [currentTime, setCurrentTime] = useState("");
+// const TimeDisplay: React.FC<TimeDisplayProps> = ({ timeZone, locale = "en-GB" }) => {
+//   const [currentTime, setCurrentTime] = useState("");
 
-  useEffect(() => {
-    const updateTime = () => {
-      const now = new Date();
-      const options: Intl.DateTimeFormatOptions = {
-        timeZone,
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-        hour12: false,
-      };
-      const timeString = new Intl.DateTimeFormat(locale, options).format(now);
-      setCurrentTime(timeString);
-    };
+//   useEffect(() => {
+//     const updateTime = () => {
+//       const now = new Date();
+//       const options: Intl.DateTimeFormatOptions = {
+//         timeZone,
+//         hour: "2-digit",
+//         minute: "2-digit",
+//         second: "2-digit",
+//         hour12: false,
+//       };
+//       const timeString = new Intl.DateTimeFormat(locale, options).format(now);
+//       setCurrentTime(timeString);
+//     };
 
-    updateTime();
-    const intervalId = setInterval(updateTime, 1000);
+//     updateTime();
+//     const intervalId = setInterval(updateTime, 1000);
 
-    return () => clearInterval(intervalId);
-  }, [timeZone, locale]);
+//     return () => clearInterval(intervalId);
+//   }, [timeZone, locale]);
 
-  return <>{currentTime}</>;
-};
+//   return <>{currentTime}</>;
+// };
 
-export default TimeDisplay;
+// export default TimeDisplay;
 
 export const Header = () => {
   const pathname = usePathname() ?? "";
+
+  const [theme, setTheme] = useState(style.theme);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    root.setAttribute("data-theme", theme);
+  }, [theme]);
+
+  // Toggle between light and dark
+  const handleThemeToggle = () => {
+    setTheme(theme === "light" ? "dark" : "light");
+  };
 
   return (
     <>
@@ -167,7 +179,15 @@ export const Header = () => {
             textVariant="body-default-s"
             gap="20"
           >
-            <Flex hide="s">{display.time && <TimeDisplay timeZone={person.location} />}</Flex>
+            <div onClick={handleThemeToggle}>
+              <IconButton
+                size="l"
+                key={`theme-icon`}
+                icon={theme === "dark" ? "sun" : "moon"}
+                variant="secondary"
+              />
+            </div>
+            {/* <Flex hide="s">{display.time && <TimeDisplay timeZone={person.location} />}</Flex> */}
           </Flex>
         </Flex>
       </Flex>
