@@ -1,15 +1,7 @@
 "use client";
 
-import NotFound from "@/app/not-found";
 import { protectedRoutes, routes } from "@/app/resources";
-import {
-  Button,
-  Column,
-  Flex,
-  Heading,
-  PasswordInput,
-  Spinner,
-} from "@/once-ui/components";
+import { Button, Flex, Heading, Input, Spinner } from "@/once-ui/components";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -85,33 +77,46 @@ const RouteGuard: React.FC<RouteGuardProps> = ({ children }) => {
 
   if (loading) {
     return (
-      <Flex fillWidth paddingY="128" horizontal="center">
+      <Flex fillWidth paddingY="128" justifyContent="center">
         <Spinner />
       </Flex>
     );
   }
 
   if (!isRouteEnabled) {
-    return <NotFound />;
+    return (
+      <Flex fillWidth paddingY="128" justifyContent="center">
+        <Spinner />
+      </Flex>
+    );
   }
 
   if (isPasswordRequired && !isAuthenticated) {
     return (
-      <Column paddingY="128" maxWidth={24} gap="24" center>
+      <Flex
+        fillWidth
+        paddingY="128"
+        maxWidth={24}
+        gap="24"
+        justifyContent="center"
+        direction="column"
+        alignItems="center"
+      >
         <Heading align="center" wrap="balance">
           This page is password protected
         </Heading>
-        <Column fillWidth gap="8" horizontal="center">
-          <PasswordInput
+        <Flex fillWidth gap="8" direction="column" alignItems="center">
+          <Input
             id="password"
             label="Password"
+            type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             errorMessage={error}
           />
           <Button onClick={handlePasswordSubmit}>Submit</Button>
-        </Column>
-      </Column>
+        </Flex>
+      </Flex>
     );
   }
 

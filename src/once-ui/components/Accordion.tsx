@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, forwardRef, useImperativeHandle } from "react";
-import { Flex, Icon, Heading, Column } from ".";
+import React, { forwardRef, useImperativeHandle, useState } from "react";
+import { Column, Flex, Heading, Icon } from ".";
 import styles from "./Accordion.module.scss";
 
 interface AccordionProps extends Omit<React.ComponentProps<typeof Flex>, "title"> {
@@ -38,8 +38,8 @@ const Accordion: React.FC<AccordionProps> = forwardRef(
           transition="macro-medium"
           paddingY="16"
           paddingX="20"
-          vertical="center"
-          horizontal="space-between"
+          alignItems="center"
+          justifyContent="space-between"
           onClick={toggleAccordion}
           aria-expanded={isOpen}
           aria-controls="accordion-content"
@@ -76,7 +76,7 @@ const Accordion: React.FC<AccordionProps> = forwardRef(
         </Flex>
       </Flex>
     );
-  },
+  }
 );
 
 Accordion.displayName = "Accordion";

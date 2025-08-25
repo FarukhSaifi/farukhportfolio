@@ -1,8 +1,8 @@
-import { getPosts } from "@/app/utils/utils";
-import { Column } from "@/once-ui/components";
-import { Projects } from "@/components/work/Projects";
 import { baseURL } from "@/app/resources";
 import { person, work } from "@/app/resources/content";
+import { getPosts } from "@/app/utils/utils";
+import { Projects } from "@/components/work/Projects";
+import { Flex } from "@/once-ui/components";
 
 export async function generateMetadata() {
   const title = work.title;
@@ -37,7 +37,7 @@ export default function Work() {
   let allProjects = getPosts(["src", "app", "work", "projects"]);
 
   return (
-    <Column maxWidth="m">
+    <Flex fillWidth maxWidth="m" direction="column">
       <script
         type="application/ld+json"
         suppressHydrationWarning
@@ -64,6 +64,6 @@ export default function Work() {
         }}
       />
       <Projects />
-    </Column>
+    </Flex>
   );
 }

@@ -2,7 +2,7 @@
 
 import React, { forwardRef } from "react";
 
-import { Skeleton, Icon, Text, StatusIndicator, Flex, SmartImage } from ".";
+import { Flex, Icon, Skeleton, SmartImage, StatusIndicator, Text } from ".";
 import styles from "./Avatar.module.scss";
 
 interface AvatarProps extends React.ComponentProps<typeof Flex> {
@@ -46,7 +46,9 @@ const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
       return (
         <Skeleton
           {...rest}
-          border="neutral-medium"
+          style={{
+            border: "1px solid var(--neutral-border-medium)",
+          }}
           shape="circle"
           width={size}
           height={size}
@@ -105,8 +107,8 @@ const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
         ref={ref}
         role="img"
         position="relative"
-        horizontal="center"
-        vertical="center"
+        justifyContent="center"
+        alignItems="center"
         radius="full"
         border="neutral-strong"
         background="surface"
@@ -125,7 +127,7 @@ const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
         )}
       </Flex>
     );
-  },
+  }
 );
 
 Avatar.displayName = "Avatar";

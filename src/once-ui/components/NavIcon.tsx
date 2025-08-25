@@ -1,7 +1,7 @@
-import React, { forwardRef } from "react";
-import styles from "./NavIcon.module.scss";
-import { Flex } from ".";
 import classNames from "classnames";
+import React, { forwardRef } from "react";
+import { Flex } from ".";
+import styles from "./NavIcon.module.scss";
 
 interface NavIconProps extends React.ComponentProps<typeof Flex> {
   className?: string;
@@ -32,7 +32,7 @@ const NavIcon = forwardRef<HTMLDivElement, Partial<NavIconProps>>(
         <div className={classNames(styles.line, isActive && styles.active)} />
       </Flex>
     );
-  },
+  }
 );
 
 NavIcon.displayName = "NavIcon";

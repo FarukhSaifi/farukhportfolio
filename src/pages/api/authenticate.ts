@@ -1,15 +1,10 @@
-import { NextApiRequest, NextApiResponse } from "next";
 import * as cookie from "cookie";
+import { NextApiRequest, NextApiResponse } from "next";
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {
     const { password } = req.body;
-    const correctPassword = process.env.PAGE_ACCESS_PASSWORD;
-
-    if (!correctPassword) {
-      console.error('PAGE_ACCESS_PASSWORD environment variable is not set');
-      return res.status(500).json({ message: "Internal server error" });
-    }
+    const correctPassword = "password";
 
     if (password === correctPassword) {
       res.setHeader(
@@ -20,7 +15,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
           maxAge: 60 * 60,
           sameSite: "strict",
           path: "/",
-        }),
+        })
       );
 
       return res.status(200).json({ success: true });

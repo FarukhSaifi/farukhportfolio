@@ -9,10 +9,7 @@ class MyDocument extends Document {
         <Head>
           {/* Open Graph Meta Tags */}
           <meta property="og:title" content={home.title} />
-          <meta
-            property="og:image"
-            content={`${baseURL}/images/${person.avatar}`}
-          />
+          <meta property="og:image" content={`${baseURL}/images/${person.avatar}`} />
           <meta property="og:url" content={`https://${baseURL}`} />
           <meta property="og:type" content="website" />
 
@@ -38,15 +35,9 @@ class MyDocument extends Document {
           <meta name="twitter:url" content={`https://${baseURL}`} /> */}
 
           {/* Other meta tags */}
-          <link
-            rel="manifest"
-            href={`https://${baseURL}/images/manifest.json`}
-          />
+          <link rel="manifest" href={`https://${baseURL}/images/manifest.json`} />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <meta
-            name="apple-mobile-web-app-status-bar-style"
-            content="black-translucent"
-          />
+          <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         </Head>
         <body>
           <Main />
