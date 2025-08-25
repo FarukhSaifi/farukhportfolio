@@ -3,8 +3,8 @@
 import { forwardRef, useEffect, useState } from "react";
 import { Column, Flex, IconButton, Scroller, SegmentedControl, Text } from ".";
 
+import { style } from "@/app/resources";
 import classNames from "classnames";
-import { style } from "../resources/config";
 import styles from "./StylePanel.module.scss";
 
 interface StylePanelProps extends React.ComponentProps<typeof Flex> {
