@@ -6,7 +6,7 @@ import styles from "@/components/Header.module.scss";
 import { Fade, Flex, IconButton, ToggleButton } from "@/once-ui/components";
 
 import { display, routes, style } from "@/app/resources";
-import { about, blog, gallery, home, person, work } from "@/app/resources/content";
+import { about, blog, gallery, person, work } from "@/app/resources/content";
 import { useEffect, useState } from "react";
 
 // type TimeDisplayProps = {
@@ -89,7 +89,7 @@ export const Header = () => {
                     className="s-flex-hide"
                     prefixIcon="home"
                     href="/"
-                    label={home.label}
+                    // label={home.label}
                     selected={pathname === "/"}
                   />
                   <ToggleButton
