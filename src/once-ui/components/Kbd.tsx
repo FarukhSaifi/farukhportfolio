@@ -16,7 +16,7 @@ const Kbd = forwardRef<HTMLDivElement, KbdProps>(
     <Flex
       as="kbd"
       ref={ref}
-      horizontal="center"
+      justifyContent="center"
       minWidth="32"
       background="neutral-strong"
       radius="s"
@@ -32,7 +32,7 @@ const Kbd = forwardRef<HTMLDivElement, KbdProps>(
         {label || children}
       </Text>
     </Flex>
-  ),
+  )
 );
 
 Kbd.displayName = "Kbd";

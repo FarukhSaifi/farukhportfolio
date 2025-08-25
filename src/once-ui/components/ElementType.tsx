@@ -52,7 +52,7 @@ const ElementType = forwardRef<HTMLElement, ElementTypeProps>(
         {children}
       </button>
     );
-  },
+  }
 );
 
 ElementType.displayName = "ElementType";

@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import classNames from "classnames";
-import styles from "./Arrow.module.scss";
+import { useEffect, useRef } from "react";
 import { Flex } from ".";
+import styles from "./Arrow.module.scss";
 
 interface ArrowProps {
   trigger: string;
@@ -48,8 +48,8 @@ const Arrow: React.FC<ArrowProps> = ({
     <Flex
       ref={ref}
       position="relative"
-      vertical="center"
-      horizontal="center"
+      alignItems="center"
+      justifyContent="flex-end"
       className={classNames(styles.arrowContainer, className)}
       style={{
         transform: `scale(${scale})`,

@@ -1,8 +1,8 @@
 "use client";
 
-import React, { ReactNode, MouseEventHandler, forwardRef } from "react";
 import classNames from "classnames";
-import { Text, Icon, IconButton, IconButtonProps, Flex } from ".";
+import React, { MouseEventHandler, ReactNode, forwardRef } from "react";
+import { Flex, Icon, IconButton, IconButtonProps, Text } from ".";
 import styles from "./Chip.module.scss";
 
 interface ChipProps extends React.ComponentProps<typeof Flex> {
@@ -29,7 +29,7 @@ const Chip: React.FC<ChipProps> = forwardRef<HTMLDivElement, ChipProps>(
       iconButtonProps = {},
       ...rest
     },
-    ref,
+    ref
   ) => {
     const defaultIconButtonProps: IconButtonProps = {
       icon: "close",
@@ -62,7 +62,7 @@ const Chip: React.FC<ChipProps> = forwardRef<HTMLDivElement, ChipProps>(
       <Flex
         ref={ref}
         fit
-        vertical="center"
+        alignItems="center"
         radius="full"
         paddingX="8"
         paddingY="4"
@@ -93,7 +93,7 @@ const Chip: React.FC<ChipProps> = forwardRef<HTMLDivElement, ChipProps>(
         )}
       </Flex>
     );
-  },
+  }
 );
 
 Chip.displayName = "Chip";

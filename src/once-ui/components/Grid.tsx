@@ -1,18 +1,18 @@
 "use client";
 
-import React, { CSSProperties, forwardRef } from "react";
 import classNames from "classnames";
+import { CSSProperties, forwardRef } from "react";
 
 import {
-  GridProps,
-  SpacingProps,
-  SizeProps,
-  StyleProps,
   CommonProps,
-  DisplayProps,
   ConditionalProps,
+  DisplayProps,
+  GridProps,
+  SizeProps,
+  SpacingProps,
+  StyleProps,
 } from "../interfaces";
-import { SpacingToken, ColorScheme, ColorWeight } from "../types";
+import { ColorScheme, ColorWeight, SpacingToken } from "../types";
 
 interface ComponentProps
   extends GridProps,
@@ -103,7 +103,7 @@ const Grid = forwardRef<HTMLDivElement, ComponentProps>(
       children,
       ...rest
     },
-    ref,
+    ref
   ) => {
     const generateDynamicClass = (type: string, value: string | "-1" | undefined) => {
       if (!value) return undefined;
@@ -116,7 +116,7 @@ const Grid = forwardRef<HTMLDivElement, ComponentProps>(
 
     const parseDimension = (
       value: number | SpacingToken | undefined,
-      type: "width" | "height",
+      type: "width" | "height"
     ): string | undefined => {
       if (value === undefined) return undefined;
       if (typeof value === "number") return `${value}rem`;
@@ -184,7 +184,7 @@ const Grid = forwardRef<HTMLDivElement, ComponentProps>(
       generateDynamicClass("solid", solid),
       generateDynamicClass(
         "border",
-        border || borderTop || borderRight || borderBottom || borderLeft,
+        border || borderTop || borderRight || borderBottom || borderLeft
       ),
       (border || borderTop || borderRight || borderBottom || borderLeft) &&
         !borderStyle &&
@@ -215,10 +215,11 @@ const Grid = forwardRef<HTMLDivElement, ComponentProps>(
       zIndex && `z-index-${zIndex}`,
       textType && `font-${textType}`,
       cursor && `cursor-${cursor}`,
-      className,
+      className
     );
 
     const combinedStyle: CSSProperties = {
+      gap,
       maxWidth: parseDimension(maxWidth, "width"),
       minWidth: parseDimension(minWidth, "width"),
       minHeight: parseDimension(minHeight, "height"),
@@ -235,7 +236,7 @@ const Grid = forwardRef<HTMLDivElement, ComponentProps>(
         {children}
       </Component>
     );
-  },
+  }
 );
 
 Grid.displayName = "Grid";

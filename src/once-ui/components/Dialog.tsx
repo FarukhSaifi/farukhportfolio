@@ -1,16 +1,16 @@
 "use client";
 
+import classNames from "classnames";
 import React, {
-  ReactNode,
-  useEffect,
-  useCallback,
-  useRef,
   forwardRef,
-  useState,
+  ReactNode,
+  useCallback,
   useContext,
+  useEffect,
+  useRef,
+  useState,
 } from "react";
 import ReactDOM from "react-dom";
-import classNames from "classnames";
 import { Flex, Heading, IconButton, Text } from ".";
 import styles from "./Dialog.module.scss";
 
@@ -67,7 +67,7 @@ const Dialog: React.FC<DialogProps> = forwardRef<HTMLDivElement, DialogProps>(
       minHeight,
       ...rest
     },
-    ref,
+    ref
   ) => {
     const dialogRef = useRef<HTMLDivElement>(null);
     const [isVisible, setIsVisible] = useState(isOpen);
@@ -108,7 +108,7 @@ const Dialog: React.FC<DialogProps> = forwardRef<HTMLDivElement, DialogProps>(
         }
         if (event.key === "Tab" && dialogRef.current) {
           const focusableElements = dialogRef.current.querySelectorAll(
-            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
           );
 
           if (focusableElements.length > 0) {
@@ -125,7 +125,7 @@ const Dialog: React.FC<DialogProps> = forwardRef<HTMLDivElement, DialogProps>(
           }
         }
       },
-      [onClose, base],
+      [onClose, base]
     );
 
     useEffect(() => {
@@ -180,7 +180,7 @@ const Dialog: React.FC<DialogProps> = forwardRef<HTMLDivElement, DialogProps>(
     useEffect(() => {
       if (isOpen && dialogRef.current) {
         const focusableElements = dialogRef.current.querySelectorAll<HTMLElement>(
-          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
         );
         const firstElement = focusableElements[0];
         firstElement.focus();
@@ -220,7 +220,8 @@ const Dialog: React.FC<DialogProps> = forwardRef<HTMLDivElement, DialogProps>(
         className={classNames(styles.overlay, {
           [styles.open]: isAnimating,
         })}
-        center
+        justifyContent="center"
+        alignItems="center"
         padding="l"
         role="dialog"
         aria-modal="true"
@@ -228,7 +229,8 @@ const Dialog: React.FC<DialogProps> = forwardRef<HTMLDivElement, DialogProps>(
       >
         <Flex
           fill
-          center
+          justifyContent="center"
+          alignItems="center"
           transition="macro-medium"
           style={{
             transform: base ? "scale(0.94) translateY(-1.25rem)" : "",
@@ -254,8 +256,8 @@ const Dialog: React.FC<DialogProps> = forwardRef<HTMLDivElement, DialogProps>(
               if (e.key === "Tab") {
                 const focusableElements = Array.from(
                   dialogRef.current?.querySelectorAll(
-                    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
-                  ) || [],
+                    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+                  ) || []
                 );
 
                 if (focusableElements.length === 0) return;
@@ -282,7 +284,7 @@ const Dialog: React.FC<DialogProps> = forwardRef<HTMLDivElement, DialogProps>(
               paddingBottom="s"
               gap="4"
             >
-              <Flex fillWidth horizontal="space-between" gap="8">
+              <Flex fillWidth justifyContent="space-between" gap="8">
                 <Heading id="dialog-title" variant="heading-strong-l">
                   {title}
                 </Heading>
@@ -311,16 +313,22 @@ const Dialog: React.FC<DialogProps> = forwardRef<HTMLDivElement, DialogProps>(
               {children}
             </Flex>
             {footer && (
-              <Flex borderTop="neutral-medium" as="footer" horizontal="end" padding="12" gap="8">
+              <Flex
+                borderTop="neutral-medium"
+                as="footer"
+                justifyContent="flex-end"
+                padding="12"
+                gap="8"
+              >
                 {footer}
               </Flex>
             )}
           </Flex>
         </Flex>
       </Flex>,
-      document.body,
+      document.body
     );
-  },
+  }
 );
 
 Dialog.displayName = "Dialog";
