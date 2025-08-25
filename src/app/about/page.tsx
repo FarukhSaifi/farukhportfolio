@@ -14,6 +14,13 @@ import {
   Text,
 } from "@/once-ui/components";
 
+interface ImageType {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+}
+
 export async function generateMetadata() {
   const title = about.title;
   const description = about.description;
@@ -248,7 +255,7 @@ export default function About() {
                     </Flex>
                     {experience.images.length > 0 && (
                       <Flex fillWidth paddingTop="m" paddingLeft="40" wrap>
-                        {experience.images.map((image, index) => (
+                        {experience.images.map((image: ImageType, index) => (
                           <Flex
                             key={index}
                             border="neutral-medium"
@@ -312,7 +319,7 @@ export default function About() {
                     </Text>
                     {skill.images && skill.images.length > 0 && (
                       <Flex fillWidth paddingTop="m" gap="12" wrap>
-                        {skill.images.map((image, index) => (
+                        {skill.images.map((image: ImageType, index) => (
                           <Flex
                             key={index}
                             border="neutral-medium"
