@@ -1,7 +1,7 @@
 "use client";
 
 import React, { forwardRef, ReactNode } from "react";
-import { IconButton, Button, Icon, Flex, Text } from ".";
+import { Button, Flex, Icon, IconButton, Text } from ".";
 
 interface FeedbackProps extends Omit<React.ComponentProps<typeof Flex>, "title"> {
   variant?: "info" | "danger" | "warning" | "success";
@@ -36,7 +36,7 @@ const Feedback = forwardRef<HTMLDivElement, FeedbackProps>(
       children,
       ...rest
     },
-    ref,
+    ref
   ) => {
     return (
       <Flex
@@ -45,13 +45,12 @@ const Feedback = forwardRef<HTMLDivElement, FeedbackProps>(
         ref={ref}
         border={`${variant}-medium`}
         background={`${variant}-medium`}
-        vertical="start"
         role="alert"
         aria-live="assertive"
         {...rest}
       >
         {icon && (
-          <Flex paddingY="16" paddingLeft="16">
+          <Flex paddingY="16" paddingLeft="16" alignItems="flex-start">
             <Icon
               padding="4"
               radius="m"
@@ -62,7 +61,7 @@ const Feedback = forwardRef<HTMLDivElement, FeedbackProps>(
             />
           </Flex>
         )}
-        <Flex fillWidth padding="16" gap="24" vertical="center" direction="column">
+        <Flex fillWidth padding="16" gap="24" justifyContent="center" direction="column">
           {(title || description) && (
             <Flex direction="column" fillWidth gap="4">
               {title && (
@@ -108,7 +107,7 @@ const Feedback = forwardRef<HTMLDivElement, FeedbackProps>(
         </Flex>
       </Flex>
     );
-  },
+  }
 );
 
 Feedback.displayName = "Feedback";

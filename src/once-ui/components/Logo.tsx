@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useEffect } from "react";
-import Link from "next/link";
 import classNames from "classnames";
-import styles from "./Logo.module.scss";
-import { SpacingToken } from "../types";
+import Link from "next/link";
+import React, { useEffect } from "react";
 import { Flex } from ".";
+import { SpacingToken } from "../types";
+import styles from "./Logo.module.scss";
 
 const sizeMap: Record<string, SpacingToken> = {
   xs: "20",
@@ -40,7 +40,7 @@ const Logo: React.FC<LogoProps> = ({
   useEffect(() => {
     if (!icon && !wordmark) {
       console.warn(
-        "Both 'icon' and 'wordmark' props are set to false. The logo will not render any content.",
+        "Both 'icon' and 'wordmark' props are set to false. The logo will not render any content."
       );
     }
   }, [icon, wordmark]);

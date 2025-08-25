@@ -1,11 +1,11 @@
-import { notFound } from "next/navigation";
-import { CustomMDX } from "@/components/mdx";
-import { getPosts } from "@/app/utils/utils";
-import { AvatarGroup, Button, Column, Flex, Heading, SmartImage, Text } from "@/once-ui/components";
 import { baseURL } from "@/app/resources";
 import { person } from "@/app/resources/content";
 import { formatDate } from "@/app/utils/formatDate";
+import { getPosts } from "@/app/utils/utils";
+import { CustomMDX } from "@/components/mdx";
 import ScrollToHash from "@/components/ScrollToHash";
+import { AvatarGroup, Button, Flex, Heading, SmartImage, Text } from "@/once-ui/components";
+import { notFound } from "next/navigation";
 
 interface WorkParams {
   params: {
@@ -76,7 +76,7 @@ export default function Project({ params }: WorkParams) {
     })) || [];
 
   return (
-    <Column as="section" maxWidth="m" horizontal="center" gap="l">
+    <Flex as="section" fillWidth maxWidth="m" direction="column" alignItems="center" gap="l">
       <script
         type="application/ld+json"
         suppressHydrationWarning
@@ -99,12 +99,12 @@ export default function Project({ params }: WorkParams) {
           }),
         }}
       />
-      <Column maxWidth="xs" gap="16">
+      <Flex fillWidth maxWidth="xs" gap="16" direction="column">
         <Button href="/work" variant="tertiary" weight="default" size="s" prefixIcon="chevronLeft">
           Projects
         </Button>
         <Heading variant="display-strong-s">{post.metadata.title}</Heading>
-      </Column>
+      </Flex>
       {post.metadata.images.length > 0 && (
         <SmartImage
           priority
@@ -114,16 +114,16 @@ export default function Project({ params }: WorkParams) {
           src={post.metadata.images[0]}
         />
       )}
-      <Column style={{ margin: "auto" }} as="article" maxWidth="xs">
-        <Flex gap="12" marginBottom="24" vertical="center">
+      <Flex style={{ margin: "auto" }} as="article" maxWidth="xs" fillWidth direction="column">
+        <Flex gap="12" marginBottom="24" alignItems="center">
           {post.metadata.team && <AvatarGroup reverse avatars={avatars} size="m" />}
           <Text variant="body-default-s" onBackground="neutral-weak">
-            {post.metadata.publishedAt && formatDate(post.metadata.publishedAt)}
+            {formatDate(post.metadata.publishedAt)}
           </Text>
         </Flex>
         <CustomMDX source={post.content} />
-      </Column>
+      </Flex>
       <ScrollToHash />
-    </Column>
+    </Flex>
   );
 }
