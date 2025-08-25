@@ -1,11 +1,11 @@
 "use client";
 
-import React, { forwardRef } from "react";
 import classNames from "classnames";
+import React, { forwardRef } from "react";
 
 import { Flex, InteractiveDetails, InteractiveDetailsProps } from ".";
-import styles from "./Switch.module.scss";
 import commonStyles from "./SharedInteractiveStyles.module.scss";
+import styles from "./Switch.module.scss";
 
 interface SwitchProps
   extends Omit<InteractiveDetailsProps, "onClick">,
@@ -34,7 +34,7 @@ const Switch: React.FC<SwitchProps> = forwardRef<HTMLInputElement, SwitchProps>(
       value,
       ...props
     },
-    ref,
+    ref
   ) => {
     const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
       if (!disabled && (event.key === "Enter" || event.key === " ")) {
@@ -52,8 +52,8 @@ const Switch: React.FC<SwitchProps> = forwardRef<HTMLInputElement, SwitchProps>(
     return (
       <Flex
         gap="16"
-        vertical="center"
-        horizontal={reverse ? "space-between" : undefined}
+        alignItems="center"
+        justifyContent={reverse ? "space-between" : "auto"}
         fillWidth={reverse}
         className={classNames(styles.container, className, {
           [styles.reverse]: reverse,
@@ -95,7 +95,7 @@ const Switch: React.FC<SwitchProps> = forwardRef<HTMLInputElement, SwitchProps>(
         {props.label && <InteractiveDetails {...props} onClick={() => {}} />}
       </Flex>
     );
-  },
+  }
 );
 
 Switch.displayName = "Switch";

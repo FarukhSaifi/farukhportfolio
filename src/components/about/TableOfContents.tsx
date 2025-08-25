@@ -1,7 +1,7 @@
 "use client";
 
+import { Flex, Text } from "@/once-ui/components";
 import React from "react";
-import { Column, Flex, Text } from "@/once-ui/components";
 import styles from "./about.module.scss";
 
 interface TableOfContentsProps {
@@ -35,9 +35,9 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ structure, about }) =
   if (!about.tableOfContent.display) return null;
 
   return (
-    <Column
-      left="0"
+    <Flex
       style={{
+        left: "0",
         top: "50%",
         transform: "translateY(-50%)",
         whiteSpace: "nowrap",
@@ -45,17 +45,18 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ structure, about }) =
       position="fixed"
       paddingLeft="24"
       gap="32"
+      direction="column"
       hide="m"
     >
       {structure
         .filter((section) => section.display)
         .map((section, sectionIndex) => (
-          <Column key={sectionIndex} gap="12">
+          <Flex key={sectionIndex} gap="12" direction="column">
             <Flex
-              cursor="interactive"
+              style={{ cursor: "pointer" }}
               className={styles.hover}
               gap="8"
-              vertical="center"
+              alignItems="center"
               onClick={() => scrollTo(section.title, 80)}
             >
               <Flex height="1" minWidth="16" background="neutral-strong"></Flex>
@@ -71,7 +72,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ structure, about }) =
                     className={styles.hover}
                     gap="12"
                     paddingLeft="24"
-                    vertical="center"
+                    alignItems="center"
                     onClick={() => scrollTo(item, 80)}
                   >
                     <Flex height="1" minWidth="8" background="neutral-strong"></Flex>
@@ -80,9 +81,9 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ structure, about }) =
                 ))}
               </>
             )}
-          </Column>
+          </Flex>
         ))}
-    </Column>
+    </Flex>
   );
 };
 

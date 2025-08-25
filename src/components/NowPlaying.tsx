@@ -48,12 +48,7 @@ const NowPlaying = () => {
           <h2>{track?.title}</h2>
           <p>{track?.artist}</p>
           <p>{track?.album}</p>
-          <img
-            src={track?.imageUrl}
-            alt={track?.title}
-            width={100}
-            height={100}
-          />
+          <img src={track?.imageUrl} alt={track?.title} width={100} height={100} />
           <p>
             <a href={track?.songUrl} target="_blank" rel="noopener noreferrer">
               Listen on Spotify

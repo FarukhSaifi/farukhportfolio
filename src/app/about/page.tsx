@@ -5,7 +5,6 @@ import styles from "@/components/about/about.module.scss";
 import {
   Avatar,
   Button,
-  Column,
   Flex,
   Heading,
   Icon,
@@ -68,7 +67,7 @@ export default function About() {
     },
   ];
   return (
-    <Column maxWidth="m">
+    <Flex maxWidth="m" direction="column">
       <script
         type="application/ld+json"
         suppressHydrationWarning
@@ -92,34 +91,34 @@ export default function About() {
         }}
       />
       {about.tableOfContent.display && (
-        <Column
-          left="0"
-          style={{ top: "50%", transform: "translateY(-50%)" }}
+        <Flex
+          style={{ left: "0", top: "50%", transform: "translateY(-50%)" }}
           position="fixed"
           paddingLeft="24"
           gap="32"
+          direction="column"
           hide="s"
         >
           <TableOfContents structure={structure} about={about} />
-        </Column>
+        </Flex>
       )}
-      <Flex fillWidth mobileDirection="column" horizontal="center">
+      <Flex fillWidth mobileDirection="column" justifyContent="center">
         {about.avatar.display && (
-          <Column
+          <Flex
             className={styles.avatar}
             minWidth="160"
             paddingX="l"
             paddingBottom="xl"
             gap="m"
             flex={3}
-            horizontal="center"
+            direction="column"
+            alignItems="center"
           >
             <Avatar src={person.avatar} size="xl" />
-            <Flex gap="8" vertical="center">
+            <Flex gap="8" alignItems="center">
               <Icon onBackground="accent-weak" name="globe" />
               {person.location}
             </Flex>
-            {/* <NowPlaying /> */}
             {person.languages.length > 0 && (
               <Flex wrap gap="8">
                 {person.languages.map((language, index) => (
@@ -129,14 +128,15 @@ export default function About() {
                 ))}
               </Flex>
             )}
-          </Column>
+          </Flex>
         )}
-        <Column className={styles.blockAlign} flex={9} maxWidth={40}>
-          <Column
+        <Flex className={styles.blockAlign} flex={9} maxWidth={40} direction="column">
+          <Flex
             id={about.intro.title}
             fillWidth
             minHeight="160"
-            vertical="center"
+            direction="column"
+            justifyContent="center"
             marginBottom="32"
           >
             {about.calendar.display && (
@@ -152,13 +152,11 @@ export default function About() {
                 padding="4"
                 gap="8"
                 marginBottom="m"
-                vertical="center"
+                alignItems="center"
               >
-                <Icon
-                  paddingLeft="12"
-                  name="calendar"
-                  onBackground="brand-weak"
-                />
+                <Flex paddingLeft="12">
+                  <Icon name="calendar" onBackground="brand-weak" />
+                </Flex>
                 <Flex paddingX="8">Schedule a call</Flex>
                 <IconButton
                   href={about.calendar.link}
@@ -179,106 +177,75 @@ export default function About() {
               {person.role}
             </Text>
             {social.length > 0 && (
-              <Flex
-                className={styles.blockAlign}
-                paddingTop="20"
-                paddingBottom="8"
-                gap="8"
-                wrap
-                horizontal="center"
-                fitWidth
-              >
+              <Flex className={styles.blockAlign} paddingTop="20" paddingBottom="8" gap="8" wrap>
                 {social.map(
-                  (item, index) =>
+                  (item) =>
                     item.link && (
-                      <>
-                        <Button
-                          className="s-flex-hide"
-                          key={item.name}
-                          href={item.link}
-                          prefixIcon={item.icon}
-                          label={item.name}
-                          size="s"
-                          variant="secondary"
-                        />
-                        <IconButton
-                          className="s-flex-show"
-                          size="l"
-                          key={`${item.name}-icon`}
-                          href={item.link}
-                          icon={item.icon}
-                          variant="secondary"
-                        />
-                      </>
+                      <Button
+                        key={item.name}
+                        href={item.link}
+                        prefixIcon={item.icon}
+                        label={item.name}
+                        size="s"
+                        variant="secondary"
+                      />
                     )
                 )}
               </Flex>
             )}
-          </Column>
+          </Flex>
 
           {about.intro.display && (
-            <Column
+            <Flex
+              direction="column"
               textVariant="body-default-l"
               fillWidth
               gap="m"
               marginBottom="xl"
             >
               {about.intro.description}
-            </Column>
+            </Flex>
           )}
 
           {about.work.display && (
             <>
-              <Heading
-                as="h2"
-                id={about.work.title}
-                variant="display-strong-s"
-                marginBottom="m"
-              >
+              <Heading as="h2" id={about.work.title} variant="display-strong-s" marginBottom="m">
                 {about.work.title}
               </Heading>
-              <Column fillWidth gap="l" marginBottom="40">
+              <Flex direction="column" fillWidth gap="l" marginBottom="40">
                 {about.work.experiences.map((experience, index) => (
-                  <Column
+                  <Flex
                     key={`${experience.company}-${experience.role}-${index}`}
                     fillWidth
+                    direction="column"
                   >
                     <Flex
                       fillWidth
-                      horizontal="space-between"
-                      vertical="end"
+                      justifyContent="space-between"
+                      alignItems="flex-end"
                       marginBottom="4"
                     >
                       <Text id={experience.company} variant="heading-strong-l">
                         {experience.company}
                       </Text>
-                      <Text
-                        variant="heading-default-xs"
-                        onBackground="neutral-weak"
-                      >
+                      <Text variant="heading-default-xs" onBackground="neutral-weak">
                         {experience.timeframe}
                       </Text>
                     </Flex>
-                    <Text
-                      variant="body-default-s"
-                      onBackground="brand-weak"
-                      marginBottom="m"
-                    >
+                    <Text variant="body-default-s" onBackground="brand-weak" marginBottom="m">
                       {experience.role}
                     </Text>
-                    <Column as="ul" gap="16">
-                      {experience.achievements.map(
-                        (achievement: JSX.Element, index: number) => (
-                          <Text
-                            as="li"
-                            variant="body-default-m"
-                            key={`${experience.company}-${index}`}
-                          >
-                            {achievement}
-                          </Text>
-                        )
-                      )}
-                    </Column>
+                    <Flex as="ul" direction="column" gap="16">
+                      {experience.achievements.map((achievement: JSX.Element, index: number) => (
+                        <Text
+                          as="li"
+                          variant="body-default-m"
+                          key={`${experience.company}-${index}`}
+                        >
+                          {achievement}
+                        </Text>
+                      ))}
+                    </Flex>
                     {experience.images.length > 0 && (
                       <Flex fillWidth paddingTop="m" paddingLeft="40" wrap>
                         {experience.images.map((image, index) => (
@@ -286,60 +253,43 @@ export default function About() {
                             key={index}
                             border="neutral-medium"
                             radius="m"
-                            //@ts-ignore
                             minWidth={image.width}
-                            //@ts-ignore
                             height={image.height}
                           >
                             <SmartImage
                               enlarge
                               radius="m"
-                              //@ts-ignore
                               sizes={image.width.toString()}
-                              //@ts-ignore
                               alt={image.alt}
-                              //@ts-ignore
                               src={image.src}
                             />
                           </Flex>
                         ))}
                       </Flex>
                     )}
-                  </Column>
+                  </Flex>
                 ))}
-              </Column>
+              </Flex>
             </>
           )}
 
           {about.studies.display && (
             <>
-              <Heading
-                as="h2"
-                id={about.studies.title}
-                variant="display-strong-s"
-                marginBottom="m"
-              >
+              <Heading as="h2" id={about.studies.title} variant="display-strong-s" marginBottom="m">
                 {about.studies.title}
               </Heading>
-              <Column fillWidth gap="l" marginBottom="40">
+              <Flex direction="column" fillWidth gap="l" marginBottom="40">
                 {about.studies.institutions.map((institution, index) => (
-                  <Column
-                    key={`${institution.name}-${index}`}
-                    fillWidth
-                    gap="4"
-                  >
+                  <Flex key={`${institution.name}-${index}`} fillWidth gap="4" direction="column">
                     <Text id={institution.name} variant="heading-strong-l">
                       {institution.name}
                     </Text>
-                    <Text
-                      variant="heading-default-xs"
-                      onBackground="neutral-weak"
-                    >
+                    <Text variant="heading-default-xs" onBackground="neutral-weak">
                       {institution.description}
                     </Text>
-                  </Column>
+                  </Flex>
                 ))}
-              </Column>
+              </Flex>
             </>
           )}
 
@@ -353,9 +303,9 @@ export default function About() {
               >
                 {about.technical.title}
               </Heading>
-              <Column fillWidth gap="l">
+              <Flex direction="column" fillWidth gap="l">
                 {about.technical.skills.map((skill, index) => (
-                  <Column key={`${skill}-${index}`} fillWidth gap="4">
+                  <Flex key={`${skill}-${index}`} fillWidth gap="4" direction="column">
                     <Text variant="heading-strong-l">{skill.title}</Text>
                     <Text variant="body-default-m" onBackground="neutral-weak">
                       {skill.description}
@@ -367,32 +317,27 @@ export default function About() {
                             key={index}
                             border="neutral-medium"
                             radius="m"
-                            //@ts-ignore
                             minWidth={image.width}
-                            //@ts-ignore
                             height={image.height}
                           >
                             <SmartImage
                               enlarge
                               radius="m"
-                              //@ts-ignore
                               sizes={image.width.toString()}
-                              //@ts-ignore
                               alt={image.alt}
-                              //@ts-ignore
                               src={image.src}
                             />
                           </Flex>
                         ))}
                       </Flex>
                     )}
-                  </Column>
+                  </Flex>
                 ))}
-              </Column>
+              </Flex>
             </>
           )}
-        </Column>
+        </Flex>
       </Flex>
-    </Column>
+    </Flex>
   );
 }

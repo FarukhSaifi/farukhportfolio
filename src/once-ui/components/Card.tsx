@@ -23,7 +23,7 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
         {children}
       </Flex>
     );
-  },
+  }
 );
 
 Card.displayName = "Card";

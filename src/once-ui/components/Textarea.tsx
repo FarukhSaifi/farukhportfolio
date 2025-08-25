@@ -1,17 +1,17 @@
 "use client";
 
+import classNames from "classnames";
 import React, {
-  useState,
-  useEffect,
   forwardRef,
+  ReactNode,
   TextareaHTMLAttributes,
   useCallback,
-  ReactNode,
+  useEffect,
+  useState,
 } from "react";
-import classNames from "classnames";
 import { Flex, Text } from ".";
-import styles from "./Input.module.scss";
 import useDebounce from "../hooks/useDebounce";
+import styles from "./Input.module.scss";
 
 interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   id: string;
@@ -61,7 +61,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
       style,
       ...props
     },
-    ref,
+    ref
   ) => {
     const [isFocused, setIsFocused] = useState(false);
     const [isFilled, setIsFilled] = useState(!!props.value);
@@ -138,7 +138,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         [styles.withSuffix]: hasSuffix,
         [styles.labelAsPlaceholder]: labelAsPlaceholder,
         [styles.hasChildren]: children,
-      },
+      }
     );
 
     return (
@@ -159,11 +159,11 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           background="neutral-alpha-weak"
           position="relative"
           overflow="hidden"
-          vertical="stretch"
+          alignItems="stretch"
           className={classNames(
             styles.base,
             lines !== "auto" && styles.textareaBase,
-            radius === "none" ? "radius-none" : radius ? `radius-l-${radius}` : "radius-l",
+            radius === "none" ? "radius-none" : radius ? `radius-l-${radius}` : "radius-l"
           )}
         >
           {hasPrefix && (
@@ -180,7 +180,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
                 } else if (ref) {
                   ref.current = node;
                 }
-                //@ts-ignore
+                // @ts-ignore:next-line
                 textareaRef.current = node;
               }}
               id={id}
@@ -239,7 +239,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         )}
       </Flex>
     );
-  },
+  }
 );
 
 Textarea.displayName = "Textarea";

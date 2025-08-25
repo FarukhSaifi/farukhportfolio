@@ -8,14 +8,11 @@ const {
 } = process.env;
 
 const TOKEN_ENDPOINT = "https://accounts.spotify.com/api/token";
-const CURRENTLY_PLAYING_ENDPOINT =
-  "https://api.spotify.com/v1/me/player/currently-playing";
+const CURRENTLY_PLAYING_ENDPOINT = "https://api.spotify.com/v1/me/player/currently-playing";
 
 // Function to refresh the access token
 const refreshAccessToken = async (): Promise<string> => {
-  const basicAuth = Buffer.from(`${clientId}:${clientSecret}`).toString(
-    "base64"
-  );
+  const basicAuth = Buffer.from(`${clientId}:${clientSecret}`).toString("base64");
 
   const response = await fetch(TOKEN_ENDPOINT, {
     method: "POST",
@@ -62,9 +59,7 @@ const fetchCurrentlyPlaying = async (accessToken: string) => {
   const track = {
     isPlaying: data.is_playing,
     title: data.item.name,
-    artist: data.item.artists
-      .map((artist: { name: string }) => artist.name)
-      .join(", "),
+    artist: data.item.artists.map((artist: { name: string }) => artist.name).join(", "),
     album: data.item.album.name,
     albumImageUrl: data.item.album.images[0].url,
     songUrl: data.item.external_urls.spotify,

@@ -31,9 +31,9 @@ const Flex = forwardRef<HTMLDivElement, ComponentProps>(
       direction,
       tabletDirection,
       mobileDirection,
+      justifyContent,
+      alignItems,
       wrap = false,
-      horizontal,
-      vertical,
       flex,
       textVariant,
       textSize,
@@ -62,7 +62,6 @@ const Flex = forwardRef<HTMLDivElement, ComponentProps>(
       marginY,
       gap,
       position,
-      center,
       width,
       height,
       maxWidth,
@@ -110,17 +109,17 @@ const Flex = forwardRef<HTMLDivElement, ComponentProps>(
       children,
       ...rest
     },
-    ref,
+    ref
   ) => {
     if (onBackground && onSolid) {
       console.warn(
-        "You cannot use both 'onBackground' and 'onSolid' props simultaneously. Only one will be applied.",
+        "You cannot use both 'onBackground' and 'onSolid' props simultaneously. Only one will be applied."
       );
     }
 
     if (background && solid) {
       console.warn(
-        "You cannot use both 'background' and 'solid' props simultaneously. Only one will be applied.",
+        "You cannot use both 'background' and 'solid' props simultaneously. Only one will be applied."
       );
     }
 
@@ -193,7 +192,7 @@ const Flex = forwardRef<HTMLDivElement, ComponentProps>(
       generateDynamicClass("solid", solid),
       generateDynamicClass(
         "border",
-        border || borderTop || borderRight || borderBottom || borderLeft,
+        border || borderTop || borderRight || borderBottom || borderLeft
       ),
       (border || borderTop || borderRight || borderBottom || borderLeft) &&
         !borderStyle &&
@@ -228,21 +227,12 @@ const Flex = forwardRef<HTMLDivElement, ComponentProps>(
       overflowX && `overflow-x-${overflowX}`,
       overflowY && `overflow-y-${overflowY}`,
       flex && `flex-${flex}`,
-      horizontal &&
-        (direction === "row" || direction === "row-reverse" || direction === undefined
-          ? `justify-${horizontal}`
-          : `align-${horizontal}`),
-      vertical &&
-        (direction === "row" || direction === "row-reverse" || direction === undefined
-          ? `align-${vertical}`
-          : `justify-${vertical}`),
-      center && "center",
+      justifyContent && `justify-${justifyContent}`,
+      alignItems && `align-${alignItems}`,
       fit && "fit",
       fitWidth && "fit-width",
       fitHeight && "fit-height",
       fill && "fill",
-      fillWidth && !minWidth && "min-width-0",
-      fillHeight && !minHeight && "min-height-0",
       (fillWidth || maxWidth) && "fill-width",
       (fillHeight || maxHeight) && "fill-height",
       shadow && `shadow-${shadow}`,
@@ -252,12 +242,12 @@ const Flex = forwardRef<HTMLDivElement, ComponentProps>(
       cursor && `cursor-${cursor}`,
       colorClass,
       className,
-      ...variantClasses,
+      ...variantClasses
     );
 
     const parseDimension = (
       value: number | SpacingToken | undefined,
-      type: "width" | "height",
+      type: "width" | "height"
     ): string | undefined => {
       if (value === undefined) return undefined;
       if (typeof value === "number") return `${value}rem`;
@@ -308,7 +298,7 @@ const Flex = forwardRef<HTMLDivElement, ComponentProps>(
         {children}
       </Component>
     );
-  },
+  }
 );
 
 Flex.displayName = "Flex";

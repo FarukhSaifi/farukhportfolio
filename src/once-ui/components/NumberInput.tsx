@@ -1,11 +1,9 @@
 "use client";
 
-import React, { forwardRef, useState } from "react";
-import { Input } from ".";
-import { Flex } from ".";
-import { IconButton } from ".";
-import styles from "./NumberInput.module.scss";
 import classNames from "classnames";
+import React, { forwardRef, useState } from "react";
+import { Flex, IconButton, Input } from ".";
+import styles from "./NumberInput.module.scss";
 
 interface NumberInputProps
   extends Omit<React.ComponentProps<typeof Input>, "type" | "value" | "onChange"> {
@@ -22,7 +20,7 @@ const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
     const [localValue, setLocalValue] = useState<string>(
       padStart && value !== undefined
         ? value.toString().padStart(padStart, "0")
-        : (value?.toString() ?? ""),
+        : (value?.toString() ?? "")
     );
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -114,7 +112,7 @@ const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
         className={styles.numberInput}
       />
     );
-  },
+  }
 );
 
 NumberInput.displayName = "NumberInput";

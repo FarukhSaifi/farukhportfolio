@@ -17,8 +17,8 @@ const newsletter = {
   title: <>Subscribe to {person.firstName}'s Newsletter</>,
   description: (
     <>
-      I occasionally write about design, technology, and share thoughts on the
-      intersection of creativity and engineering.
+      I occasionally write about design, technology, and share thoughts on the intersection of
+      creativity and engineering.
     </>
   ),
 };
@@ -55,8 +55,7 @@ const home = {
   headline: <>I'm a Software Engineer and enthusiastic towards Technology. </>,
   subline: (
     <>
-      I'm Farukh, a Software Engineer at <InlineCode>Earth 🌏</InlineCode>,
-      where I craft intuitive
+      I'm Farukh, a Software Engineer at <InlineCode>Earth 🌏</InlineCode>, where I craft intuitive
       <br /> user experiences. After hours, I build my own projects.
     </>
   ),
@@ -82,10 +81,9 @@ const about = {
     title: "Introduction",
     description: (
       <>
-        Farukh is a Software Engineer with a passion for transforming complex
-        challenges into simple, elegant design solutions. His work spans digital
-        interfaces, interactive experiences, and the convergence of design and
-        technology.
+        Farukh is a Software Engineer with a passion for transforming complex challenges into
+        simple, elegant design solutions. His work spans digital interfaces, interactive
+        experiences, and the convergence of design and technology.
       </>
     ),
   },
@@ -99,19 +97,16 @@ const about = {
         role: "Senior Consultant",
         achievements: [
           <>
-            Implemented cost-effective solutions, resulting in a 20% reduction
-            in project expenses.
+            Implemented cost-effective solutions, resulting in a 20% reduction in project expenses.
+          </>,
+          <>Streamlined project workflows, enhancing overall efficiency by 25%.</>,
+          <>
+            Collaborated with designers to translate UI/UX wireframes into high-quality code,
+            ensuring a seamless user experience.
           </>,
           <>
-            Streamlined project workflows, enhancing overall efficiency by 25%.
-          </>,
-          <>
-            Collaborated with designers to translate UI/UX wireframes into
-            high-quality code, ensuring a seamless user experience.
-          </>,
-          <>
-            Optimized web applications for maximum speed and scalability,
-            implementing best practices for performance improvement.
+            Optimized web applications for maximum speed and scalability, implementing best
+            practices for performance improvement.
           </>,
         ],
         images: [
@@ -130,17 +125,16 @@ const about = {
         role: "Software Developer",
         achievements: [
           <>
-            Skilled in using Frontend frameworks like React and Vue to build
-            products and integrate features according to client needs.
+            Skilled in using Frontend frameworks like React and Vue to build products and integrate
+            features according to client needs.
           </>,
           <>
-            Proven proficiency as a backend developer utilizing Node.js with
-            Express.js, Socket.io, and WebRTC to create API endpoints.
+            Proven proficiency as a backend developer utilizing Node.js with Express.js, Socket.io,
+            and WebRTC to create API endpoints.
           </>,
           <>
-            Able to manage multiple software projects simultaneously, actively
-            participating in the entire software development process from
-            inception to delivery.
+            Able to manage multiple software projects simultaneously, actively participating in the
+            entire software development process from inception to delivery.
           </>,
         ],
         images: [],
@@ -165,9 +159,8 @@ const about = {
         title: "React",
         description: (
           <>
-            React is the library for web and native user interfaces. Build user
-            interfaces out of individual pieces called components written in
-            JavaScript.
+            React is the library for web and native user interfaces. Build user interfaces out of
+            individual pieces called components written in JavaScript.
           </>
         ),
         // optional: leave the array empty if you don't want to display images
@@ -190,9 +183,8 @@ const about = {
         title: "Node.js",
         description: (
           <>
-            Node.js® is a free, open-source, cross-platform JavaScript runtime
-            environment that lets developers create servers, web apps, command
-            line tools and scripts.
+            Node.js® is a free, open-source, cross-platform JavaScript runtime environment that
+            lets developers create servers, web apps, command line tools and scripts.
           </>
         ),
         // optional: leave the array empty if you don't want to display images
@@ -209,8 +201,8 @@ const about = {
         title: "Next.js",
         description: (
           <>
-            Built on a foundation of fast, production-grade tooling. Powered By.
-            React The library for web and native user interfaces.{" "}
+            Built on a foundation of fast, production-grade tooling. Powered By. React The library
+            for web and native user interfaces.{" "}
           </>
         ),
         // optional: leave the array empty if you don't want to display images

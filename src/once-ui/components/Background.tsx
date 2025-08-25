@@ -1,11 +1,11 @@
 "use client";
 
-import React, { CSSProperties, forwardRef, useEffect, useRef, useState } from "react";
-import { SpacingToken } from "../types";
-import { Flex } from "./Flex";
-import { DisplayProps } from "../interfaces";
-import styles from "./Background.module.scss";
 import classNames from "classnames";
+import React, { CSSProperties, forwardRef, useEffect, useRef, useState } from "react";
+import { DisplayProps } from "../interfaces";
+import { SpacingToken } from "../types";
+import styles from "./Background.module.scss";
+import { Flex } from "./Flex";
 
 function setRef<T>(ref: React.Ref<T> | undefined, value: T | null) {
   if (typeof ref === "function") {
@@ -81,12 +81,12 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
       style,
       ...rest
     },
-    forwardedRef,
+    forwardedRef
   ) => {
     const dotsColor = dots.color ?? "brand-on-background-weak";
     const dotsSize = "var(--static-space-" + (dots.size ?? "24") + ")";
 
-    const [cursorPosition, setCursorPosition] = useState({ x: 500, y: 500 });
+    const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
     const [smoothPosition, setSmoothPosition] = useState({ x: 0, y: 0 });
     const backgroundRef = useRef<HTMLDivElement>(null);
 
@@ -165,7 +165,7 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
       inputMin: number,
       inputMax: number,
       outputMin: number,
-      outputMax: number,
+      outputMax: number
     ) => {
       return ((value - inputMin) / (inputMax - inputMin)) * (outputMax - outputMin) + outputMin;
     };
@@ -279,7 +279,7 @@ const Background = forwardRef<HTMLDivElement, BackgroundProps>(
         {children}
       </Flex>
     );
-  },
+  }
 );
 
 Background.displayName = "Background";

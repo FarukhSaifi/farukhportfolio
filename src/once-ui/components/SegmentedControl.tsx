@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { ToggleButton, Scroller, Flex } from ".";
+import { useEffect, useRef, useState } from "react";
+import { Flex, Scroller, ToggleButton } from ".";
 import type { ToggleButtonProps } from "./ToggleButton";
 
 interface ButtonOption extends Omit<ToggleButtonProps, "selected"> {
@@ -10,7 +10,7 @@ interface ButtonOption extends Omit<ToggleButtonProps, "selected"> {
 
 interface SegmentedControlProps extends Omit<React.ComponentProps<typeof Scroller>, "onToggle"> {
   buttons: ButtonOption[];
-  onToggle: (value: string, event?: React.MouseEvent<HTMLButtonElement>) => void;
+  onToggle: (value: string, event?: React.MouseEvent<HTMLDivElement>) => void;
   defaultSelected?: string;
   fillWidth?: boolean;
   selected?: string;
@@ -42,14 +42,10 @@ const SegmentedControl: React.FC<SegmentedControlProps> = ({
     }
   }, [selected]);
 
-  const handleButtonClick = (
-    clickedButton: ButtonOption,
-    event: React.MouseEvent<HTMLButtonElement>,
-  ) => {
-    event.stopPropagation();
+  const handleButtonClick = (clickedButton: ButtonOption) => {
     const newSelected = clickedButton.value;
     setInternalSelected(newSelected);
-    onToggle(newSelected, event);
+    onToggle(newSelected);
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
@@ -114,7 +110,7 @@ const SegmentedControl: React.FC<SegmentedControlProps> = ({
               radius={index === 0 ? "left" : index === buttons.length - 1 ? "right" : "none"}
               key={button.value}
               selected={index === selectedIndex}
-              onClick={(event) => handleButtonClick(button, event)}
+              onClick={() => handleButtonClick(button)}
               role="tab"
               aria-selected={index === selectedIndex}
               aria-controls={`panel-${button.value}`}
@@ -132,4 +128,4 @@ const SegmentedControl: React.FC<SegmentedControlProps> = ({
 SegmentedControl.displayName = "SegmentedControl";
 
 export { SegmentedControl };
-export type { SegmentedControlProps, ButtonOption };
+export type { ButtonOption, SegmentedControlProps };

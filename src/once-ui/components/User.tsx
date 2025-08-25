@@ -1,9 +1,9 @@
 "use client";
 
-import React, { forwardRef } from "react";
 import classNames from "classnames";
+import React, { forwardRef } from "react";
 
-import { Flex, Text, Skeleton, Tag, TagProps, Avatar, AvatarProps } from ".";
+import { Avatar, AvatarProps, Flex, Skeleton, Tag, TagProps, Text } from ".";
 
 interface UserProps {
   name?: string;
@@ -19,13 +19,13 @@ interface UserProps {
 const User = forwardRef<HTMLDivElement, UserProps>(
   (
     { name, children, subline, tagProps = {}, loading = false, avatarProps = {}, className },
-    ref,
+    ref
   ) => {
     const { src, value, empty, ...restAvatarProps } = avatarProps;
     const isEmpty = empty || (!src && !value);
 
     return (
-      <Flex ref={ref} vertical="center" gap="8" className={classNames(className)}>
+      <Flex ref={ref} alignItems="center" gap="8" className={classNames(className)}>
         <Avatar
           size="m"
           src={src}
@@ -42,7 +42,7 @@ const User = forwardRef<HTMLDivElement, UserProps>(
                 <Skeleton width="xl" height="m" shape="line" aria-label="Loading name" />
               </Flex>
             ) : (
-              <Flex gap="8" vertical="center">
+              <Flex gap="8" alignItems="center">
                 <Text variant="heading-strong-xs" onBackground="neutral-strong">
                   {name}
                 </Text>
@@ -66,7 +66,7 @@ const User = forwardRef<HTMLDivElement, UserProps>(
         )}
       </Flex>
     );
-  },
+  }
 );
 
 User.displayName = "User";

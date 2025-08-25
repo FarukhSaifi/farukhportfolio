@@ -1,14 +1,14 @@
 "use client";
 
-import React, {
-  useState,
-  KeyboardEventHandler,
+import {
   ChangeEventHandler,
   FocusEventHandler,
   forwardRef,
+  KeyboardEventHandler,
+  useState,
 } from "react";
 
-import { Flex, Chip, Input, InputProps } from ".";
+import { Chip, Flex, Input, InputProps } from ".";
 
 interface TagInputProps extends Omit<InputProps, "onChange" | "value"> {
   value: string[];
@@ -69,7 +69,7 @@ const TagInput = forwardRef<HTMLInputElement, TagInputProps>(
             }}
             direction="row"
             gap="4"
-            vertical="center"
+            alignItems="center"
             wrap
             paddingY="16"
           >
@@ -85,7 +85,7 @@ const TagInput = forwardRef<HTMLInputElement, TagInputProps>(
         )}
       </Input>
     );
-  },
+  }
 );
 
 TagInput.displayName = "TagInput";

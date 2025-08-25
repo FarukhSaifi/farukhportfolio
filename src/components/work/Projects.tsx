@@ -1,6 +1,6 @@
 import { getPosts } from "@/app/utils/utils";
 import { ProjectCard } from "@/components";
-import { Column } from "@/once-ui/components";
+import { Flex } from "@/once-ui/components";
 
 interface ProjectsProps {
   range?: [number, number?];
@@ -10,10 +10,7 @@ export function Projects({ range }: ProjectsProps) {
   let allProjects = getPosts(["src", "app", "work", "projects"]);
 
   const sortedProjects = allProjects.sort((a, b) => {
-    return (
-      new Date(b.metadata.publishedAt).getTime() -
-      new Date(a.metadata.publishedAt).getTime()
-    );
+    return new Date(b.metadata.publishedAt).getTime() - new Date(a.metadata.publishedAt).getTime();
   });
 
   const displayedProjects = range
@@ -21,7 +18,7 @@ export function Projects({ range }: ProjectsProps) {
     : sortedProjects;
 
   return (
-    <Column fillWidth gap="xl" marginBottom="40" paddingX="l">
+    <Flex fillWidth gap="xl" marginBottom="40" paddingX="l" direction="column">
       {displayedProjects.map((post, index) => (
         <ProjectCard
           priority={index < 2}
@@ -31,12 +28,10 @@ export function Projects({ range }: ProjectsProps) {
           title={post.metadata.title}
           description={post.metadata.summary}
           content={post.content}
-          avatars={
-            post.metadata.team?.map((member) => ({ src: member.avatar })) || []
-          }
+          avatars={post.metadata.team?.map((member) => ({ src: member.avatar })) || []}
           link={post.metadata.link || ""}
         />
       ))}
-    </Column>
+    </Flex>
   );
 }

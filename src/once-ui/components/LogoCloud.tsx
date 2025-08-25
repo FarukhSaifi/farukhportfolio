@@ -1,12 +1,12 @@
 "use client";
 
-import React, { forwardRef, useState, useEffect } from "react";
 import classNames from "classnames";
+import type { ComponentProps } from "react";
+import React, { forwardRef, useEffect, useState } from "react";
+import { Flex } from "./Flex";
 import { Grid } from "./Grid";
 import { Logo } from "./Logo";
 import styles from "./LogoCloud.module.scss";
-import type { ComponentProps } from "react";
-import { Flex } from "./Flex";
 
 type LogoProps = ComponentProps<typeof Logo>;
 
@@ -46,7 +46,7 @@ const LogoCloud = forwardRef<HTMLDivElement, LogoCloudProps>(
             return nextLogos;
           });
         },
-        rotationInterval + STAGGER_DELAY * limit,
+        rotationInterval + STAGGER_DELAY * limit
       );
 
       return () => clearInterval(interval);
@@ -57,8 +57,8 @@ const LogoCloud = forwardRef<HTMLDivElement, LogoCloudProps>(
         {visibleLogos.map((logo, index) => (
           <Flex
             key={`${key}-${index}`}
-            vertical="center"
-            horizontal="center"
+            alignItems="center"
+            justifyContent="center"
             paddingX="24"
             paddingY="20"
             radius="l"
@@ -75,7 +75,7 @@ const LogoCloud = forwardRef<HTMLDivElement, LogoCloudProps>(
         ))}
       </Grid>
     );
-  },
+  }
 );
 
 LogoCloud.displayName = "LogoCloud";

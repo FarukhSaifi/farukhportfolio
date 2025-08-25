@@ -39,7 +39,7 @@ const Fade = forwardRef<HTMLDivElement, FadeProps>(
       children,
       ...rest
     },
-    ref,
+    ref
   ) => {
     const getBaseVar = (base: BaseColor) => {
       if (base === "page") return "var(--page-background)";
@@ -81,7 +81,7 @@ const Fade = forwardRef<HTMLDivElement, FadeProps>(
         {children}
       </Flex>
     );
-  },
+  }
 );
 
 Fade.displayName = "Fade";

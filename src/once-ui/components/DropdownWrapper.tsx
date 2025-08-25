@@ -1,23 +1,23 @@
 "use client";
 
-import React, {
-  useState,
-  useRef,
-  useEffect,
-  ReactNode,
-  forwardRef,
-  useImperativeHandle,
-} from "react";
 import {
-  useFloating,
-  shift,
-  offset,
-  flip,
-  size,
   autoUpdate,
+  flip,
+  offset,
   Placement,
+  shift,
+  size,
+  useFloating,
 } from "@floating-ui/react-dom";
-import { Flex, Dropdown } from ".";
+import React, {
+  forwardRef,
+  ReactNode,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
+import { Dropdown, Flex } from ".";
 import styles from "./DropdownWrapper.module.scss";
 
 export interface DropdownWrapperProps {
@@ -53,7 +53,7 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
       className,
       style,
     },
-    ref,
+    ref
   ) => {
     const wrapperRef = useRef<HTMLDivElement>(null);
     const dropdownRef = useRef<HTMLDivElement | null>(null);
@@ -193,7 +193,7 @@ const DropdownWrapper = forwardRef<HTMLDivElement, DropdownWrapperProps>(
         )}
       </Flex>
     );
-  },
+  }
 );
 
 DropdownWrapper.displayName = "DropdownWrapper";
