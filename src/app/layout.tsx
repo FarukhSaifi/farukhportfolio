@@ -6,6 +6,7 @@ import classNames from "classnames";
 import { baseURL, effects, style } from "@/app/resources";
 import { Footer, Header, RouteGuard } from "@/components";
 
+import { Analytics } from "@vercel/analytics/react";
 import { Inter, Source_Code_Pro } from "next/font/google";
 
 import { home, person } from "@/app/resources/content";
@@ -160,6 +161,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           </Flex>
         </Flex>
         <Footer />
+        <Analytics />
       </Flex>
     </Flex>
   );
