@@ -17,6 +17,17 @@ export async function generateMetadata() {
     metadataBase: new URL(`https://${baseURL}`),
     title: home.title,
     description: home.description,
+    icons: {
+      icon: [
+        { url: "/favicon.ico" },
+        { url: "/images/favicon_io/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+        { url: "/images/favicon_io/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      ],
+      shortcut: "/favicon.ico",
+      apple: [
+        { url: "/images/favicon_io/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+      ],
+    },
     openGraph: {
       title: `${person.firstName}'s Portfolio`,
       description: "Portfolio website showcasing my work.",
@@ -24,6 +35,27 @@ export async function generateMetadata() {
       siteName: `${person.firstName}'s Portfolio`,
       locale: "en_US",
       type: "website",
+      images: [
+        {
+          url: `/images/${person.avatar}`,
+          width: 1200,
+          height: 630,
+          alt: `${person.firstName}'s Portfolio`,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: home.title,
+      description: home.description,
+      images: [`/images/${person.cover}`],
+      creator: "@FarukhSaifi",
+    },
+    manifest: `/images/manifest.json`,
+    appleWebApp: {
+      capable: true,
+      statusBarStyle: "default",
+      title: `${person.firstName}'s Portfolio`,
     },
     robots: {
       index: true,
@@ -38,6 +70,11 @@ export async function generateMetadata() {
     },
   };
 }
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+};
 
 const primary = Inter({
   variable: "--font-primary",
