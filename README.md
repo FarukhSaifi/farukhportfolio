@@ -44,6 +44,46 @@ src/app/resources/content
 Add a new .mdx file to src/app/blog/posts or src/app/work/projects
 ```
 
+# **Cleanup & Maintenance**
+
+Magic Portfolio includes comprehensive cleanup scripts to help maintain your project:
+
+## **Quick Cleanup Commands**
+
+```bash
+# Clean build artifacts and cache
+npm run clean
+
+# Full cleanup including node_modules
+npm run clean:all
+
+# Reinstall dependencies
+npm run reinstall
+
+# Complete fresh start
+npm run fresh
+```
+
+## **Advanced Cleanup Scripts**
+
+For more control, use the dedicated cleanup scripts:
+
+```bash
+# Unix/macOS/Linux
+./scripts/cleanup.sh [option]
+
+# Windows
+scripts\cleanup.bat [option]
+```
+
+**Options:**
+- `clean` - Default cleanup (build artifacts + cache)
+- `full` - Full cleanup including dependencies
+- `reinstall` - Clean modules and reinstall
+- `fresh` - Complete project reset
+
+See [scripts/README.md](scripts/README.md) for detailed documentation.
+
 # **Features**
 
 ## **Once UI**

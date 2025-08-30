@@ -6,7 +6,17 @@
     "export": "next export",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "clean": "npm run clean:build && npm run clean:cache && npm run clean:modules",
+    "clean:build": "rm -rf .next out build dist",
+    "clean:cache": "rm -rf .cache .parcel-cache .turbo .swc .eslintcache && rm -f tsconfig.tsbuildinfo",
+    "clean:modules": "rm -rf node_modules package-lock.json",
+    "clean:all": "npm run clean && rm -rf .DS_Store && rm -f *.log",
+    "reinstall": "npm run clean:modules && npm install",
+    "fresh": "npm run clean:all && npm install",
+    "test:spotify": "node scripts/test-spotify.js",
+    "get:spotify-token": "node scripts/get-spotify-token.js",
+    "check:spotify": "node scripts/check-spotify-config.js"
   },
   "dependencies": {
     "@floating-ui/react-dom": "^2.1.1",
@@ -15,6 +25,7 @@
     "@vercel/analytics": "^1.5.0",
     "classnames": "^2.5.1",
     "cookie": "^1.0.1",
+    "dotenv": "^17.2.1",
     "gray-matter": "^4.0.3",
     "next": "^14.2.16",
     "next-mdx-remote": "^5.0.0",

@@ -1,152 +1,162 @@
-# 🎵 Spotify Integration Setup Guide
+# Spotify Integration Setup Guide
 
-This guide will help you set up the Spotify "Now Playing" feature in your portfolio.
+This guide will help you set up Spotify integration for your portfolio using the [Spotify Web API](https://developer.spotify.com/documentation/web-api/reference/get-the-users-currently-playing-track).
 
-## 🚀 **Quick Start**
+## Prerequisites
 
-### **Step 1: Spotify App Configuration**
+- A Spotify account
+- Node.js 18+ (for the test script)
+
+## Step 1: Create a Spotify App
 
 1. Go to [Spotify Developer Dashboard](https://developer.spotify.com/dashboard)
-2. Create a new app or select existing one
-3. Add this redirect URI: `http://localhost:3000/api/spotify/callback`
-4. Copy your **Client ID** and **Client Secret**
+2. Click **"Create App"**
+3. Fill in the app details:
+   - **App name**: Your portfolio name (e.g., "My Portfolio")
+   - **App description**: Brief description
+   - **Website**: Your portfolio URL
+   - **Redirect URI**: `http://localhost:3000/spotify-success` (for development)
+4. Click **"Save"**
 
-### **Step 2: Environment Variables**
+## Step 2: Get Your Credentials
 
-Add these to your `.env.local` file:
+After creating the app, you'll see:
+
+- **Client ID**: Copy this
+- **Client Secret**: Click "Show Client Secret" and copy it
+
+## Step 3: Set Up Environment Variables
+
+Create a `.env.local` file in your project root:
 
 ```bash
+# Spotify API credentials
 SPOTIFY_CLIENT_ID=your_client_id_here
 SPOTIFY_CLIENT_SECRET=your_client_secret_here
 SPOTIFY_REFRESH_TOKEN=your_refresh_token_here
 ```
 
-### **Step 3: Get Your Refresh Token**
+## Step 4: Get Your Refresh Token
 
-1. Visit: `http://localhost:3000/spotify-auth`
-2. Click "Authorize with Spotify"
-3. Complete the Spotify authorization
-4. Copy the refresh token from the success page
-5. Add it to your `.env.local` file
+### Option A: Use the Built-in Auth Flow
 
-### **Step 4: Restart Server**
+1. Start your development server: `npm run dev`
+2. Visit `/spotify-auth` in your browser
+3. Click "Connect with Spotify"
+4. Authorize your app
+5. You'll be redirected to `/spotify-success` with your refresh token
+6. Copy the token and add it to `.env.local`
+
+### Option B: Manual Token Generation
+
+1. Visit this URL (replace `YOUR_CLIENT_ID` with your actual client ID):
+
+   ```
+   https://accounts.spotify.com/authorize?client_id=YOUR_CLIENT_ID&response_type=code&redirect_uri=http://localhost:3000/spotify-success&scope=user-read-currently-playing,user-read-recently-played
+   ```
+
+2. Authorize the app
+3. Copy the `code` parameter from the redirect URL
+4. Exchange the code for tokens using curl:
+
+   ```bash
+   curl -X POST -H "Content-Type: application/x-www-form-urlencoded" \
+        -H "Authorization: Basic $(echo -n 'YOUR_CLIENT_ID:YOUR_CLIENT_SECRET' | base64)" \
+        -d "grant_type=authorization_code&code=YOUR_CODE&redirect_uri=http://localhost:3000/spotify-success" \
+        https://accounts.spotify.com/api/token
+   ```
+
+5. Copy the `refresh_token` from the response
+
+## Step 5: Test Your Setup
+
+Run the test script to verify everything works:
 
 ```bash
-npm run dev
+npm run test:spotify
 ```
 
-## 🔧 **How It Works**
+This will:
 
-### **Architecture**
+- ✅ Check environment variables
+- ✅ Test token refresh
+- ✅ Test API calls
+- ✅ Show detailed error messages if something fails
 
-- **`/lib/spotify.ts`** - Centralized Spotify service with token management
-- **`/api/spotify/now-playing`** - API endpoint for currently playing track
-- **`/api/spotify/auth`** - Initiates OAuth flow
-- **`/api/spotify/callback`** - Handles OAuth callback
-- **`/spotify-auth`** - User-facing authorization page
+## Step 6: Deploy
+
+For production, update your redirect URI in the Spotify Dashboard to your live domain:
+
+- **Production Redirect URI**: `https://yourdomain.com/spotify-success`
+
+## Troubleshooting
+
+### Common Issues
+
+#### 1. "Invalid refresh token" Error
+
+- **Cause**: Token expired or invalid
+- **Solution**: Re-authenticate using `/spotify-auth`
+
+#### 2. "Invalid client credentials" Error
+
+- **Cause**: Wrong client ID or secret
+- **Solution**: Double-check your credentials in the Spotify Dashboard
+
+#### 3. "Missing required Spotify environment variables" Error
+
+- **Cause**: `.env.local` file missing or incomplete
+- **Solution**: Create/update `.env.local` with all required variables
+
+#### 4. API Returns 204 (No Content)
+
+- **Cause**: User not currently playing anything
+- **Solution**: This is normal - start playing music on Spotify
+
+### Debug Mode
+
+Enable detailed logging by checking the console output. The updated service includes comprehensive logging for:
+
+- Token refresh attempts
+- API calls
+- Error details
+- Response status codes
+
+### Rate Limits
+
+Spotify API has rate limits:
+
+- **Token refresh**: 100 requests per hour
+- **Currently playing**: 100 requests per hour
+- **Recently played**: 100 requests per hour
+
+The API includes caching (30 seconds) to minimize API calls.
+
+## API Endpoints
+
+Your portfolio now includes these Spotify endpoints:
+
+- **`/api/spotify/now-playing`** - Get currently playing track
+- **`/api/spotify/recently-played`** - Get recently played tracks
+- **`/spotify-auth`** - Spotify authentication page
 - **`/spotify-success`** - Success page with refresh token
-- **`NowPlayingBanner`** - Header component displaying current track
 
-### **Features**
+## Security Notes
 
-- ✅ Automatic token refresh
-- ✅ Error handling and fallbacks
-- ✅ Rate limiting (30-second cache)
-- ✅ Clean separation of concerns
-- ✅ TypeScript interfaces
-- ✅ Responsive design
+- Never commit `.env.local` to version control
+- Keep your client secret secure
+- Refresh tokens can be revoked by users
+- Consider implementing token rotation for production
 
-### **API Endpoints**
+## Support
 
-- `GET /api/spotify/now-playing` - Get currently playing track
-- `GET /api/spotify/auth` - Start OAuth flow
-- `GET /api/spotify/callback` - OAuth callback handler
+If you encounter issues:
 
-## 🎯 **Customization**
-
-### **Change Refresh Interval**
-
-In `NowPlaying.tsx`, modify the interval:
-
-```typescript
-// Refresh every 30 seconds
-const interval = setInterval(fetchTrack, 30000);
-
-// Refresh every 2 minutes
-const interval = setInterval(fetchTrack, 120000);
-```
-
-### **Add More Spotify Data**
-
-Extend the `SpotifyService` class in `/lib/spotify.ts`:
-
-```typescript
-async getRecentlyPlayed(limit: number = 5) {
-  // Implementation for recently played tracks
-}
-
-async getPlaylists() {
-  // Implementation for user playlists
-}
-```
-
-### **Styling**
-
-Modify the `NowPlayingBanner` component in `/components/NowPlaying.tsx` to match your design.
-
-## 🐛 **Troubleshooting**
-
-### **Common Issues**
-
-#### **"Missing required Spotify environment variables"**
-
-- Check your `.env.local` file
-- Ensure all three variables are set
-- Restart your development server
-
-#### **"Failed to refresh Spotify access token"**
-
-- Your refresh token may have expired
-- Re-authorize through `/spotify-auth`
-- Update your `.env.local` with the new token
-
-#### **"Spotify API error: 401"**
-
-- Invalid or expired access token
-- The service will automatically refresh, but check your credentials
-
-#### **"Failed to fetch Spotify data"**
-
-- Check your internet connection
-- Verify your Spotify app settings
-- Check server logs for detailed errors
-
-### **Debug Mode**
-
-Enable detailed logging by adding to your `.env.local`:
-
-```bash
-DEBUG=spotify:*
-```
-
-## 🔒 **Security Notes**
-
-- **Never commit** your `.env.local` file
-- **Refresh tokens** are long-lived - keep them secure
-- **Client secrets** should remain server-side only
-- **Access tokens** are automatically managed and short-lived
-
-## 📱 **Production Deployment**
-
-1. Update redirect URIs in Spotify Dashboard
-2. Set `NEXT_PUBLIC_BASE_URL` environment variable
-3. Ensure all environment variables are set in your hosting platform
-4. Test the OAuth flow in production
-
-## 🎉 **You're All Set!**
-
-Once configured, the Spotify "Now Playing" banner will automatically appear in your header when you're listening to music on Spotify!
+1. Check the console logs for detailed error messages
+2. Run `npm run test:spotify` to isolate the problem
+3. Verify your credentials in the Spotify Dashboard
+4. Check the [Spotify Web API documentation](https://developer.spotify.com/documentation/web-api)
 
 ---
 
-**Need Help?** Check the server logs or browser console for detailed error messages.
+**Happy coding! 🎵**
