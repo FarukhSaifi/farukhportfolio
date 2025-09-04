@@ -6,6 +6,9 @@ const routes = {
   "/work": true,
   "/admin": true,
   "/blog": true,
+  "/spotify-auth": true,
+  "/spotify-success": true,
+  "/spotify-test": true,
   "/gallery": false,
 };
 

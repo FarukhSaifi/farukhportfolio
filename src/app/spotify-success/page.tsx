@@ -1,135 +1,159 @@
 "use client";
 
+import { useSpotify } from "@/contexts/SpotifyContext";
 import { Button, Card, Flex, Heading, Text } from "@/once-ui/components";
-import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function SpotifySuccessPage() {
-  const searchParams = useSearchParams();
+  const [isLoading, setIsLoading] = useState(true);
+
   const [refreshToken, setRefreshToken] = useState<string | null>(null);
-  const [copied, setCopied] = useState(false);
+  const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const { updateRefreshToken, updateAccessToken, tokens } = useSpotify();
 
   useEffect(() => {
-    const token = searchParams.get("refresh_token");
-    if (token) {
-      setRefreshToken(token);
-    }
-  }, [searchParams]);
+    console.log("🎉 Spotify Success Page: Component mounted");
 
-  const copyToClipboard = async () => {
-    if (refreshToken) {
+    const exchangeCodeForTokens = async () => {
       try {
-        await navigator.clipboard.writeText(refreshToken);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-      } catch (err) {
-        console.error("Failed to copy:", err);
+        // Check if we have a token in the URL params
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get("code");
+
+        if (code) {
+          console.log(
+            "🔑 Spotify Success Page: Found authorization code:",
+            code.substring(0, 20) + "..."
+          );
+
+          // Exchange the code for tokens
+          const response = await fetch("/api/spotify/exchange-code", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ code }),
+          });
+
+          if (response.ok) {
+            const tokenData = await response.json();
+            console.log("✅ Successfully exchanged code for tokens:", tokenData);
+
+            // Store the tokens
+            updateRefreshToken(tokenData.refresh_token);
+            updateAccessToken(tokenData.access_token, tokenData.expires_in);
+
+            setRefreshToken(tokenData.refresh_token);
+            setAccessToken(tokenData.access_token);
+          } else {
+            const errorData = await response.json();
+            console.error("❌ Failed to exchange code for tokens:", errorData);
+            setError(`Failed to exchange code: ${errorData.error}`);
+          }
+        } else {
+          console.log("❌ Spotify Success Page: No authorization code found");
+          setError("No authorization code found in URL");
+        }
+      } catch (err: any) {
+        console.error("❌ Error exchanging code for tokens:", err);
+        setError(`Error: ${err.message}`);
+      } finally {
+        setIsLoading(false);
       }
-    }
+    };
+
+    exchangeCodeForTokens();
+  }, [updateRefreshToken, updateAccessToken]);
+
+  const clearStoredToken = () => {
+    console.log("🗑️ Spotify Success Page: Clearing stored token");
+    setRefreshToken(null);
+    setAccessToken(null);
+    // The context will handle clearing localStorage
   };
 
-  if (!refreshToken) {
+  if (isLoading) {
     return (
-      <Flex
-        direction="column"
-        alignItems="center"
-        justifyContent="center"
-        fillWidth
-        style={{ minHeight: "100vh" }}
-        gap="xl"
-        padding="xl"
-      >
-        <Heading variant="display-strong-l">❌ Authorization Failed</Heading>
-        <Text variant="body-default-l" style={{ textAlign: "center" }}>
-          No refresh token received. Please try the authorization process again.
-        </Text>
-        <Button as="a" href="/spotify-auth" variant="primary">
-          Try Again
-        </Button>
+      <Flex justifyContent="center" alignItems="center" style={{ minHeight: "50vh" }}>
+        <Text>Exchanging authorization code for tokens...</Text>
+      </Flex>
+    );
+  }
+
+  if (error) {
+    return (
+      <Flex justifyContent="center" alignItems="center" style={{ minHeight: "50vh" }}>
+        <Card padding="xl" maxWidth="m">
+          <Flex direction="column" gap="l" alignItems="center">
+            <Heading variant="display-strong-m">❌ Error</Heading>
+            <Text variant="body-default-m" style={{ textAlign: "center" }}>
+              {error}
+            </Text>
+            <Button href="/spotify-auth" variant="primary">
+              Try Again
+            </Button>
+          </Flex>
+        </Card>
       </Flex>
     );
   }
 
   return (
-    <Flex
-      direction="column"
-      alignItems="center"
-      justifyContent="center"
-      fillWidth
-      style={{ minHeight: "100vh" }}
-      gap="xl"
-      padding="xl"
-    >
-      <Heading variant="display-strong-l">✅ Spotify Connected Successfully!</Heading>
+    <Flex justifyContent="center" alignItems="center" style={{ minHeight: "50vh" }}>
+      <Card padding="xl" maxWidth="m">
+        <Flex direction="column" gap="l" alignItems="center">
+          <Heading variant="display-strong-m">🎉 Spotify Connected!</Heading>
 
-      <Card padding="xl" maxWidth="m" style={{ textAlign: "center" }}>
-        <Text variant="body-default-l" marginBottom="l">
-          Your Spotify account has been successfully connected! Here's what you need to do next:
-        </Text>
-
-        <Flex direction="column" gap="m" marginBottom="xl">
-          <Text variant="body-default-m" onBackground="neutral-weak">
-            <strong>Step 1:</strong> Copy the refresh token below
-          </Text>
-          <Text variant="body-default-m" onBackground="neutral-weak">
-            <strong>Step 2:</strong> Add it to your .env.local file
-          </Text>
-          <Text variant="body-default-m" onBackground="neutral-weak">
-            <strong>Step 3:</strong> Restart your development server
-          </Text>
-        </Flex>
-
-        <Flex direction="column" gap="m" marginBottom="xl">
-          <Text variant="body-default-s" onBackground="neutral-weak">
-            <strong>Refresh Token:</strong>
-          </Text>
-
-          <Flex
-            background="neutral-alpha-weak"
-            border="neutral-alpha-medium"
-            radius="m"
-            padding="m"
-            alignItems="center"
-            gap="m"
-          >
-            <Text
-              variant="body-default-s"
-              fontFamily="mono"
-              onBackground="neutral-weak"
-              style={{ wordBreak: "break-all" }}
-            >
-              {refreshToken}
+          <Flex direction="column" gap="m" alignItems="center">
+            <Text variant="body-default-m">
+              Your Spotify account has been successfully connected!
             </Text>
 
-            <Button size="s" variant="secondary" onClick={copyToClipboard} disabled={copied}>
-              {copied ? "Copied!" : "Copy"}
+            {refreshToken && (
+              <Flex direction="column" gap="s" alignItems="center">
+                <Text variant="body-default-s" onBackground="neutral-weak">
+                  <strong>Refresh Token:</strong> {refreshToken.substring(0, 50)}...
+                </Text>
+                <Text variant="body-default-xs" onBackground="neutral-weak">
+                  This token has been stored in your browser and will be used for API calls.
+                </Text>
+              </Flex>
+            )}
+
+            {accessToken && (
+              <Flex direction="column" gap="s" alignItems="center">
+                <Text variant="body-default-s" onBackground="neutral-weak">
+                  <strong>Access Token:</strong> {accessToken.substring(0, 50)}...
+                </Text>
+                <Text variant="body-default-xs" onBackground="neutral-weak">
+                  This token will be used for API calls and automatically refreshed.
+                </Text>
+              </Flex>
+            )}
+
+            <Flex direction="column" gap="m" alignItems="center">
+              <Text variant="body-default-s">
+                <strong>Context State:</strong>
+              </Text>
+              <Text
+                variant="body-default-xs"
+                onBackground="neutral-weak"
+                style={{ fontFamily: "monospace" }}
+              >
+                {JSON.stringify(tokens, null, 2)}
+              </Text>
+            </Flex>
+          </Flex>
+
+          <Flex gap="m">
+            <Button href="/" variant="primary">
+              Go to Home
+            </Button>
+            <Button onClick={clearStoredToken} variant="secondary">
+              Clear Token
             </Button>
           </Flex>
-        </Flex>
-
-        <Text variant="body-default-xs" onBackground="neutral-weak">
-          Add this line to your .env.local file:
-        </Text>
-
-        <Flex
-          background="neutral-alpha-weak"
-          border="neutral-alpha-medium"
-          radius="m"
-          padding="m"
-          marginBottom="l"
-        >
-          <Text variant="body-default-xs" fontFamily="mono" onBackground="neutral-weak">
-            SPOTIFY_REFRESH_TOKEN={refreshToken}
-          </Text>
-        </Flex>
-
-        <Flex gap="m" justifyContent="center">
-          <Button as="a" href="/" variant="primary">
-            Go to Home
-          </Button>
-          <Button as="a" href="/spotify-auth" variant="secondary">
-            Authorize Another Account
-          </Button>
         </Flex>
       </Card>
     </Flex>

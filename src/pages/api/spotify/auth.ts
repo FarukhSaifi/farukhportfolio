@@ -3,8 +3,8 @@ import { NextApiRequest, NextApiResponse } from "next";
 const SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
 const REDIRECT_URI =
   process.env.NODE_ENV === "production"
-    ? `${process.env.NEXT_PUBLIC_BASE_URL}/about`
-    : "http://localhost:3000/about";
+    ? `${process.env.NEXT_PUBLIC_BASE_URL}/spotify-success`
+    : "http://localhost:3000/spotify-success";
 
 const SCOPES = [
   "user-read-currently-playing",

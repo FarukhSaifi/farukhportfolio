@@ -16,7 +16,7 @@ const RouteGuard: React.FC<RouteGuardProps> = ({ children }) => {
   const [password, setPassword] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const performChecks = async () => {
@@ -32,7 +32,14 @@ const RouteGuard: React.FC<RouteGuardProps> = ({ children }) => {
           return routes[pathname as keyof typeof routes];
         }
 
-        const dynamicRoutes = ["/blog", "/work", "/admin"] as const;
+        const dynamicRoutes = [
+          "/blog",
+          "/work",
+          "/admin",
+          "/spotify-auth",
+          "/spotify-success",
+          "/spotify-test",
+        ] as const;
         for (const route of dynamicRoutes) {
           if (pathname?.startsWith(route) && routes[route]) {
             return true;
