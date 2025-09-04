@@ -52,10 +52,8 @@ export async function generateMetadata() {
       creator: "@FarukhSaifi",
     },
     manifest: `/images/manifest.json`,
-    appleWebApp: {
-      capable: true,
-      statusBarStyle: "default",
-      title: `${person.firstName}'s Portfolio`,
+    other: {
+      "mobile-web-app-capable": "yes",
     },
     robots: {
       index: true,

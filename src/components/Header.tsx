@@ -8,7 +8,6 @@ import { Fade, Flex, IconButton, ToggleButton } from "@/once-ui/components";
 import { display, routes, style } from "@/app/resources";
 import { about, blog, gallery, person, work } from "@/app/resources/content";
 import { useEffect, useState } from "react";
-import { NowPlayingBanner } from "./NowPlaying";
 
 // type TimeDisplayProps = {
 //   timeZone: string;
@@ -73,8 +72,6 @@ export const Header = () => {
       >
         <Flex paddingLeft="12" fillWidth alignItems="center" textVariant="body-default-s">
           {display.location && <Flex hide="s">{person.location}</Flex>}
-          {/* Spotify Now Playing Banner */}
-          <NowPlayingBanner />
         </Flex>
         <Flex fillWidth justifyContent="center">
           <Flex
