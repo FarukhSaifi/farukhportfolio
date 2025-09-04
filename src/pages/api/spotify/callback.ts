@@ -28,8 +28,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
     const redirectUri =
       process.env.NODE_ENV === "production"
-        ? `${process.env.NEXT_PUBLIC_BASE_URL}/about`
-        : "http://localhost:3000/about";
+        ? `${process.env.NEXT_PUBLIC_BASE_URL}/spotify-success`
+        : "http://localhost:3000/spotify-success";
 
     if (!clientId || !clientSecret) {
       throw new Error("Missing Spotify credentials");
@@ -60,17 +60,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     console.log("Refresh token:", tokens.refresh_token);
     console.log("Access token expires in:", tokens.expires_in, "seconds");
 
-    // Redirect to about page with success message and refresh token
-    const aboutUrl = new URL("/about", req.headers.origin || "http://localhost:3000");
-    aboutUrl.searchParams.set("spotify", "success");
-    aboutUrl.searchParams.set("token", tokens.refresh_token);
+    // Redirect to spotify-success page with refresh token
+    const successUrl = new URL("/spotify-success", req.headers.origin || "http://localhost:3000");
+    successUrl.searchParams.set("refresh_token", tokens.refresh_token);
 
-    res.redirect(aboutUrl.toString());
+    res.redirect(successUrl.toString());
   } catch (error) {
     console.error("Error in Spotify callback:", error);
 
-    const errorUrl = new URL("/about", req.headers.origin || "http://localhost:3000");
-    errorUrl.searchParams.set("spotify", "error");
+    const errorUrl = new URL("/spotify-auth", req.headers.origin || "http://localhost:3000");
+    errorUrl.searchParams.set("error", "token_exchange_failed");
     errorUrl.searchParams.set("message", error instanceof Error ? error.message : "Unknown error");
 
     res.redirect(errorUrl.toString());
