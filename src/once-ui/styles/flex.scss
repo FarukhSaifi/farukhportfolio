@@ -122,3 +122,18 @@
 .flex-12 {
   flex: 12;
 }
+
+/* Responsive justify-content */
+@media (--s) {
+  .s-justify-start {
+    justify-content: flex-start !important;
+  }
+  
+  .s-justify-center {
+    justify-content: center !important;
+  }
+
+  .s-justify-end {
+    justify-content: flex-end !important;
+  }
+}
