@@ -1,6 +1,6 @@
 "use client";
-
 import { useSpotify } from "@/contexts/SpotifyContext";
+import { Avatar, Button, Flex, Icon, RevealFx, Spinner } from "@/once-ui/components";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 interface SimplifiedTrack {
@@ -33,7 +33,7 @@ function useNowPlaying() {
   const { hasRefreshToken, getTokenForAPI, updateAccessToken } = useSpotify();
   const [payload, setPayload] = useState<NowPlayingPayload | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const pollTimerRef = useRef<number | null>(null);
   const abortRef = useRef<AbortController | null>(null);
@@ -143,7 +143,6 @@ function useNowPlaying() {
       if (result.ok && result.data) {
         etagRef.current = result.etag || null;
 
-        // Use title + artist + album as identity (API does not return Spotify id in simplified payload)
         const identity = result.data.track
           ? `${result.data.track.title}|${result.data.track.artist}|${result.data.track.album}`
           : null;
@@ -212,55 +211,86 @@ function useNowPlaying() {
 
 export default function NowPlaying() {
   const { payload, loading, error } = useNowPlaying();
+  const [hover, setHover] = useState(false);
 
   if (loading) {
-    return <span className="text-sm text-gray-500">Loading Spotify…</span>;
+    return (
+      <Flex gap="s" alignItems="center">
+        <Spinner size="s" />
+        {/* <span className="text-sm text-gray-500">Loading Spotify…</span> */}
+      </Flex>
+    );
   }
 
   if (error) {
     return (
-      <button
+      <Button
+        variant="secondary"
+        size="s"
         onClick={() => (window.location.href = "/spotify-auth")}
         className="text-sm text-blue-500 hover:underline"
         title={error}
       >
+        <Icon name="spotify" size="s" style={{ marginRight: "0.5rem", marginBottom: "0rem", marginTop: "-0.25rem" }} />
         Connect Spotify
-      </button>
+      </Button>
     );
   }
 
   if (!payload || !payload.isPlaying || !payload.track) {
-    return <span className="text-sm text-gray-500">Not playing</span>;
+    return null;
   }
 
   const track = payload.track;
 
   return (
-    <a
-      href={track.songUrl || "#"}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="group flex items-center gap-3 rounded-md border border-[var(--neutral-alpha-weak)] bg-[rgb(16,16,16,0.5)] px-3 py-2 shadow-sm hover:bg-[rgb(24,24,24,0.65)] transition-colors"
-      title={`${track.title} — ${track.artist}`}
+    <div
+      style={{ position: "relative", display: "inline-block" }}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
     >
-      {/* Using img to avoid remote domain restrictions */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={track.imageUrl}
-        alt={`${track.album} cover`}
-        width={40}
-        height={40}
-        className="h-10 w-10 rounded object-cover"
-        loading="lazy"
-        decoding="async"
-      />
-      <div className="min-w-0 flex-1 leading-tight">
-        <div className="text-[11px] uppercase tracking-wide text-[var(--accent-weak)]">Now Playing</div>
-        <div className="truncate text-sm text-white group-hover:underline">{track.title}</div>
-        <div className="truncate text-xs text-[var(--neutral-weak)]">
-          {track.artist} · {track.album}
+      <RevealFx translateY="12" delay={0.4} justifyContent="flex-start">
+        <Button id="about" data-border="rounded" href={track.songUrl || "#"} variant="secondary" size="l" arrowIcon>
+          <Flex gap="8" alignItems="center">
+            {track.imageUrl && (
+              <Avatar style={{ marginLeft: "-1.5rem", marginRight: "0.25rem" }} src={track.imageUrl} size="l" />
+            )}
+            {track.title}
+          </Flex>
+        </Button>
+      </RevealFx>
+
+      {hover && (
+        <div
+          style={{
+            position: "absolute",
+            top: "110%",
+            left: 0,
+            zIndex: 20,
+            minWidth: "260px",
+            background: "var(--surface-background)",
+            border: "1px solid var(--neutral-alpha-weak)",
+            borderRadius: "12px",
+            boxShadow: "0 8px 24px rgba(0,0,0,0.2)",
+            padding: "12px",
+          }}
+        >
+          <Flex gap="12" alignItems="center">
+            {track.imageUrl && <Avatar src={track.imageUrl} size="l" />}
+            <Flex direction="column" gap="4" style={{ minWidth: 0 }}>
+              <div className="truncate" style={{ color: "var(--on-background-strong)", fontWeight: 600 }}>
+                {track.title}
+              </div>
+              <div className="truncate" style={{ color: "var(--neutral-weak)", fontSize: 12 }}>
+                {track.artist}
+              </div>
+              <div className="truncate" style={{ color: "var(--neutral-weak)", fontSize: 12 }}>
+                {track.album}
+              </div>
+            </Flex>
+          </Flex>
         </div>
-      </div>
-    </a>
+      )}
+    </div>
   );
 }
