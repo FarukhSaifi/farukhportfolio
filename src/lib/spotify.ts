@@ -35,19 +35,20 @@ export class SpotifyService {
   constructor() {
     this.clientId = process.env.SPOTIFY_CLIENT_ID || "";
     this.clientSecret = process.env.SPOTIFY_CLIENT_SECRET || "";
-    this.refreshToken =
-      "AQBpXUuTXSDp41Fd1PCi0_4SAqvsZbNBPAepMt9pnKaaxBY_hVq8i1YQ3bdxf1KMAvFFFi_VzEXJc_hma4qRC68yYixoFW_5pj08iANAeHi9-TnQvP2ZQ_DYO--znNnG348";
+    this.refreshToken = process.env.SPOTIFY_REFRESH_TOKEN || "";
 
-    // Validate required credentials
     if (!this.clientId || !this.clientSecret) {
-      console.warn(
-        "⚠️ Missing Spotify environment variables: SPOTIFY_CLIENT_ID and SPOTIFY_CLIENT_SECRET"
-      );
+      console.warn("⚠️ Missing Spotify environment variables: SPOTIFY_CLIENT_ID and SPOTIFY_CLIENT_SECRET");
       console.warn("⚠️ Please create a .env.local file with your Spotify app credentials");
     }
   }
 
-  // Method to get the current access token
+  setAccessToken(token: string, expiresIn: number = 3600) {
+    this.accessToken = token;
+    this.tokenExpiry = Date.now() + expiresIn * 1000;
+    console.log("✅ Access token set explicitly; expires at:", new Date(this.tokenExpiry).toISOString());
+  }
+
   getCurrentAccessToken(): string | null {
     if (this.accessToken && Date.now() < this.tokenExpiry) {
       return this.accessToken;
@@ -55,36 +56,28 @@ export class SpotifyService {
     return null;
   }
 
-  // Method to check if we have a valid access token
   hasValidAccessToken(): boolean {
     const token = this.getCurrentAccessToken();
     if (token) {
       console.log("✅ Access token is valid");
       console.log("⏰ Token expires at:", new Date(this.tokenExpiry).toISOString());
       console.log("⏰ Current time:", new Date().toISOString());
-      console.log(
-        "⏰ Time until expiry:",
-        Math.round((this.tokenExpiry - Date.now()) / 1000),
-        "seconds"
-      );
+      console.log("⏰ Time until expiry:", Math.round((this.tokenExpiry - Date.now()) / 1000), "seconds");
     } else {
       console.log("❌ No valid access token available");
     }
     return !!token;
   }
 
-  // Method to update the refresh token (useful for client-side updates)
   updateRefreshToken(newToken: string) {
     this.refreshToken = newToken;
     console.log("✅ Refresh token updated in Spotify service");
   }
 
-  // Method to check if we have a valid refresh token
   hasValidRefreshToken(): boolean {
     return !!this.refreshToken && this.refreshToken !== process.env.SPOTIFY_CLIENT_SECRET;
   }
 
-  // Method to get a valid access token (refreshes if needed)
   async getValidAccessToken(): Promise<string> {
     if (!this.accessToken || Date.now() >= this.tokenExpiry) {
       return this.refreshAccessToken();
@@ -108,9 +101,7 @@ export class SpotifyService {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
-          Authorization: `Basic ${Buffer.from(`${this.clientId}:${this.clientSecret}`).toString(
-            "base64"
-          )}`,
+          Authorization: `Basic ${Buffer.from(`${this.clientId}:${this.clientSecret}`).toString("base64")}`,
         },
         body: new URLSearchParams({
           grant_type: "refresh_token",
@@ -151,7 +142,7 @@ export class SpotifyService {
     }
   }
 
-  async getCurrentlyPlaying(): Promise<{
+  async getCurrentlyPlaying(options?: { market?: string; additionalTypes?: string }): Promise<{
     isPlaying: boolean;
     track: {
       title: string;
@@ -165,45 +156,36 @@ export class SpotifyService {
       const accessToken = await this.getValidAccessToken();
       console.log("🔑 Using access token for API call:", accessToken.substring(0, 20) + "...");
 
-      console.log("Fetching currently playing track from Spotify...");
+      const url = new URL("https://api.spotify.com/v1/me/player/currently-playing");
+      if (options?.market) url.searchParams.set("market", options.market);
+      if (options?.additionalTypes) url.searchParams.set("additional_types", options.additionalTypes);
 
-      const response = await fetch("https://api.spotify.com/v1/me/player/currently-playing", {
+      const response = await fetch(url.toString(), {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       });
 
-      // Handle different response statuses according to Spotify API docs
       if (response.status === 204) {
-        // No content - user not playing anything
         console.log("No currently playing track (status 204)");
         return { isPlaying: false, track: null };
       }
 
       if (response.status === 401) {
-        // Unauthorized - token might be expired
         console.log("Token expired, refreshing...");
-        this.accessToken = null; // Force token refresh
+        this.accessToken = null;
         const newToken = await this.getValidAccessToken();
-
-        // Retry with new token
-        const retryResponse = await fetch(
-          "https://api.spotify.com/v1/me/player/currently-playing",
-          {
-            headers: {
-              Authorization: `Bearer ${newToken}`,
-            },
-          }
-        );
+        const retryUrl = new URL(url.toString());
+        const retryResponse = await fetch(retryUrl.toString(), {
+          headers: { Authorization: `Bearer ${newToken}` },
+        });
 
         if (retryResponse.status === 204) {
           return { isPlaying: false, track: null };
         }
 
         if (!retryResponse.ok) {
-          throw new Error(
-            `Spotify API error: ${retryResponse.statusText} (${retryResponse.status})`
-          );
+          throw new Error(`Spotify API error: ${retryResponse.statusText} (${retryResponse.status})`);
         }
 
         const data: CurrentlyPlayingResponse = await retryResponse.json();
@@ -253,14 +235,11 @@ export class SpotifyService {
     try {
       const accessToken = await this.getValidAccessToken();
 
-      const response = await fetch(
-        `https://api.spotify.com/v1/me/player/recently-played?limit=${limit}`,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
+      const response = await fetch(`https://api.spotify.com/v1/me/player/recently-played?limit=${limit}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
 
       if (!response.ok) {
         throw new Error(`Spotify API error: ${response.statusText}`);

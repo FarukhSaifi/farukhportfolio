@@ -1,5 +1,10 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
+const REDIRECT_URI =
+  process.env.NODE_ENV === "production"
+    ? `${process.env.NEXT_PUBLIC_BASE_URL}/spotify-success`
+    : "http://localhost:3000/spotify-success";
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
@@ -15,19 +20,24 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     console.log("🔄 Exchanging authorization code for tokens...");
     console.log("🔑 Code received:", code.substring(0, 20) + "...");
 
+    const clientId = process.env.SPOTIFY_CLIENT_ID;
+    const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
+
+    if (!clientId || !clientSecret) {
+      return res.status(500).json({ error: "Spotify client credentials not configured" });
+    }
+
     // Exchange the authorization code for tokens
     const tokenResponse = await fetch("https://accounts.spotify.com/api/token", {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
-        Authorization: `Basic ${Buffer.from(
-          `${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`
-        ).toString("base64")}`,
+        Authorization: `Basic ${Buffer.from(`${clientId}:${clientSecret}`).toString("base64")}`,
       },
       body: new URLSearchParams({
         grant_type: "authorization_code",
-        code: code,
-        redirect_uri: "http://localhost:3000/spotify-success",
+        code,
+        redirect_uri: REDIRECT_URI,
       }),
     });
 

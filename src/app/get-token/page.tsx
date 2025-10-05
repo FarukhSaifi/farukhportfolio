@@ -38,7 +38,7 @@ export default function GetTokenPage() {
         </Button>
 
         <Text variant="body-default-xs" marginTop="l" onBackground="neutral-weak">
-          After authorization, you'll be redirected to the about page with your token.
+          After authorization, you&apos;ll be redirected to the about page with your token.
         </Text>
       </Card>
     </Flex>

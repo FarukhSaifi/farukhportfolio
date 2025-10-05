@@ -8,7 +8,6 @@ const routes = {
   "/blog": true,
   "/spotify-auth": true,
   "/spotify-success": true,
-  "/spotify-test": true,
   "/gallery": false,
 };
 

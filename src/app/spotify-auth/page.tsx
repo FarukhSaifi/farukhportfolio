@@ -133,31 +133,20 @@ export default function SpotifyAuthPage() {
             )}
 
             <Text variant="body-default-l" style={{ textAlign: "center" }}>
-              To enable the Spotify Now Playing feature, you need to authorize this app to access
-              your Spotify account.
+              To enable the Spotify Now Playing feature, you need to authorize this app to access your Spotify account.
             </Text>
 
-            <Text
-              variant="body-default-m"
-              style={{ textAlign: "center" }}
-              onBackground="neutral-weak"
-            >
-              This will allow the app to see what you're currently playing on Spotify and display it
-              in the header.
+            <Text variant="body-default-m" style={{ textAlign: "center" }} onBackground="neutral-weak">
+              This will allow the app to see what you&apos;re currently playing on Spotify and display it in the header.
             </Text>
 
             <Flex direction="column" gap="m" marginTop="l">
               <Text variant="body-default-s" onBackground="neutral-weak">
                 <strong>Required Permissions:</strong>
               </Text>
-              <Flex
-                direction="column"
-                gap="xs"
-                alignItems="flex-start"
-                style={{ marginLeft: "1rem" }}
-              >
+              <Flex direction="column" gap="xs" alignItems="flex-start" style={{ marginLeft: "1rem" }}>
                 <Text variant="body-default-xs" onBackground="neutral-weak">
-                  • See what you're currently playing
+                  • See what you&apos;re currently playing
                 </Text>
                 <Text variant="body-default-xs" onBackground="neutral-weak">
                   • See your playback state
@@ -168,13 +157,9 @@ export default function SpotifyAuthPage() {
               </Flex>
             </Flex>
 
-            <Text
-              variant="body-default-xs"
-              style={{ textAlign: "center" }}
-              onBackground="neutral-weak"
-            >
-              After authorization, you'll receive a refresh token that will be stored in your
-              browser and can be used for API calls.
+            <Text variant="body-default-xs" style={{ textAlign: "center" }} onBackground="neutral-weak">
+              After authorization, you&apos;ll receive a refresh token that will be stored in your browser and can be
+              used for API calls.
             </Text>
 
             <Button onClick={handleAuth} variant="primary" size="l">
