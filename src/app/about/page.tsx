@@ -2,19 +2,10 @@
 
 import { baseURL } from "@/app/resources";
 import { about, person, social } from "@/app/resources/content";
+import NowPlaying from "@/components/NowPlaying";
 import TableOfContents from "@/components/about/TableOfContents";
 import styles from "@/components/about/about.module.scss";
-import {
-  Avatar,
-  Button,
-  Flex,
-  Heading,
-  Icon,
-  IconButton,
-  SmartImage,
-  Tag,
-  Text,
-} from "@/once-ui/components";
+import { Avatar, Button, Flex, Heading, Icon, IconButton, SmartImage, Tag, Text } from "@/once-ui/components";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -78,10 +69,7 @@ export default function About() {
           border={spotifyStatus === "success" ? "brand-alpha-medium" : "accent-alpha-medium"}
           radius="m"
         >
-          <Heading
-            variant="heading-strong-m"
-            onBackground={spotifyStatus === "success" ? "brand-weak" : "accent-weak"}
-          >
+          <Heading variant="heading-strong-m" onBackground={spotifyStatus === "success" ? "brand-weak" : "accent-weak"}>
             {spotifyStatus === "success" ? "✅ Spotify Connected!" : "❌ Spotify Error"}
           </Heading>
 
@@ -157,6 +145,8 @@ export default function About() {
               <Icon onBackground="accent-weak" name="globe" />
               {person.location}
             </Flex>
+            {/* Spotify Now Playing Banner */}
+            <NowPlaying />
             {person.languages.length > 0 && (
               <Flex wrap gap="8">
                 {person.languages.map((language, index) => (
@@ -196,22 +186,13 @@ export default function About() {
                   <Icon name="calendar" onBackground="brand-weak" />
                 </Flex>
                 <Flex paddingX="8">Schedule a call</Flex>
-                <IconButton
-                  href={about.calendar.link}
-                  data-border="rounded"
-                  variant="secondary"
-                  icon="chevronRight"
-                />
+                <IconButton href={about.calendar.link} data-border="rounded" variant="secondary" icon="chevronRight" />
               </Flex>
             )}
             <Heading className={styles.textAlign} variant="display-strong-xl">
               {person.name}
             </Heading>
-            <Text
-              className={styles.textAlign}
-              variant="display-default-xs"
-              onBackground="neutral-weak"
-            >
+            <Text className={styles.textAlign} variant="display-default-xs" onBackground="neutral-weak">
               {person.role}
             </Text>
             {social.length > 0 && (
@@ -234,13 +215,7 @@ export default function About() {
           </Flex>
 
           {about.intro.display && (
-            <Flex
-              direction="column"
-              textVariant="body-default-l"
-              fillWidth
-              gap="m"
-              marginBottom="xl"
-            >
+            <Flex direction="column" textVariant="body-default-l" fillWidth gap="m" marginBottom="xl">
               {about.intro.description}
             </Flex>
           )}
@@ -252,17 +227,8 @@ export default function About() {
               </Heading>
               <Flex direction="column" fillWidth gap="l" marginBottom="40">
                 {about.work.experiences.map((experience, index) => (
-                  <Flex
-                    key={`${experience.company}-${experience.role}-${index}`}
-                    fillWidth
-                    direction="column"
-                  >
-                    <Flex
-                      fillWidth
-                      justifyContent="space-between"
-                      alignItems="flex-end"
-                      marginBottom="4"
-                    >
+                  <Flex key={`${experience.company}-${experience.role}-${index}`} fillWidth direction="column">
+                    <Flex fillWidth justifyContent="space-between" alignItems="flex-end" marginBottom="4">
                       <Text id={experience.company} variant="heading-strong-l">
                         {experience.company}
                       </Text>
@@ -275,11 +241,7 @@ export default function About() {
                     </Text>
                     <Flex as="ul" direction="column" gap="16">
                       {experience.achievements.map((achievement: JSX.Element, index: number) => (
-                        <Text
-                          as="li"
-                          variant="body-default-m"
-                          key={`${experience.company}-${index}`}
-                        >
+                        <Text as="li" variant="body-default-m" key={`${experience.company}-${index}`}>
                           {achievement}
                         </Text>
                       ))}
@@ -333,12 +295,7 @@ export default function About() {
 
           {about.technical.display && (
             <>
-              <Heading
-                as="h2"
-                id={about.technical.title}
-                variant="display-strong-s"
-                marginBottom="40"
-              >
+              <Heading as="h2" id={about.technical.title} variant="display-strong-s" marginBottom="40">
                 {about.technical.title}
               </Heading>
               <Flex direction="column" fillWidth gap="l">
