@@ -17,9 +17,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(400).json({ error: "Authorization code is required" });
     }
 
-    console.log("🔄 Exchanging authorization code for tokens...");
-    console.log("🔑 Code received:", code.substring(0, 20) + "...");
-
     const clientId = process.env.SPOTIFY_CLIENT_ID;
     const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
 

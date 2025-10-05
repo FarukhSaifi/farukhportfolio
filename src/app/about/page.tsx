@@ -5,7 +5,7 @@ import { about, person, social } from "@/app/resources/content";
 import NowPlaying from "@/components/NowPlaying";
 import TableOfContents from "@/components/about/TableOfContents";
 import styles from "@/components/about/about.module.scss";
-import { Avatar, Button, Flex, Heading, Icon, IconButton, SmartImage, Tag, Text } from "@/once-ui/components";
+import { Avatar, Button, Flex, Heading, Icon, IconButton, RevealFx, SmartImage, Tag, Text } from "@/once-ui/components";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -140,21 +140,29 @@ export default function About() {
             direction="column"
             alignItems="center"
           >
-            <Avatar src={person.avatar} size="xl" />
-            <Flex gap="8" alignItems="center">
-              <Icon onBackground="accent-weak" name="globe" />
-              {person.location}
-            </Flex>
-            {/* Spotify Now Playing Banner */}
-            <NowPlaying />
-            {person.languages.length > 0 && (
-              <Flex wrap gap="8">
-                {person.languages.map((language, index) => (
-                  <Tag key={index} size="l">
-                    {language}
-                  </Tag>
-                ))}
+            <RevealFx translateY="4" delay={0.1} justifyContent="center" alignItems="center">
+              <Avatar src={person.avatar} size="xl" />
+            </RevealFx>
+            <RevealFx translateY="8" delay={0.2} justifyContent="center" alignItems="center">
+              <Flex gap="8" alignItems="center">
+                <Icon onBackground="accent-weak" name="globe" />
+                {person.location}
               </Flex>
+            </RevealFx>
+            {/* Spotify Now Playing Banner */}
+            <RevealFx translateY="12" delay={0.3} justifyContent="center" alignItems="center">
+              <NowPlaying />
+            </RevealFx>
+            {person.languages.length > 0 && (
+              <RevealFx translateY="16" delay={0.4} justifyContent="center" alignItems="center">
+                <Flex wrap gap="8">
+                  {person.languages.map((language, index) => (
+                    <Tag key={index} size="l">
+                      {language}
+                    </Tag>
+                  ))}
+                </Flex>
+              </RevealFx>
             )}
           </Flex>
         )}
@@ -168,106 +176,161 @@ export default function About() {
             marginBottom="32"
           >
             {about.calendar.display && (
-              <Flex
-                fitWidth
-                border="brand-alpha-medium"
-                className={styles.blockAlign}
-                style={{
-                  backdropFilter: "blur(var(--static-space-1))",
-                }}
-                background="brand-alpha-weak"
-                radius="full"
-                padding="4"
-                gap="8"
-                marginBottom="m"
+              <RevealFx
+                translateY="4"
+                delay={0.1}
+                justifyContent="flex-start"
                 alignItems="center"
+                className="s-justify-center"
               >
-                <Flex paddingLeft="12">
-                  <Icon name="calendar" onBackground="brand-weak" />
+                <Flex
+                  fitWidth
+                  border="brand-alpha-medium"
+                  className={styles.blockAlign}
+                  style={{
+                    backdropFilter: "blur(var(--static-space-1))",
+                  }}
+                  background="brand-alpha-weak"
+                  radius="full"
+                  padding="4"
+                  gap="8"
+                  marginBottom="m"
+                  alignItems="center"
+                >
+                  <Flex paddingLeft="12">
+                    <Icon name="calendar" onBackground="brand-weak" />
+                  </Flex>
+                  <Flex paddingX="8">Schedule a call</Flex>
+                  <IconButton
+                    href={about.calendar.link}
+                    data-border="rounded"
+                    variant="secondary"
+                    icon="chevronRight"
+                  />
                 </Flex>
-                <Flex paddingX="8">Schedule a call</Flex>
-                <IconButton href={about.calendar.link} data-border="rounded" variant="secondary" icon="chevronRight" />
-              </Flex>
+              </RevealFx>
             )}
-            <Heading className={styles.textAlign} variant="display-strong-xl">
-              {person.name}
-            </Heading>
-            <Text className={styles.textAlign} variant="display-default-xs" onBackground="neutral-weak">
-              {person.role}
-            </Text>
+            <RevealFx
+              translateY="8"
+              delay={0.2}
+              justifyContent="flex-start"
+              alignItems="center"
+              className="s-justify-center"
+            >
+              <Heading className={styles.textAlign} variant="display-strong-xl">
+                {person.name}
+              </Heading>
+            </RevealFx>
+            <RevealFx
+              translateY="12"
+              delay={0.3}
+              justifyContent="flex-start"
+              alignItems="center"
+              className="s-justify-center"
+            >
+              <Text className={styles.textAlign} variant="display-default-xs" onBackground="neutral-weak">
+                {person.role}
+              </Text>
+            </RevealFx>
             {social.length > 0 && (
-              <Flex className={styles.blockAlign} paddingTop="20" paddingBottom="8" gap="8" wrap>
-                {social.map(
-                  (item) =>
-                    item.link && (
-                      <Button
-                        key={item.name}
-                        href={item.link}
-                        prefixIcon={item.icon}
-                        label={item.name}
-                        size="s"
-                        variant="secondary"
-                      />
-                    )
-                )}
-              </Flex>
+              <RevealFx
+                translateY="16"
+                delay={0.4}
+                justifyContent="flex-start"
+                alignItems="center"
+                className="s-justify-center"
+              >
+                <Flex className={styles.blockAlign} paddingTop="20" paddingBottom="8" gap="8" wrap>
+                  {social.map(
+                    (item) =>
+                      item.link && (
+                        <Button
+                          key={item.name}
+                          href={item.link}
+                          prefixIcon={item.icon}
+                          label={item.name}
+                          size="s"
+                          variant="secondary"
+                        />
+                      )
+                  )}
+                </Flex>
+              </RevealFx>
             )}
           </Flex>
 
           {about.intro.display && (
-            <Flex direction="column" textVariant="body-default-l" fillWidth gap="m" marginBottom="xl">
-              {about.intro.description}
-            </Flex>
+            <RevealFx
+              translateY="20"
+              delay={0.5}
+              justifyContent="flex-start"
+              alignItems="center"
+              className="s-justify-center"
+            >
+              <Flex direction="column" textVariant="body-default-l" fillWidth gap="m" marginBottom="xl">
+                {about.intro.description}
+              </Flex>
+            </RevealFx>
           )}
 
           {about.work.display && (
             <>
-              <Heading as="h2" id={about.work.title} variant="display-strong-s" marginBottom="m">
-                {about.work.title}
-              </Heading>
+              <RevealFx translateY="24" delay={0.6} justifyContent="flex-start" alignItems="center">
+                <Heading as="h2" id={about.work.title} variant="display-strong-s" marginBottom="m">
+                  {about.work.title}
+                </Heading>
+              </RevealFx>
               <Flex direction="column" fillWidth gap="l" marginBottom="40">
                 {about.work.experiences.map((experience, index) => (
-                  <Flex key={`${experience.company}-${experience.role}-${index}`} fillWidth direction="column">
-                    <Flex fillWidth justifyContent="space-between" alignItems="flex-end" marginBottom="4">
-                      <Text id={experience.company} variant="heading-strong-l">
-                        {experience.company}
-                      </Text>
-                      <Text variant="heading-default-xs" onBackground="neutral-weak">
-                        {experience.timeframe}
-                      </Text>
-                    </Flex>
-                    <Text variant="body-default-s" onBackground="brand-weak" marginBottom="m">
-                      {experience.role}
-                    </Text>
-                    <Flex as="ul" direction="column" gap="16">
-                      {experience.achievements.map((achievement: JSX.Element, index: number) => (
-                        <Text as="li" variant="body-default-m" key={`${experience.company}-${index}`}>
-                          {achievement}
+                  <RevealFx
+                    key={`${experience.company}-${experience.role}-${index}`}
+                    translateY={28}
+                    delay={0.7 + index * 0.1}
+                    justifyContent="flex-start"
+                    alignItems="center"
+                  >
+                    <Flex fillWidth direction="column">
+                      <Flex fillWidth justifyContent="space-between" alignItems="flex-end" marginBottom="4">
+                        <Text id={experience.company} variant="heading-strong-l">
+                          {experience.company}
                         </Text>
-                      ))}
-                    </Flex>
-                    {experience.images.length > 0 && (
-                      <Flex fillWidth paddingTop="m" paddingLeft="40" wrap>
-                        {experience.images.map((image: ImageType, index) => (
-                          <Flex
-                            key={index}
-                            border="neutral-medium"
-                            radius="m"
-                            minWidth={image.width}
-                            height={image.height}
-                          >
-                            <SmartImage
-                              enlarge
-                              radius="m"
-                              sizes={image.width.toString()}
-                              alt={image.alt}
-                              src={image.src}
-                            />
-                          </Flex>
+                        <Text variant="heading-default-xs" onBackground="neutral-weak">
+                          {experience.timeframe}
+                        </Text>
+                      </Flex>
+                      <Text variant="body-default-s" onBackground="brand-weak" marginBottom="m">
+                        {experience.role}
+                      </Text>
+                      <Flex as="ul" direction="column" gap="16">
+                        {experience.achievements.map((achievement: JSX.Element, index: number) => (
+                          <Text as="li" variant="body-default-m" key={`${experience.company}-${index}`}>
+                            {achievement}
+                          </Text>
                         ))}
                       </Flex>
-                    )}
-                  </Flex>
+                      {experience.images.length > 0 && (
+                        <Flex fillWidth paddingTop="m" paddingLeft="40" wrap>
+                          {experience.images.map((image: ImageType, index) => (
+                            <Flex
+                              key={index}
+                              border="neutral-medium"
+                              radius="m"
+                              minWidth={image.width}
+                              height={image.height}
+                            >
+                              <SmartImage
+                                enlarge
+                                radius="m"
+                                sizes={image.width.toString()}
+                                alt={image.alt}
+                                src={image.src}
+                              />
+                            </Flex>
+                          ))}
+                        </Flex>
+                      )}
+                    </Flex>
+                  </RevealFx>
                 ))}
               </Flex>
             </>
@@ -275,19 +338,30 @@ export default function About() {
 
           {about.studies.display && (
             <>
-              <Heading as="h2" id={about.studies.title} variant="display-strong-s" marginBottom="m">
-                {about.studies.title}
-              </Heading>
+              <RevealFx translateY="32" delay={0.8} justifyContent="flex-start" alignItems="center">
+                <Heading as="h2" id={about.studies.title} variant="display-strong-s" marginBottom="m">
+                  {about.studies.title}
+                </Heading>
+              </RevealFx>
               <Flex direction="column" fillWidth gap="l" marginBottom="40">
                 {about.studies.institutions.map((institution, index) => (
-                  <Flex key={`${institution.name}-${index}`} fillWidth gap="4" direction="column">
-                    <Text id={institution.name} variant="heading-strong-l">
-                      {institution.name}
-                    </Text>
-                    <Text variant="heading-default-xs" onBackground="neutral-weak">
-                      {institution.description}
-                    </Text>
-                  </Flex>
+                  <RevealFx
+                    key={`${institution.name}-${index}`}
+                    translateY={36}
+                    delay={0.9 + index * 0.1}
+                    justifyContent="flex-start"
+                    alignItems="center"
+                    className="s-justify-center"
+                  >
+                    <Flex fillWidth gap="4" direction="column">
+                      <Text id={institution.name} variant="heading-strong-l">
+                        {institution.name}
+                      </Text>
+                      <Text variant="heading-default-xs" onBackground="neutral-weak">
+                        {institution.description}
+                      </Text>
+                    </Flex>
+                  </RevealFx>
                 ))}
               </Flex>
             </>
@@ -295,38 +369,49 @@ export default function About() {
 
           {about.technical.display && (
             <>
-              <Heading as="h2" id={about.technical.title} variant="display-strong-s" marginBottom="40">
-                {about.technical.title}
-              </Heading>
+              <RevealFx translateY="40" delay={1.0} justifyContent="flex-start" alignItems="center">
+                <Heading as="h2" id={about.technical.title} variant="display-strong-s" marginBottom="40">
+                  {about.technical.title}
+                </Heading>
+              </RevealFx>
               <Flex direction="column" fillWidth gap="l">
                 {about.technical.skills.map((skill, index) => (
-                  <Flex key={`${skill}-${index}`} fillWidth gap="4" direction="column">
-                    <Text variant="heading-strong-l">{skill.title}</Text>
-                    <Text variant="body-default-m" onBackground="neutral-weak">
-                      {skill.description}
-                    </Text>
-                    {skill.images && skill.images.length > 0 && (
-                      <Flex fillWidth paddingTop="m" gap="12" wrap>
-                        {skill.images.map((image: ImageType, index) => (
-                          <Flex
-                            key={index}
-                            border="neutral-medium"
-                            radius="m"
-                            minWidth={image.width}
-                            height={image.height}
-                          >
-                            <SmartImage
-                              enlarge
+                  <RevealFx
+                    key={`${skill}-${index}`}
+                    translateY={44}
+                    delay={1.1 + index * 0.1}
+                    justifyContent="flex-start"
+                    alignItems="center"
+                    className="s-justify-center"
+                  >
+                    <Flex fillWidth gap="4" direction="column">
+                      <Text variant="heading-strong-l">{skill.title}</Text>
+                      <Text variant="body-default-m" onBackground="neutral-weak">
+                        {skill.description}
+                      </Text>
+                      {skill.images && skill.images.length > 0 && (
+                        <Flex fillWidth paddingTop="m" gap="12" wrap>
+                          {skill.images.map((image: ImageType, index) => (
+                            <Flex
+                              key={index}
+                              border="neutral-medium"
                               radius="m"
-                              sizes={image.width.toString()}
-                              alt={image.alt}
-                              src={image.src}
-                            />
-                          </Flex>
-                        ))}
-                      </Flex>
-                    )}
-                  </Flex>
+                              minWidth={image.width}
+                              height={image.height}
+                            >
+                              <SmartImage
+                                enlarge
+                                radius="m"
+                                sizes={image.width.toString()}
+                                alt={image.alt}
+                                src={image.src}
+                              />
+                            </Flex>
+                          ))}
+                        </Flex>
+                      )}
+                    </Flex>
+                  </RevealFx>
                 ))}
               </Flex>
             </>

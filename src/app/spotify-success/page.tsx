@@ -1,62 +1,49 @@
 "use client";
 
 import { useSpotify } from "@/contexts/SpotifyContext";
-import { Button, Card, Flex, Heading, Text } from "@/once-ui/components";
-import { useEffect, useState } from "react";
+import { Button, Card, Flex, Heading, Spinner, Text } from "@/once-ui/components";
+import { useEffect, useRef, useState } from "react";
 
 export default function SpotifySuccessPage() {
   const [isLoading, setIsLoading] = useState(true);
-
+  const [error, setError] = useState<string | null>(null);
   const [refreshToken, setRefreshToken] = useState<string | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
   const { updateRefreshToken, updateAccessToken, tokens } = useSpotify();
+  const hasExecuted = useRef(false);
 
   useEffect(() => {
-    console.log("🎉 Spotify Success Page: Component mounted");
-
     const exchangeCodeForTokens = async () => {
+      if (hasExecuted.current) return;
+      hasExecuted.current = true;
+
       try {
-        // Check if we have a token in the URL params
         const urlParams = new URLSearchParams(window.location.search);
         const code = urlParams.get("code");
 
-        if (code) {
-          console.log(
-            "🔑 Spotify Success Page: Found authorization code:",
-            code.substring(0, 20) + "..."
-          );
+        if (!code) {
+          setError("No authorization code found");
+          return;
+        }
 
-          // Exchange the code for tokens
-          const response = await fetch("/api/spotify/exchange-code", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ code }),
-          });
+        const response = await fetch("/api/spotify/exchange-code", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ code }),
+        });
 
-          if (response.ok) {
-            const tokenData = await response.json();
-            console.log("✅ Successfully exchanged code for tokens:", tokenData);
+        if (response.ok) {
+          const tokenData = await response.json();
+          updateRefreshToken(tokenData.refresh_token);
+          updateAccessToken(tokenData.access_token, tokenData.expires_in);
 
-            // Store the tokens
-            updateRefreshToken(tokenData.refresh_token);
-            updateAccessToken(tokenData.access_token, tokenData.expires_in);
-
-            setRefreshToken(tokenData.refresh_token);
-            setAccessToken(tokenData.access_token);
-          } else {
-            const errorData = await response.json();
-            console.error("❌ Failed to exchange code for tokens:", errorData);
-            setError(`Failed to exchange code: ${errorData.error}`);
-          }
+          setRefreshToken(tokenData.refresh_token);
+          setAccessToken(tokenData.access_token);
         } else {
-          console.log("❌ Spotify Success Page: No authorization code found");
-          setError("No authorization code found in URL");
+          const errorData = await response.json();
+          setError(`Failed to exchange code: ${errorData.error}`);
         }
       } catch (err: any) {
-        console.error("❌ Error exchanging code for tokens:", err);
         setError(`Error: ${err.message}`);
       } finally {
         setIsLoading(false);
@@ -64,33 +51,54 @@ export default function SpotifySuccessPage() {
     };
 
     exchangeCodeForTokens();
-  }, [updateRefreshToken, updateAccessToken]);
-
-  const clearStoredToken = () => {
-    console.log("🗑️ Spotify Success Page: Clearing stored token");
-    setRefreshToken(null);
-    setAccessToken(null);
-    // The context will handle clearing localStorage
-  };
+  }, []);
 
   if (isLoading) {
     return (
-      <Flex justifyContent="center" alignItems="center" style={{ minHeight: "50vh" }}>
-        <Text>Exchanging authorization code for tokens...</Text>
+      <Flex
+        direction="column"
+        alignItems="center"
+        justifyContent="center"
+        fillWidth
+        style={{ minHeight: "100vh" }}
+        gap="xl"
+        padding="xl"
+        background="neutral-weak"
+      >
+        <Card padding="xl" background="neutral-strong" border="neutral-medium" radius="m">
+          <Flex direction="column" gap="l" alignItems="center">
+            <Spinner size="l" />
+            <Heading variant="display-strong-l">🔄 Processing...</Heading>
+            <Text variant="body-default-l" onBackground="neutral-weak">
+              Exchanging authorization code for tokens...
+            </Text>
+          </Flex>
+        </Card>
       </Flex>
     );
   }
 
   if (error) {
     return (
-      <Flex justifyContent="center" alignItems="center" style={{ minHeight: "50vh" }}>
-        <Card padding="xl" maxWidth="m">
+      <Flex
+        direction="column"
+        alignItems="center"
+        justifyContent="center"
+        fillWidth
+        style={{ minHeight: "100vh" }}
+        gap="xl"
+        padding="xl"
+        background="neutral-weak"
+      >
+        <Card padding="xl" background="accent-alpha-weak" border="accent-alpha-medium" radius="m" maxWidth="l">
           <Flex direction="column" gap="l" alignItems="center">
-            <Heading variant="display-strong-m">❌ Error</Heading>
-            <Text variant="body-default-m" style={{ textAlign: "center" }}>
+            <Heading variant="display-strong-m" onBackground="accent-weak">
+              ❌ Error
+            </Heading>
+            <Text variant="body-default-m" onBackground="accent-weak" style={{ textAlign: "center" }}>
               {error}
             </Text>
-            <Button href="/spotify-auth" variant="primary">
+            <Button href="/spotify-auth" variant="primary" size="l">
               Try Again
             </Button>
           </Flex>
@@ -106,9 +114,7 @@ export default function SpotifySuccessPage() {
           <Heading variant="display-strong-m">🎉 Spotify Connected!</Heading>
 
           <Flex direction="column" gap="m" alignItems="center">
-            <Text variant="body-default-m">
-              Your Spotify account has been successfully connected!
-            </Text>
+            <Text variant="body-default-m">Your Spotify account has been successfully connected!</Text>
 
             {refreshToken && (
               <Flex direction="column" gap="s" alignItems="center">
@@ -136,11 +142,7 @@ export default function SpotifySuccessPage() {
               <Text variant="body-default-s">
                 <strong>Context State:</strong>
               </Text>
-              <Text
-                variant="body-default-xs"
-                onBackground="neutral-weak"
-                style={{ fontFamily: "monospace" }}
-              >
+              <Text variant="body-default-xs" onBackground="neutral-weak" style={{ fontFamily: "monospace" }}>
                 {JSON.stringify(tokens, null, 2)}
               </Text>
             </Flex>
@@ -149,9 +151,6 @@ export default function SpotifySuccessPage() {
           <Flex gap="m">
             <Button href="/" variant="primary">
               Go to Home
-            </Button>
-            <Button onClick={clearStoredToken} variant="secondary">
-              Clear Token
             </Button>
           </Flex>
         </Flex>
