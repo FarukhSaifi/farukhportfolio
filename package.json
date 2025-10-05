@@ -16,7 +16,9 @@
     "fresh": "npm run clean:all && npm install",
     "test:spotify": "node scripts/test-spotify.js",
     "get:spotify-token": "node scripts/get-spotify-token.js",
-    "check:spotify": "node scripts/check-spotify-config.js"
+    "check:spotify": "node scripts/check-spotify-config.js",
+    "typecheck": "tsc --noEmit",
+    "validate": "npm run typecheck && npm run lint"
   },
   "dependencies": {
     "@floating-ui/react-dom": "^2.1.1",
@@ -47,7 +49,8 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "eslint": "^9.34.0",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "^14.2.16",
     "postcss-custom-media": "^10.0.7",
     "postcss-flexbugs-fixes": "^5.0.2",
     "typescript": "^5"

@@ -8,7 +8,6 @@ import { Fade, Flex, IconButton, ToggleButton } from "@/once-ui/components";
 import { display, routes, style } from "@/app/resources";
 import { about, blog, gallery, person, work } from "@/app/resources/content";
 import { useEffect, useState } from "react";
-import NowPlaying from "./NowPlaying";
 
 // type TimeDisplayProps = {
 //   timeZone: string;
@@ -62,19 +61,9 @@ export const Header = () => {
     <>
       <Fade hide="s" fillWidth position="fixed" height="80" zIndex={9} />
       <Fade show="s" fillWidth position="fixed" bottom="0" to="top" height="80" zIndex={9} />
-      <Flex
-        fitHeight
-        className={styles.position}
-        as="header"
-        zIndex={9}
-        fillWidth
-        padding="8"
-        justifyContent="center"
-      >
+      <Flex fitHeight className={styles.position} as="header" zIndex={9} fillWidth padding="8" justifyContent="center">
         <Flex paddingLeft="12" fillWidth alignItems="center" textVariant="body-default-s">
           {display.location && <Flex hide="s">{person.location}</Flex>}
-          {/* Spotify Now Playing Banner */}
-          <NowPlaying />
         </Flex>
         <Flex fillWidth justifyContent="center">
           <Flex
@@ -95,12 +84,7 @@ export const Header = () => {
                     // label={home.label}
                     selected={pathname === "/"}
                   />
-                  <ToggleButton
-                    className="s-flex-show"
-                    prefixIcon="home"
-                    href="/"
-                    selected={pathname === "/"}
-                  />
+                  <ToggleButton className="s-flex-show" prefixIcon="home" href="/" selected={pathname === "/"} />
                 </>
               )}
               {routes["/about"] && (
@@ -175,20 +159,9 @@ export const Header = () => {
           </Flex>
         </Flex>
         <Flex fillWidth justifyContent="end" alignItems="center">
-          <Flex
-            paddingRight="12"
-            justifyContent="flex-end"
-            alignItems="center"
-            textVariant="body-default-s"
-            gap="20"
-          >
+          <Flex paddingRight="12" justifyContent="flex-end" alignItems="center" textVariant="body-default-s" gap="20">
             <div onClick={handleThemeToggle}>
-              <IconButton
-                size="l"
-                key={`theme-icon`}
-                icon={theme === "dark" ? "sun" : "moon"}
-                variant="secondary"
-              />
+              <IconButton size="l" key={`theme-icon`} icon={theme === "dark" ? "sun" : "moon"} variant="secondary" />
             </div>
             {/* <Flex hide="s">{display.time && <TimeDisplay timeZone={person.location} />}</Flex> */}
           </Flex>
