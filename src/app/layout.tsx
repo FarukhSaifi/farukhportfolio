@@ -5,7 +5,7 @@ import classNames from "classnames";
 
 import { baseURL, effects, style } from "@/app/resources";
 import { Footer, Header, RouteGuard } from "@/components";
-import { ToastContainer } from "@/components/Toast";
+import ConditionalToastContainer from "@/components/ConditionalToastContainer";
 import { DatabaseSpotifyProvider } from "@/contexts/DatabaseSpotifyContext";
 
 import { Analytics } from "@vercel/analytics/react";
@@ -174,7 +174,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           </Flex>
           <Footer />
           <Analytics />
-          <ToastContainer />
+          <ConditionalToastContainer />
         </Flex>
       </DatabaseSpotifyProvider>
     </Flex>
