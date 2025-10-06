@@ -1,172 +1,79 @@
 "use client";
 
-import { Avatar, Card, Flex, Icon, Text } from "@/once-ui/components";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-
-interface SimplifiedTrack {
-  title: string;
-  artist: string;
-  album: string;
-  imageUrl: string;
-  songUrl: string;
-}
-
-interface PublicNowPlayingPayload {
-  isPlaying: boolean;
-  track: SimplifiedTrack | null;
-  timestamp: string;
-}
-
-type FetchResult = {
-  ok: boolean;
-  data?: PublicNowPlayingPayload;
-  error?: string;
-};
-
-function usePublicNowPlaying() {
-  const [payload, setPayload] = useState<PublicNowPlayingPayload | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-
-  const pollTimerRef = useRef<number | null>(null);
-  const isVisibleRef = useRef<boolean>(true);
-
-  const fetchPublicNowPlaying = useCallback(async (): Promise<FetchResult> => {
-    try {
-      const response = await fetch("/api/spotify/public-now-playing", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        return { ok: false, error: errorData.error || "Failed to fetch public now playing" };
-      }
-
-      const data = await response.json();
-      return { ok: true, data: data.data };
-    } catch (err: any) {
-      return { ok: false, error: err.message };
-    }
-  }, []);
-
-  const startPolling = useCallback(() => {
-    if (pollTimerRef.current) return;
-
-    const poll = async () => {
-      if (!isVisibleRef.current) return;
-
-      const result = await fetchPublicNowPlaying();
-      if (result.ok && result.data) {
-        setPayload(result.data);
-        setError(null);
-      } else {
-        setError(result.error || "Failed to fetch public now playing");
-      }
-      setLoading(false);
-    };
-
-    // Initial fetch
-    poll();
-
-    // Poll every 30 seconds
-    pollTimerRef.current = window.setInterval(poll, 30000);
-  }, [fetchPublicNowPlaying]);
-
-  const stopPolling = useCallback(() => {
-    if (pollTimerRef.current) {
-      clearInterval(pollTimerRef.current);
-      pollTimerRef.current = null;
-    }
-  }, []);
-
-  useEffect(() => {
-    const handleVisibilityChange = () => {
-      isVisibleRef.current = !document.hidden;
-      if (isVisibleRef.current) {
-        startPolling();
-      } else {
-        stopPolling();
-      }
-    };
-
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-    startPolling();
-
-    return () => {
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-      stopPolling();
-    };
-  }, [startPolling, stopPolling]);
-
-  const value = useMemo(() => ({ payload, loading, error }), [payload, loading, error]);
-
-  return value;
-}
+import { usePublicSpotifyNowPlaying } from "@/hooks/useSpotify";
+import { Avatar, Button, Flex, RevealFx, Spinner } from "@/once-ui/components";
+import { useState } from "react";
+import MarqueeTextCSS from "./MarqueeTextCSS";
 
 export default function PublicNowPlaying() {
-  const { payload, loading, error } = usePublicNowPlaying();
-
+  const { payload, loading, error } = usePublicSpotifyNowPlaying();
+  const [hover, setHover] = useState(false);
   if (loading) {
     return (
-      <Card padding="m" background="neutral-strong" border="neutral-medium" radius="m">
-        <Flex gap="s" alignItems="center">
-          <Icon name="music" onBackground="neutral-weak" />
-          <Text variant="body-default-s" onBackground="neutral-weak">
-            Loading public music...
-          </Text>
-        </Flex>
-      </Card>
+      <Flex gap="s" alignItems="center">
+        <Spinner size="s" />
+      </Flex>
     );
   }
 
   if (error) {
-    return (
-      <Card padding="m" background="accent-alpha-weak" border="accent-alpha-medium" radius="m">
-        <Flex gap="s" alignItems="center">
-          <Icon name="music" onBackground="accent-weak" />
-          <Text variant="body-default-s" onBackground="accent-weak">
-            Public music unavailable
-          </Text>
-        </Flex>
-      </Card>
-    );
+    return null;
   }
 
   if (!payload || !payload.isPlaying || !payload.track) {
-    return (
-      <Card padding="m" background="neutral-strong" border="neutral-medium" radius="m">
-        <Flex gap="s" alignItems="center">
-          <Icon name="music" onBackground="neutral-weak" />
-          <Text variant="body-default-s" onBackground="neutral-weak">
-            No public music playing
-          </Text>
-        </Flex>
-      </Card>
-    );
+    return null;
   }
 
   const track = payload.track;
 
   return (
-    <Card padding="m" background="brand-alpha-weak" border="brand-alpha-medium" radius="m">
-      <Flex gap="s" alignItems="center">
-        {track.imageUrl && <Avatar src={track.imageUrl} size="s" />}
-        <Flex direction="column" gap="xs">
-          <Text variant="body-default-s" onBackground="brand-weak">
-            <strong>Public Now Playing:</strong>
-          </Text>
-          <Text variant="heading-strong-xs" onBackground="brand-strong">
-            {track.title}
-          </Text>
-          <Text variant="body-default-xs" onBackground="brand-weak">
-            {track.artist}
-          </Text>
-        </Flex>
-        <Icon name="chevronRight" onBackground="brand-weak" />
-      </Flex>
-    </Card>
+    <div
+      style={{ position: "relative", display: "inline-block" }}
+      onMouseEnter={() => setHover((prev) => !prev)}
+      onMouseLeave={() => setHover((prev) => !prev)}
+    >
+      <RevealFx translateY="12" delay={0.4} justifyContent="flex-start">
+        <Button id="about" data-border="rounded" href={track.songUrl || "#"} variant="secondary" size="l" arrowIcon>
+          <Flex gap="8" alignItems="center">
+            {track.imageUrl && (
+              <Avatar style={{ marginLeft: "-1.5rem", marginRight: "0.25rem" }} src={track.imageUrl} size="l" />
+            )}
+            <MarqueeTextCSS maxWidth={180}>{track.title}</MarqueeTextCSS>
+          </Flex>
+        </Button>
+      </RevealFx>
+
+      {hover && (
+        <div
+          style={{
+            position: "absolute",
+            top: "110%",
+            left: 0,
+            zIndex: 20,
+            minWidth: "260px",
+            background: "var(--surface-background)",
+            border: "1px solid var(--neutral-alpha-weak)",
+            borderRadius: "12px",
+            boxShadow: "0 8px 24px rgba(0,0,0,0.2)",
+            padding: "12px",
+          }}
+        >
+          <Flex gap="12" alignItems="center">
+            {track.imageUrl && <Avatar src={track.imageUrl} size="l" />}
+            <Flex direction="column" gap="4" style={{ minWidth: 0 }}>
+              <div style={{ color: "var(--on-background-strong)", fontWeight: 600 }}>
+                <MarqueeTextCSS maxWidth={200}>{track.title}</MarqueeTextCSS>
+              </div>
+              <div style={{ color: "var(--neutral-weak)", fontSize: 12 }}>
+                <MarqueeTextCSS maxWidth={200}>{track.artist}</MarqueeTextCSS>
+              </div>
+              <div style={{ color: "var(--neutral-weak)", fontSize: 12 }}>
+                <MarqueeTextCSS maxWidth={200}>{track.album}</MarqueeTextCSS>
+              </div>
+            </Flex>
+          </Flex>
+        </div>
+      )}
+    </div>
   );
 }

@@ -2,6 +2,7 @@
 
 import { baseURL } from "@/app/resources";
 import { admin, person } from "@/app/resources/content";
+import { useToast } from "@/hooks/useToast";
 import { Avatar, Button, Card, Flex, Heading, Icon, RevealFx, Text } from "@/once-ui/components";
 import { useEffect, useState } from "react";
 
@@ -74,6 +75,7 @@ function QuickAction({ title, description, icon, href, color = "brand" }: QuickA
 
 export default function AdminDashboard() {
   const [isMobile, setIsMobile] = useState(false);
+  const { success, info } = useToast();
 
   useEffect(() => {
     const checkMobile = () => {
@@ -87,6 +89,11 @@ export default function AdminDashboard() {
       window.removeEventListener("resize", checkMobile);
     };
   }, []);
+
+  // Show welcome toast on mount
+  useEffect(() => {
+    info("Welcome to Admin Dashboard", "Manage your blog posts and publishing status");
+  }, [info]);
 
   return (
     <Flex direction="column" fillWidth fillHeight background="neutral-weak" style={{ minHeight: "100vh" }}>

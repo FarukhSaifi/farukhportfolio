@@ -20,10 +20,14 @@ import {
   HiMiniQuestionMarkCircle,
   HiMiniXMark,
   HiOutlineArrowPath,
+  HiOutlineDocumentText,
   HiOutlineEye,
   HiOutlineEyeSlash,
   HiOutlineLink,
+  HiOutlineMagnifyingGlass,
+  HiOutlineMinus,
   HiOutlineMoon,
+  HiOutlineMusicalNote,
   HiOutlineSun,
 } from "react-icons/hi2";
 
@@ -72,4 +76,9 @@ export const iconLibrary: Record<string, IconType> = {
   sun: HiOutlineSun,
   moon: HiOutlineMoon,
   spotify: FaSpotify,
+  // Additional icons
+  document: HiOutlineDocumentText,
+  music: HiOutlineMusicalNote,
+  search: HiOutlineMagnifyingGlass,
+  minus: HiOutlineMinus,
 };
