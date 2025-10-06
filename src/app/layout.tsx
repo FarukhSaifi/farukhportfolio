@@ -5,7 +5,7 @@ import classNames from "classnames";
 
 import { baseURL, effects, style } from "@/app/resources";
 import { Footer, Header, RouteGuard } from "@/components";
-import { SpotifyProvider } from "@/contexts/SpotifyContext";
+import { DatabaseSpotifyProvider } from "@/contexts/DatabaseSpotifyContext";
 
 import { Analytics } from "@vercel/analytics/react";
 import { Inter, Source_Code_Pro } from "next/font/google";
@@ -25,9 +25,7 @@ export async function generateMetadata() {
         { url: "/images/favicon_io/favicon-32x32.png", sizes: "32x32", type: "image/png" },
       ],
       shortcut: "/favicon.ico",
-      apple: [
-        { url: "/images/favicon_io/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
-      ],
+      apple: [{ url: "/images/favicon_io/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
     },
     openGraph: {
       title: `${person.firstName}'s Portfolio`,
@@ -128,15 +126,8 @@ export default async function RootLayout({ children }: RootLayoutProps) {
         code.variable
       )}
     >
-      <SpotifyProvider>
-        <Flex
-          style={{ minHeight: "100vh" }}
-          as="body"
-          fillWidth
-          margin="0"
-          padding="0"
-          direction="column"
-        >
+      <DatabaseSpotifyProvider>
+        <Flex style={{ minHeight: "100vh" }} as="body" fillWidth margin="0" padding="0" direction="column">
           <Background
             mask={{
               cursor: effects.mask.cursor,
@@ -153,18 +144,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
               tilt: effects.gradient.tilt,
               colorStart: effects.gradient.colorStart,
               colorEnd: effects.gradient.colorEnd,
-              opacity: effects.gradient.opacity as
-                | 0
-                | 10
-                | 20
-                | 30
-                | 40
-                | 50
-                | 60
-                | 70
-                | 80
-                | 90
-                | 100,
+              opacity: effects.gradient.opacity as 0 | 10 | 20 | 30 | 40 | 50 | 60 | 70 | 80 | 90 | 100,
             }}
             dots={{
               display: effects.dots.display,
@@ -186,15 +166,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           />
           <Flex fillWidth minHeight="16"></Flex>
           <Header />
-          <Flex
-            position="relative"
-            zIndex={0}
-            fillWidth
-            paddingY="l"
-            paddingX="l"
-            justifyContent="center"
-            flex={1}
-          >
+          <Flex position="relative" zIndex={0} fillWidth paddingY="l" paddingX="l" justifyContent="center" flex={1}>
             <Flex justifyContent="center" fillWidth minHeight="0">
               <RouteGuard>{children}</RouteGuard>
             </Flex>
@@ -202,7 +174,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           <Footer />
           <Analytics />
         </Flex>
-      </SpotifyProvider>
+      </DatabaseSpotifyProvider>
     </Flex>
   );
 }

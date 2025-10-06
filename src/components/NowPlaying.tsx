@@ -1,5 +1,5 @@
 "use client";
-import { useSpotify } from "@/contexts/SpotifyContext";
+import { useDatabaseSpotify } from "@/contexts/DatabaseSpotifyContext";
 import { Avatar, Button, Flex, Icon, RevealFx, Spinner } from "@/once-ui/components";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
@@ -30,7 +30,7 @@ const ERROR_BACKOFF_BASE = 2000;
 const ERROR_BACKOFF_MAX = 30000;
 
 function useNowPlaying() {
-  const { hasRefreshToken, getTokenForAPI, updateAccessToken } = useSpotify();
+  const { hasRefreshToken, getTokenForAPI, updateAccessToken } = useDatabaseSpotify();
   const [payload, setPayload] = useState<NowPlayingPayload | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -112,7 +112,8 @@ function useNowPlaying() {
     const seq = ++reqSeqRef.current;
 
     try {
-      if (!hasRefreshToken()) {
+      const token = getTokenForAPI();
+      if (!token) {
         setError("Not authenticated with Spotify");
         setPayload(null);
         scheduleNext(POLL_IDLE_INTERVAL);

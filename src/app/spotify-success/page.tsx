@@ -1,6 +1,6 @@
 "use client";
 
-import { useSpotify } from "@/contexts/SpotifyContext";
+import { useDatabaseSpotify } from "@/contexts/DatabaseSpotifyContext";
 import { Button, Card, Flex, Heading, Spinner, Text } from "@/once-ui/components";
 import { useEffect, useRef, useState } from "react";
 
@@ -9,47 +9,66 @@ export default function SpotifySuccessPage() {
   const [error, setError] = useState<string | null>(null);
   const [refreshToken, setRefreshToken] = useState<string | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
-  const { updateRefreshToken, updateAccessToken, tokens } = useSpotify();
+  const { updateRefreshToken, updateAccessToken, tokens } = useDatabaseSpotify();
   const hasExecuted = useRef(false);
 
-  useEffect(() => {
-    const exchangeCodeForTokens = async () => {
-      if (hasExecuted.current) return;
-      hasExecuted.current = true;
+  const exchangeCodeForTokens = async () => {
+    if (hasExecuted.current) return;
+    hasExecuted.current = true;
 
-      try {
-        const urlParams = new URLSearchParams(window.location.search);
-        const code = urlParams.get("code");
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      const code = urlParams.get("code");
 
-        if (!code) {
-          setError("No authorization code found");
-          return;
-        }
+      if (!code) {
+        setError("No authorization code found");
+        return;
+      }
 
-        const response = await fetch("/api/spotify/exchange-code", {
+      const response = await fetch("/api/spotify/exchange-code", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code }),
+      });
+
+      if (response.ok) {
+        const tokenData = await response.json();
+
+        // Save token to MongoDB for public access
+        const saveResponse = await fetch("/api/spotify/save-token", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ code }),
+          body: JSON.stringify({
+            access_token: tokenData.access_token,
+            refresh_token: tokenData.refresh_token,
+            expires_in: tokenData.expires_in,
+            token_type: tokenData.token_type,
+          }),
         });
 
-        if (response.ok) {
-          const tokenData = await response.json();
+        if (saveResponse.ok) {
+          // Update context for current user
           updateRefreshToken(tokenData.refresh_token);
           updateAccessToken(tokenData.access_token, tokenData.expires_in);
 
           setRefreshToken(tokenData.refresh_token);
           setAccessToken(tokenData.access_token);
         } else {
-          const errorData = await response.json();
-          setError(`Failed to exchange code: ${errorData.error}`);
+          const saveError = await saveResponse.json();
+          setError(`Failed to save token: ${saveError.error}`);
         }
-      } catch (err: any) {
-        setError(`Error: ${err.message}`);
-      } finally {
-        setIsLoading(false);
+      } else {
+        const errorData = await response.json();
+        setError(`Failed to exchange code: ${errorData.error}`);
       }
-    };
+    } catch (err: any) {
+      setError(`Error: ${err.message}`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
+  useEffect(() => {
     exchangeCodeForTokens();
   }, []);
 
