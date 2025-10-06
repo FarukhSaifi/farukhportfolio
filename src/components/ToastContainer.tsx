@@ -132,7 +132,7 @@ function ToastItem({ toast, onRemove }: ToastProps) {
         </Flex>
 
         <Button variant="secondary" size="s" onClick={handleRemove} style={{ padding: "4px", minWidth: "auto" }}>
-          <Icon name="x" size="s" />
+          <Icon name="close" size="xs" onBackground="neutral-weak" />
         </Button>
       </Flex>
     </div>

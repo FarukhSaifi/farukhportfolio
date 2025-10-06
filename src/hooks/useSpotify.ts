@@ -3,7 +3,14 @@ import { API_ENDPOINTS, ERROR_MESSAGES, SPOTIFY_CONFIG } from "@/lib/constants";
 import { NowPlayingPayload, UseNowPlayingReturn } from "@/lib/types";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-// Custom hook for Spotify now playing with optimized polling
+/**
+ * Custom hook for Spotify now playing with optimized polling
+ *
+ * Provides real-time Spotify playback data with intelligent polling,
+ * automatic token refresh, and performance optimizations.
+ *
+ * @returns {UseNowPlayingReturn} Spotify now playing data and state
+ */
 export function useSpotifyNowPlaying(): UseNowPlayingReturn {
   const [payload, setPayload] = useState<NowPlayingPayload | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -16,6 +23,14 @@ export function useSpotifyNowPlaying(): UseNowPlayingReturn {
   const inFlightRef = useRef<boolean>(false);
   const abortControllerRef = useRef<AbortController | null>(null);
 
+  /**
+   * Fetch currently playing track from Spotify API
+   *
+   * Handles token refresh, ETag caching, and exponential backoff retry logic.
+   * Uses AbortController for request cancellation and prevents duplicate requests.
+   *
+   * @private
+   */
   const fetchNowPlaying = useCallback(async () => {
     if (inFlightRef.current) return;
 
@@ -90,6 +105,15 @@ export function useSpotifyNowPlaying(): UseNowPlayingReturn {
     }
   }, [getValidAccessToken]);
 
+  /**
+   * Start intelligent polling for Spotify data
+   *
+   * Uses different intervals based on playback state:
+   * - Active polling when music is playing (10s)
+   * - Idle polling when no music is playing (45s)
+   *
+   * @private
+   */
   const startPolling = useCallback(() => {
     if (pollTimerRef.current) return;
 
@@ -105,6 +129,13 @@ export function useSpotifyNowPlaying(): UseNowPlayingReturn {
     poll();
   }, [fetchNowPlaying, payload?.isPlaying]);
 
+  /**
+   * Stop polling for Spotify data
+   *
+   * Clears the polling timer to prevent unnecessary API calls.
+   *
+   * @private
+   */
   const stopPolling = useCallback(() => {
     if (pollTimerRef.current) {
       clearTimeout(pollTimerRef.current);
@@ -137,12 +168,27 @@ export function useSpotifyNowPlaying(): UseNowPlayingReturn {
   return useMemo(() => ({ payload, loading, error }), [payload, loading, error]);
 }
 
-// Custom hook for public Spotify now playing
+/**
+ * Custom hook for public Spotify now playing
+ *
+ * Provides public access to Spotify playback data without authentication.
+ * Uses a simplified polling mechanism for public consumption.
+ *
+ * @returns {UseNowPlayingReturn} Public Spotify now playing data and state
+ */
 export function usePublicSpotifyNowPlaying(): UseNowPlayingReturn {
   const [payload, setPayload] = useState<NowPlayingPayload | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
+  /**
+   * Fetch public Spotify now playing data
+   *
+   * Retrieves publicly available Spotify playback data without authentication.
+   * Handles API response parsing and error management.
+   *
+   * @private
+   */
   const fetchPublicNowPlaying = useCallback(async () => {
     try {
       setLoading(true);
@@ -180,12 +226,27 @@ export function usePublicSpotifyNowPlaying(): UseNowPlayingReturn {
   return useMemo(() => ({ payload, loading, error }), [payload, loading, error]);
 }
 
-// Custom hook for Spotify authentication status
+/**
+ * Custom hook for Spotify authentication status
+ *
+ * Manages Spotify authentication state and provides methods for
+ * authentication, disconnection, and status checking.
+ *
+ * @returns {object} Authentication state and methods
+ */
 export function useSpotifyAuth() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
+  /**
+   * Check current Spotify authentication status
+   *
+   * Verifies if user is authenticated with Spotify by checking
+   * for valid tokens in the database.
+   *
+   * @private
+   */
   const checkAuthStatus = useCallback(async () => {
     try {
       setLoading(true);
@@ -204,10 +265,25 @@ export function useSpotifyAuth() {
     }
   }, []);
 
+  /**
+   * Initiate Spotify authentication flow
+   *
+   * Redirects user to Spotify OAuth authorization page.
+   *
+   * @public
+   */
   const authenticate = useCallback(() => {
     window.location.href = API_ENDPOINTS.SPOTIFY.AUTH;
   }, []);
 
+  /**
+   * Disconnect from Spotify
+   *
+   * Clears all Spotify tokens from the database and updates
+   * authentication state.
+   *
+   * @public
+   */
   const disconnect = useCallback(async () => {
     try {
       // Clear tokens from database
