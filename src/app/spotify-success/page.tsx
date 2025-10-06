@@ -7,9 +7,7 @@ import { useEffect, useRef, useState } from "react";
 export default function SpotifySuccessPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [refreshToken, setRefreshToken] = useState<string | null>(null);
-  const [accessToken, setAccessToken] = useState<string | null>(null);
-  const { updateRefreshToken, updateAccessToken, tokens } = useDatabaseSpotify();
+  const { updateRefreshToken, updateAccessToken } = useDatabaseSpotify();
   const hasExecuted = useRef(false);
 
   const exchangeCodeForTokens = async () => {
@@ -50,9 +48,6 @@ export default function SpotifySuccessPage() {
           // Update context for current user
           updateRefreshToken(tokenData.refresh_token);
           updateAccessToken(tokenData.access_token, tokenData.expires_in);
-
-          setRefreshToken(tokenData.refresh_token);
-          setAccessToken(tokenData.access_token);
         } else {
           const saveError = await saveResponse.json();
           setError(`Failed to save token: ${saveError.error}`);
@@ -135,36 +130,9 @@ export default function SpotifySuccessPage() {
           <Flex direction="column" gap="m" alignItems="center">
             <Text variant="body-default-m">Your Spotify account has been successfully connected!</Text>
 
-            {refreshToken && (
-              <Flex direction="column" gap="s" alignItems="center">
-                <Text variant="body-default-s" onBackground="neutral-weak">
-                  <strong>Refresh Token:</strong> {refreshToken.substring(0, 50)}...
-                </Text>
-                <Text variant="body-default-xs" onBackground="neutral-weak">
-                  This token has been stored in your browser and will be used for API calls.
-                </Text>
-              </Flex>
-            )}
-
-            {accessToken && (
-              <Flex direction="column" gap="s" alignItems="center">
-                <Text variant="body-default-s" onBackground="neutral-weak">
-                  <strong>Access Token:</strong> {accessToken.substring(0, 50)}...
-                </Text>
-                <Text variant="body-default-xs" onBackground="neutral-weak">
-                  This token will be used for API calls and automatically refreshed.
-                </Text>
-              </Flex>
-            )}
-
-            <Flex direction="column" gap="m" alignItems="center">
-              <Text variant="body-default-s">
-                <strong>Context State:</strong>
-              </Text>
-              <Text variant="body-default-xs" onBackground="neutral-weak" style={{ fontFamily: "monospace" }}>
-                {JSON.stringify(tokens, null, 2)}
-              </Text>
-            </Flex>
+            <Text variant="body-default-s" onBackground="neutral-weak">
+              Your tokens have been saved to the database and are now publicly accessible.
+            </Text>
           </Flex>
 
           <Flex gap="m">
