@@ -1,16 +1,18 @@
 "use client";
 
 import { useDatabaseSpotify } from "@/contexts/DatabaseSpotifyContext";
+import { useToast } from "@/hooks/useToast";
 import { Button, Card, Flex, Heading, Spinner, Text } from "@/once-ui/components";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export default function SpotifySuccessPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { updateRefreshToken, updateAccessToken } = useDatabaseSpotify();
+  const { success, error: showError } = useToast();
   const hasExecuted = useRef(false);
 
-  const exchangeCodeForTokens = async () => {
+  const exchangeCodeForTokens = useCallback(async () => {
     if (hasExecuted.current) return;
     hasExecuted.current = true;
 
@@ -48,24 +50,33 @@ export default function SpotifySuccessPage() {
           // Update context for current user
           updateRefreshToken(tokenData.refresh_token);
           updateAccessToken(tokenData.access_token, tokenData.expires_in);
+
+          // Show success toast
+          success("Spotify Connected!", "Your tokens have been saved to the database and are now publicly accessible.");
         } else {
           const saveError = await saveResponse.json();
-          setError(`Failed to save token: ${saveError.error}`);
+          const errorMessage = `Failed to save token: ${saveError.error}`;
+          setError(errorMessage);
+          showError("Save Failed", errorMessage);
         }
       } else {
         const errorData = await response.json();
-        setError(`Failed to exchange code: ${errorData.error}`);
+        const errorMessage = `Failed to exchange code: ${errorData.error}`;
+        setError(errorMessage);
+        showError("Exchange Failed", errorMessage);
       }
     } catch (err: any) {
-      setError(`Error: ${err.message}`);
+      const errorMessage = `Error: ${err.message}`;
+      setError(errorMessage);
+      showError("Connection Error", errorMessage);
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [updateRefreshToken, updateAccessToken, success, showError]);
 
   useEffect(() => {
     exchangeCodeForTokens();
-  }, []);
+  }, [exchangeCodeForTokens]);
 
   if (isLoading) {
     return (

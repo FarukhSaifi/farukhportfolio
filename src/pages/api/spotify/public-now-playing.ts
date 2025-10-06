@@ -1,75 +1,84 @@
-import { MongoClient } from "mongodb";
+import { HTTP_STATUS, SPOTIFY_CONFIG } from "@/lib/constants";
+import { databaseService } from "@/lib/database";
+import { ApiUtils, SpotifyUtils } from "@/lib/server-utils";
+import { PublicNowPlayingPayload } from "@/lib/types";
 import { NextApiRequest, NextApiResponse } from "next";
 
-const MONGODB_URI =
-  process.env.MONGODB_URI || "mongodb+srv://username:password@cluster.mongodb.net/syncapp?retryWrites=true&w=majority";
-const DB_NAME = "syncapp";
-
+/**
+ * API Route: Get Public Currently Playing Track
+ *
+ * Fetches the currently playing track from Spotify API for public consumption.
+ * This endpoint provides a simplified version of the now-playing data for public display.
+ *
+ * @param req - Next.js API request object
+ * @param res - Next.js API response object
+ * @returns JSON response with public currently playing track data
+ */
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  // Validate HTTP method
   if (req.method !== "GET") {
-    return res.status(405).json({ error: "Method not allowed" });
+    return res
+      .status(HTTP_STATUS.METHOD_NOT_ALLOWED)
+      .json(ApiUtils.createErrorResponse("Method not allowed", HTTP_STATUS.METHOD_NOT_ALLOWED));
   }
 
   try {
-    const client = new MongoClient(MONGODB_URI);
-    await client.connect();
+    // Get token from database
+    const tokenResult = await databaseService.getSpotifyToken();
 
-    const db = client.db(DB_NAME);
-    const collection = db.collection("credentials");
-
-    // Get the public user's token (user_id: 5)
-    const token = await collection.findOne({ user_id: 5, is_active: true });
-
-    if (!token) {
-      await client.close();
-      return res.status(404).json({
-        success: false,
-        error: "No active Spotify token found",
-      });
+    if (!tokenResult.success || !tokenResult.data) {
+      return res
+        .status(HTTP_STATUS.NOT_FOUND)
+        .json(ApiUtils.createErrorResponse("No active Spotify token found", HTTP_STATUS.NOT_FOUND));
     }
 
+    const { access_token } = tokenResult.data;
+
     // Get current playing track from Spotify API
-    const spotifyResponse = await fetch("https://api.spotify.com/v1/me/player/currently-playing", {
+    const spotifyResponse = await fetch(`${SPOTIFY_CONFIG.API_BASE_URL}/me/player/currently-playing`, {
       headers: {
-        Authorization: `Bearer ${token.access_token}`,
+        Authorization: `Bearer ${access_token}`,
         "Content-Type": "application/json",
       },
     });
 
-    if (!spotifyResponse.ok) {
-      await client.close();
-      return res.status(spotifyResponse.status).json({
-        success: false,
-        error: "Failed to get current playing track from Spotify",
-        details: await spotifyResponse.text(),
-      });
+    // Handle no content response (not playing anything)
+    if (spotifyResponse.status === HTTP_STATUS.NO_CONTENT) {
+      const response: PublicNowPlayingPayload = {
+        isPlaying: false,
+        track: null,
+        timestamp: new Date().toISOString(),
+      };
+
+      return res.status(HTTP_STATUS.OK).json(ApiUtils.createSuccessResponse(response));
     }
 
+    // Handle error responses
+    if (!spotifyResponse.ok) {
+      return res
+        .status(spotifyResponse.status)
+        .json(ApiUtils.createErrorResponse("Failed to get current playing track from Spotify", spotifyResponse.status));
+    }
+
+    // Parse successful response
     const spotifyData = await spotifyResponse.json();
+    const parsedData = SpotifyUtils.parseCurrentlyPlayingResponse(spotifyData);
 
-    await client.close();
+    // Create public response with timestamp
+    const response: PublicNowPlayingPayload = {
+      ...parsedData,
+      timestamp: new Date().toISOString(),
+    };
 
-    res.status(200).json({
-      success: true,
-      data: {
-        isPlaying: spotifyData.is_playing || false,
-        track: spotifyData.item
-          ? {
-              title: spotifyData.item.name,
-              artist: spotifyData.item.artists.map((artist: any) => artist.name).join(", "),
-              album: spotifyData.item.album.name,
-              imageUrl: spotifyData.item.album.images[0]?.url,
-              songUrl: spotifyData.item.external_urls.spotify,
-            }
-          : null,
-        timestamp: new Date().toISOString(),
-      },
-    });
+    return res.status(HTTP_STATUS.OK).json(ApiUtils.createSuccessResponse(response));
   } catch (error: any) {
+    // Log error for debugging
     console.error("Error getting public now playing:", error);
-    res.status(500).json({
-      error: "Failed to get public now playing",
-      details: error.message,
-    });
+
+    // Handle and return standardized error response
+    const errorResponse = ApiUtils.handleApiError(error);
+    return res
+      .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
+      .json(ApiUtils.createErrorResponse(errorResponse.message, HTTP_STATUS.INTERNAL_SERVER_ERROR));
   }
 }
