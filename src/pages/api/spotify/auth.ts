@@ -1,32 +1,58 @@
+import { HTTP_STATUS, SPOTIFY_CONFIG } from "@/lib/constants";
+import { ApiUtils, EnvironmentUtils } from "@/lib/server-utils";
 import { NextApiRequest, NextApiResponse } from "next";
 
-const SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
-const REDIRECT_URI =
-  process.env.NODE_ENV === "production"
-    ? `${process.env.NEXT_PUBLIC_BASE_URL}/spotify-success`
-    : "http://localhost:3000/spotify-success";
-
-const SCOPES = [
-  "user-read-currently-playing",
-  "user-read-playback-state",
-  "user-read-recently-played",
-];
-
+/**
+ * API Route: Spotify Authentication
+ *
+ * Initiates Spotify OAuth flow by redirecting to Spotify's authorization endpoint.
+ * This endpoint generates the authorization URL with proper scopes and redirect URI.
+ *
+ * @param req - Next.js API request object
+ * @param res - Next.js API response object
+ * @returns Redirect to Spotify authorization URL
+ */
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
+  // Validate HTTP method
   if (req.method !== "GET") {
-    return res.status(405).json({ error: "Method not allowed" });
+    return res
+      .status(HTTP_STATUS.METHOD_NOT_ALLOWED)
+      .json(ApiUtils.createErrorResponse("Method not allowed", HTTP_STATUS.METHOD_NOT_ALLOWED));
   }
 
-  if (!SPOTIFY_CLIENT_ID) {
-    return res.status(500).json({ error: "Spotify client ID not configured" });
+  try {
+    // Get Spotify client ID from environment
+    const clientId = EnvironmentUtils.getSpotifyClientId();
+
+    if (!clientId) {
+      return res
+        .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
+        .json(ApiUtils.createErrorResponse("Spotify client ID not configured", HTTP_STATUS.INTERNAL_SERVER_ERROR));
+    }
+
+    // Get redirect URI based on environment
+    const redirectUri = EnvironmentUtils.isProduction()
+      ? `${EnvironmentUtils.getBaseUrl()}/spotify-success`
+      : SPOTIFY_CONFIG.REDIRECT_URI.DEVELOPMENT;
+
+    // Build Spotify authorization URL
+    const authUrl = new URL(SPOTIFY_CONFIG.AUTHORIZE_URL);
+    authUrl.searchParams.set("client_id", clientId);
+    authUrl.searchParams.set("response_type", "code");
+    authUrl.searchParams.set("redirect_uri", redirectUri);
+    authUrl.searchParams.set("scope", SPOTIFY_CONFIG.SCOPES.join(" "));
+    authUrl.searchParams.set("show_dialog", "true");
+
+    // Redirect to Spotify authorization page
+    return res.redirect(authUrl.toString());
+  } catch (error: any) {
+    // Log error for debugging
+    console.error("Spotify auth error:", error);
+
+    // Handle and return standardized error response
+    const errorResponse = ApiUtils.handleApiError(error);
+    return res
+      .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
+      .json(ApiUtils.createErrorResponse(errorResponse.message, HTTP_STATUS.INTERNAL_SERVER_ERROR));
   }
-
-  const authUrl = new URL("https://accounts.spotify.com/authorize");
-  authUrl.searchParams.set("client_id", SPOTIFY_CLIENT_ID);
-  authUrl.searchParams.set("response_type", "code");
-  authUrl.searchParams.set("redirect_uri", REDIRECT_URI);
-  authUrl.searchParams.set("scope", SCOPES.join(" "));
-  authUrl.searchParams.set("show_dialog", "true");
-
-  res.redirect(authUrl.toString());
 }

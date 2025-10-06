@@ -1,49 +1,61 @@
-import { MongoClient } from "mongodb";
+import { HTTP_STATUS } from "@/lib/constants";
+import { databaseService } from "@/lib/database";
+import { ApiUtils } from "@/lib/server-utils";
 import { NextApiRequest, NextApiResponse } from "next";
 
-const MONGODB_URI =
-  process.env.MONGODB_URI || "mongodb+srv://username:password@cluster.mongodb.net/syncapp?retryWrites=true&w=majority";
-const DB_NAME = "syncapp";
-
+/**
+ * API Route: Get Spotify Token
+ *
+ * Retrieves the current Spotify token from the database.
+ * This endpoint is used to check if Spotify is connected and get token information.
+ *
+ * @param req - Next.js API request object
+ * @param res - Next.js API response object
+ * @returns JSON response with Spotify token data or error
+ */
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  // Validate HTTP method
   if (req.method !== "GET") {
-    return res.status(405).json({ error: "Method not allowed" });
+    return res
+      .status(HTTP_STATUS.METHOD_NOT_ALLOWED)
+      .json(ApiUtils.createErrorResponse("Method not allowed", HTTP_STATUS.METHOD_NOT_ALLOWED));
   }
 
   try {
-    const client = new MongoClient(MONGODB_URI);
-    await client.connect();
+    // Get Spotify token from database
+    const result = await databaseService.getSpotifyToken();
 
-    const db = client.db(DB_NAME);
-    const collection = db.collection("credentials");
-
-    // Get the public user's token (user_id: 5)
-    const token = await collection.findOne({ user_id: 5, is_active: true });
-
-    await client.close();
-
-    if (!token) {
-      return res.status(404).json({
-        success: false,
-        error: "No active Spotify token found",
-      });
+    // Handle successful token retrieval
+    if (result.success && result.data) {
+      return res.status(HTTP_STATUS.OK).json(
+        ApiUtils.createSuccessResponse(
+          {
+            isConnected: true,
+            token: {
+              access_token: result.data.access_token,
+              refresh_token: result.data.refresh_token,
+              expires_in: result.data.expires_in,
+              token_type: result.data.token_type,
+              last_updated: result.data.last_updated,
+            },
+          },
+          "Spotify token retrieved successfully"
+        )
+      );
     }
 
-    res.status(200).json({
-      success: true,
-      data: {
-        access_token: token.access_token,
-        refresh_token: token.refresh_token,
-        expires_in: token.expires_in,
-        token_type: token.token_type,
-        last_updated: token.last_updated,
-      },
-    });
+    // Handle no token found
+    return res
+      .status(HTTP_STATUS.NOT_FOUND)
+      .json(ApiUtils.createErrorResponse(result.error || "No active Spotify token found", HTTP_STATUS.NOT_FOUND));
   } catch (error: any) {
+    // Log error for debugging
     console.error("Error getting Spotify token:", error);
-    res.status(500).json({
-      error: "Failed to get Spotify token",
-      details: error.message,
-    });
+
+    // Handle and return standardized error response
+    const errorResponse = ApiUtils.handleApiError(error);
+    return res
+      .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
+      .json(ApiUtils.createErrorResponse(errorResponse.message, HTTP_STATUS.INTERNAL_SERVER_ERROR));
   }
 }
