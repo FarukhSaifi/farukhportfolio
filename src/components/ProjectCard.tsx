@@ -1,6 +1,14 @@
 "use client";
 
-import { AvatarGroup, Carousel, Flex, Heading, SmartLink, Text } from "@/once-ui/components";
+import {
+  AvatarGroup,
+  Carousel,
+  Column,
+  Flex,
+  Heading,
+  SmartLink,
+  Text,
+} from "@once-ui-system/core";
 
 interface ProjectCardProps {
   href: string;
@@ -23,16 +31,16 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   link,
 }) => {
   return (
-    <Flex fillWidth gap="m" direction="column">
+    <Column fillWidth gap="m">
       <Carousel
         sizes="(max-width: 960px) 100vw, 960px"
-        images={images.map((image) => ({
-          src: image,
+        items={images.map((image) => ({
+          slide: image,
           alt: title,
         }))}
       />
       <Flex
-        mobileDirection="column"
+        s={{ direction: "column" }}
         fillWidth
         paddingX="s"
         paddingTop="12"
@@ -47,7 +55,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
           </Flex>
         )}
         {(avatars?.length > 0 || description?.trim() || content?.trim()) && (
-          <Flex flex={7} direction="column" gap="16">
+          <Column flex={7} gap="16">
             {avatars?.length > 0 && <AvatarGroup avatars={avatars} size="m" reverse />}
             {description?.trim() && (
               <Text wrap="balance" variant="body-default-s" onBackground="neutral-weak">
@@ -74,9 +82,9 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                 </SmartLink>
               )}
             </Flex>
-          </Flex>
+          </Column>
         )}
       </Flex>
-    </Flex>
+    </Column>
   );
 };

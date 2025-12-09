@@ -1,9 +1,10 @@
 "use client";
 
-import { protectedRoutes, routes } from "@/app/resources";
-import { Button, Flex, Heading, Input, Spinner } from "@/once-ui/components";
-import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import { routes, protectedRoutes } from "@/resources";
+import { Flex, Spinner, Button, Heading, Column, PasswordInput } from "@once-ui-system/core";
+import NotFound from "@/app/not-found";
 
 interface RouteGuardProps {
   children: React.ReactNode;
@@ -32,7 +33,7 @@ const RouteGuard: React.FC<RouteGuardProps> = ({ children }) => {
           return routes[pathname as keyof typeof routes];
         }
 
-        const dynamicRoutes = ["/blog", "/work", "/admin"] as const;
+        const dynamicRoutes = ["/blog", "/work"] as const;
         for (const route of dynamicRoutes) {
           if (pathname?.startsWith(route) && routes[route]) {
             return true;
@@ -77,46 +78,33 @@ const RouteGuard: React.FC<RouteGuardProps> = ({ children }) => {
 
   if (loading) {
     return (
-      <Flex fillWidth paddingY="128" justifyContent="center">
+      <Flex fillWidth paddingY="128" horizontal="center">
         <Spinner />
       </Flex>
     );
   }
 
   if (!isRouteEnabled) {
-    return (
-      <Flex fillWidth paddingY="128" justifyContent="center">
-        <Spinner />
-      </Flex>
-    );
+    return <NotFound />;
   }
 
   if (isPasswordRequired && !isAuthenticated) {
     return (
-      <Flex
-        fillWidth
-        paddingY="128"
-        maxWidth={24}
-        gap="24"
-        justifyContent="center"
-        direction="column"
-        alignItems="center"
-      >
+      <Column paddingY="128" maxWidth={24} gap="24" center>
         <Heading align="center" wrap="balance">
           This page is password protected
         </Heading>
-        <Flex fillWidth gap="8" direction="column" alignItems="center">
-          <Input
+        <Column fillWidth gap="8" horizontal="center">
+          <PasswordInput
             id="password"
             label="Password"
-            type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             errorMessage={error}
           />
           <Button onClick={handlePasswordSubmit}>Submit</Button>
-        </Flex>
-      </Flex>
+        </Column>
+      </Column>
     );
   }
 
