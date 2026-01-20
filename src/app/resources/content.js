@@ -93,7 +93,7 @@ const about = {
     experiences: [
       {
         company: "Xebia",
-        timeframe: "2021 - Present",
+        timeframe: "Oct 2021 - Present",
         role: "Senior Consultant",
         achievements: [
           <>Implemented cost-effective solutions, resulting in a 20% reduction in project expenses.</>,
@@ -119,7 +119,7 @@ const about = {
       },
       {
         company: "Etelligens Technologies",
-        timeframe: "2020 - 2021",
+        timeframe: "Feb 2020 - Sep 2021",
         role: "Software Developer",
         achievements: [
           <>
@@ -154,28 +154,74 @@ const about = {
     title: "Technical skills",
     skills: [
       {
-        title: "React",
+        title: "Languages",
+        description: (
+          <>
+            JavaScript (ES6+), TypeScript, HTML5, CSS3, JSX. Proficient in modern JavaScript features, type-safe
+            development with TypeScript, and semantic HTML5 markup.
+          </>
+        ),
+        images: [],
+      },
+      {
+        title: "React.js",
         description: (
           <>
             React is the library for web and native user interfaces. Build user interfaces out of individual pieces
             called components written in JavaScript.
           </>
         ),
-        // optional: leave the array empty if you don't want to display images
-        images: [
-          // {
-          //   src: "/images/projects/project-01/cover-02.jpg",
-          //   alt: "Project image",
-          //   width: 16,
-          //   height: 9,
-          // },
-          // {
-          //   src: "/images/projects/project-01/cover-03.jpg",
-          //   alt: "Project image",
-          //   width: 16,
-          //   height: 9,
-          // },
-        ],
+        images: [],
+      },
+      {
+        title: "Next.js",
+        description: (
+          <>
+            Built on a foundation of fast, production-grade tooling. Powered by React, Next.js enables server-side
+            rendering, static site generation, and optimized performance.
+          </>
+        ),
+        images: [],
+      },
+      {
+        title: "Redux",
+        description: (
+          <>
+            Predictable state container for JavaScript apps. Redux helps manage application state with a single source of
+            truth and enables powerful debugging capabilities.
+          </>
+        ),
+        images: [],
+      },
+      {
+        title: "Vue.js & Vuex",
+        description: (
+          <>
+            Progressive JavaScript framework for building user interfaces. Vue.js offers an approachable, versatile, and
+            performant framework with Vuex for state management.
+          </>
+        ),
+        images: [],
+      },
+      {
+        title: "Frontend Libraries & Frameworks",
+        description: (
+          <>
+            Material-UI (MUI), Ant Design, Bootstrap, Tailwind CSS. Experienced in using popular UI component libraries
+            and utility-first CSS frameworks to build responsive and accessible interfaces.
+          </>
+        ),
+        images: [],
+      },
+      {
+        title: "Styling & CSS",
+        description: (
+          <>
+            SASS/SCSS, styled-components, Responsive Design. Skilled in CSS preprocessors, CSS-in-JS solutions, and
+            creating mobile-first, responsive layouts that work across all devices.
+          </>
+        ),
+        images: [],
       },
       {
         title: "Node.js",
@@ -185,34 +231,68 @@ const about = {
             servers, web apps, command line tools and scripts.
           </>
         ),
-        // optional: leave the array empty if you don't want to display images
-        images: [
-          // {
-          //   src: "/images/projects/project-01/cover-04.jpg",
-          //   alt: "Project image",
-          //   width: 16,
-          //   height: 9,
-          // },
-        ],
+        images: [],
       },
       {
-        title: "Next.js",
+        title: "Express.js",
         description: (
           <>
-            Built on a foundation of fast, production-grade tooling. Powered By. React The library for web and native
-            user interfaces.{" "}
+            Fast, unopinionated, minimalist web framework for Node.js. Express.js simplifies building robust RESTful APIs
+            and web applications with a rich ecosystem of middleware.
           </>
         ),
-        // optional: leave the array empty if you don't want to display images
-        images: [
-          // {
-          //   src: "/images/projects/project-01/cover-04.jpg",
-          //   alt: "Project image",
-          //   width: 16,
-          //   height: 9,
-          // },
-        ],
+        images: [],
       },
+      {
+        title: "APIs & Backend",
+        description: (
+          <>
+            RESTful APIs, GraphQL, WebRTC, API design principles. Experienced in designing and implementing various API
+            architectures, real-time communication protocols, and following best practices for scalable backend systems.
+          </>
+        ),
+        images: [],
+      },
+      {
+        title: "Authentication & Security",
+        description: (
+          <>
+            Auth flow (OAuth, JWT). Skilled in implementing secure authentication mechanisms, OAuth 2.0 flows, and
+            JSON Web Tokens for stateless authentication in modern web applications.
+          </>
+        ),
+        images: [],
+      },
+      {
+        title: "Build Tools & Bundlers",
+        description: (
+          <>
+            Webpack, Babel, Vite. Experienced in modern build tooling for bundling, transpiling, and optimizing
+            JavaScript applications for production with fast development experiences.
+          </>
+        ),
+        images: [],
+      },
+      {
+        title: "Package Managers & DevOps",
+        description: (
+          <>
+            npm, yarn, Docker, Git. Proficient in package management, containerization with Docker, and version control
+            with Git for collaborative development workflows.
+          </>
+        ),
+        images: [],
+      },
+      // {
+      //   title: "AJAX & Asynchronous Programming",
+      //   description: (
+      //     <>
+      //       AJAX (Asynchronous JavaScript and XML) for creating dynamic, interactive web applications. Skilled in
+      //       handling asynchronous operations, promises, and async/await patterns.
+      //     </>
+      //   ),
+      //   images: [],
+      // },
     ],
   },
 };
