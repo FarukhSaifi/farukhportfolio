@@ -37,7 +37,7 @@ export default function Work() {
   let allProjects = getPosts(["src", "app", "work", "projects"]);
 
   return (
-    <Flex fillWidth maxWidth="m" direction="column">
+    <Flex fillWidth maxWidth="l" direction="column">
       <script
         type="application/ld+json"
         suppressHydrationWarning

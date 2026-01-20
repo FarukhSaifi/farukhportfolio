@@ -1,0 +1,119 @@
+---
+title: "CityPulseApp - React Native Event Discovery App"
+publishedAt: "2025-01-23"
+summary: "A modern React Native mobile application for discovering and managing local events. Built with Expo, featuring event discovery via Ticketmaster API, user authentication, favorites management, biometric authentication, multi-language support, and offline capabilities."
+images:
+  - "/images/projects/project-01/cover-01.jpg"
+team:
+  - name: "Farukh Saifi"
+    role: "Software Engineer"
+    avatar: "/images/avatar.jpg"
+    linkedIn: "https://www.linkedin.com/in/farukh-saifi"
+link: "https://github.com/FarukhSaifi/CityPulseApp"
+---
+
+## Overview
+
+CityPulseApp is a comprehensive React Native mobile application built with Expo SDK 53 for discovering and managing local events. The app features a clean, modular architecture with local storage persistence, making it fully functional offline. It demonstrates expertise in mobile development, API integration, state management, and internationalization.
+
+## Key Features
+
+- **Event Discovery**: Search and browse local events using Ticketmaster Discovery API v2
+- **User Authentication**: Secure login and signup system with local user management
+- **Favorites Management**: Save and organize favorite events with local persistence using AsyncStorage
+- **Biometric Authentication**: Support for Face ID, Touch ID (iOS), and Fingerprint (Android)
+- **Multi-language Support**: English and Arabic interface with full RTL layout support
+- **Theme System**: Light and dark mode with dynamic switching
+- **Offline Capability**: Full functionality without internet connection using AsyncStorage
+- **Responsive Design**: Optimized for various screen sizes and orientations
+- **Error Handling**: Comprehensive error management with user-friendly alerts
+- **Firebase Ready**: Infrastructure prepared for cloud backend integration
+
+## Technologies Used
+
+- **Framework**: React Native with Expo SDK 53
+- **Navigation**: React Navigation (Stack + Bottom Tabs)
+- **State Management**: React Context API
+- **Local Storage**: AsyncStorage for data persistence
+- **Internationalization**: i18n-js with expo-localization
+- **UI Components**: Expo Vector Icons, LinearGradient
+- **Maps**: React Native Maps integration
+- **Animations**: React Native Reanimated
+- **API Integration**: Ticketmaster Discovery API v2
+
+## Technical Highlights
+
+- **Bridge Pattern Architecture**: Clean separation of business logic from UI components
+- **Service Layer**: Modular API integration and data management
+- **Intelligent Caching**: 5-minute cache duration for API responses
+- **Retry Mechanism**: 3 attempts with 10-second timeout handling
+- **Pagination Support**: Efficient handling of large event datasets
+- **RTL Support**: Automatic layout direction handling for Arabic
+- **Biometric Security**: Secure storage using device secure enclave
+- **Error Boundaries**: Comprehensive error handling system with user feedback
+
+## Architecture
+
+The app follows a well-organized structure:
+
+- **Bridge Pattern**: Business logic separated from UI components
+- **Service Layer**: API integration and data management
+- **Custom Hooks**: Reusable logic for components
+- **Context Providers**: AppContext, ErrorContext, ThemeContext
+- **Modular Components**: Reusable UI components with consistent styling
+- **Utility Services**: Validation, error handling, and utility functions
+
+## Key Screens
+
+- **HomeScreen**: Main event discovery with search and filtering
+- **EventDetailsScreen**: Comprehensive event information
+- **FavoritesScreen**: Saved events management
+- **ProfileScreen**: User profile with biometric settings
+- **Login/Signup Screens**: Secure authentication flow
+- **SplashScreen**: App loading and initialization
+
+## Challenges and Solutions
+
+### Challenge 1: Offline Functionality
+**Problem**: Ensuring full app functionality without internet connection  
+**Solution**: Implemented AsyncStorage for local persistence of user data, favorites, and preferences. Created intelligent caching system for API responses.
+
+### Challenge 2: Multi-language Support
+**Problem**: Supporting both English and Arabic with RTL layout  
+**Solution**: Integrated i18n-js with expo-localization for dynamic language switching. Implemented automatic RTL layout direction handling.
+
+### Challenge 3: API Rate Limiting
+**Problem**: Managing Ticketmaster API rate limits and errors  
+**Solution**: Implemented retry mechanism (3 attempts), timeout handling (10 seconds), and intelligent caching to minimize API calls.
+
+### Challenge 4: State Management
+**Problem**: Managing complex app state across multiple screens  
+**Solution**: Used React Context API for global state management, avoiding prop drilling while keeping the architecture lightweight.
+
+## Real-World Applications
+
+This project demonstrates practical mobile development skills applicable to:
+
+- **Event Management Platforms**: Similar apps for concerts, conferences, sports events
+- **Location-Based Services**: Apps requiring geospatial data and maps
+- **Offline-First Applications**: Apps that need to work without constant internet
+- **Multi-language Apps**: International applications requiring localization
+- **Biometric Security**: Apps requiring secure authentication
+
+## Outcome
+
+CityPulseApp successfully demonstrates:
+
+- Proficiency in React Native and Expo development
+- Understanding of mobile app architecture patterns
+- API integration and data management skills
+- Internationalization and localization expertise
+- Offline-first development approach
+- Security implementation (biometric authentication)
+- User experience design for mobile platforms
+
+The project showcases full-stack mobile development capabilities, from UI/UX design to backend integration, making it a comprehensive portfolio piece for mobile development roles.
+
+## Repository
+
+[View on GitHub](https://github.com/FarukhSaifi/CityPulseApp)
