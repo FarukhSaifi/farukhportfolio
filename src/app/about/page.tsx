@@ -111,7 +111,7 @@ export default function About() {
               .map((item) => item.link),
             worksFor: {
               "@type": "Organization",
-              name: about.work.experiences[0].company || "",
+              name: about.work.experiences[0]?.company || "",
             },
           }),
         }}
