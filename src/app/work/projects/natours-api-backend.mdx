@@ -1,0 +1,160 @@
+---
+title: "Natours API - RESTful Tour Booking Backend"
+publishedAt: "2025-01-21"
+summary: "A comprehensive RESTful API backend for a tour booking application. Built with Node.js, Express, and MongoDB, featuring user authentication, tour management, booking system, payment integration, and advanced filtering capabilities."
+images:
+  - "/images/projects/project-01/cover-01.jpg"
+team:
+  - name: "Farukh Saifi"
+    role: "Software Engineer"
+    avatar: "/images/avatar.jpg"
+    linkedIn: "https://www.linkedin.com/in/farukh-saifi"
+link: "https://github.com/FarukhSaifi/Natours-API"
+---
+
+## Overview
+
+Natours API is a production-ready RESTful API backend for a tour booking platform. Built following industry best practices, it demonstrates expertise in backend development, database design, authentication, and API architecture. The API supports comprehensive tour management, user authentication, booking operations, and payment processing.
+
+## Key Features
+
+- **RESTful API Design**: Clean, well-structured REST endpoints following best practices
+- **User Authentication**: Secure JWT-based authentication with password encryption
+- **Tour Management**: CRUD operations for tours with rich metadata
+- **Booking System**: Complete booking workflow with availability management
+- **Payment Integration**: Secure payment processing integration
+- **Advanced Filtering**: Complex query filtering, sorting, and pagination
+- **Geospatial Features**: Location-based queries using MongoDB geospatial indexes
+- **Data Validation**: Comprehensive input validation and sanitization
+- **Error Handling**: Robust error handling with meaningful error messages
+- **Security**: Protection against common vulnerabilities (XSS, NoSQL injection, etc.)
+- **Performance**: Optimized queries with indexing and aggregation pipelines
+
+## Technologies Used
+
+- **Runtime**: Node.js
+- **Framework**: Express.js
+- **Database**: MongoDB with Mongoose ODM
+- **Authentication**: JWT (JSON Web Tokens)
+- **Password Hashing**: bcrypt
+- **Validation**: Joi or express-validator
+- **Security**: helmet, express-rate-limit, express-mongo-sanitize
+- **Geospatial**: MongoDB geospatial queries
+- **File Upload**: multer for image uploads
+- **Email**: Nodemailer for email notifications
+
+## Technical Highlights
+
+- **MVC Architecture**: Clean separation of concerns with Models, Views (API responses), and Controllers
+- **Middleware Stack**: Custom middleware for authentication, error handling, and request processing
+- **Database Design**: Optimized schema design with proper indexing
+- **API Versioning**: Support for API versioning for backward compatibility
+- **Documentation**: Comprehensive API documentation
+- **Error Handling**: Centralized error handling with custom error classes
+- **Security Best Practices**: Protection against common web vulnerabilities
+- **Performance Optimization**: Query optimization, caching strategies, and efficient data loading
+
+## API Endpoints
+
+### Authentication
+- `POST /api/v1/users/signup` - User registration
+- `POST /api/v1/users/login` - User login
+- `POST /api/v1/users/forgotPassword` - Password reset request
+- `PATCH /api/v1/users/resetPassword/:token` - Password reset
+
+### Tours
+- `GET /api/v1/tours` - Get all tours with filtering, sorting, pagination
+- `GET /api/v1/tours/:id` - Get single tour
+- `POST /api/v1/tours` - Create tour (admin only)
+- `PATCH /api/v1/tours/:id` - Update tour (admin only)
+- `DELETE /api/v1/tours/:id` - Delete tour (admin only)
+
+### Bookings
+- `GET /api/v1/bookings` - Get all bookings
+- `POST /api/v1/bookings` - Create booking
+- `GET /api/v1/bookings/:id` - Get single booking
+- `PATCH /api/v1/bookings/:id` - Update booking
+- `DELETE /api/v1/bookings/:id` - Cancel booking
+
+### Reviews
+- `GET /api/v1/reviews` - Get all reviews
+- `POST /api/v1/reviews` - Create review
+- `GET /api/v1/reviews/:id` - Get single review
+- `PATCH /api/v1/reviews/:id` - Update review
+- `DELETE /api/v1/reviews/:id` - Delete review
+
+## Architecture
+
+The API follows a scalable architecture:
+
+- **Layered Architecture**: Separation of routes, controllers, services, and models
+- **Middleware Chain**: Request processing through authentication, validation, and error handling
+- **Database Layer**: Mongoose models with schema validation
+- **Business Logic**: Service layer for complex business operations
+- **Error Handling**: Global error handler with proper HTTP status codes
+- **Security Layer**: Multiple security middleware for protection
+
+## Advanced Features
+
+### Geospatial Queries
+- Find tours within a certain distance from a location
+- Calculate distances between locations
+- Location-based tour recommendations
+
+### Aggregation Pipeline
+- Complex data aggregation for statistics
+- Tour ratings calculation
+- Revenue and booking analytics
+- Monthly tour statistics
+
+### Filtering and Sorting
+- Filter by price range, difficulty, duration
+- Sort by price, ratings, popularity
+- Pagination with limit and skip
+- Field limiting for optimized responses
+
+## Challenges and Solutions
+
+### Challenge 1: Complex Query Building
+**Problem**: Building flexible queries with multiple filters, sorting, and pagination  
+**Solution**: Implemented query builder pattern that constructs MongoDB queries dynamically based on request parameters. Added support for advanced filtering, sorting, and field selection.
+
+### Challenge 2: Geospatial Data
+**Problem**: Efficiently querying tours based on geographic location  
+**Solution**: Used MongoDB geospatial indexes and queries to find tours within specified distances. Implemented efficient distance calculations using geospatial operators.
+
+### Challenge 3: Security
+**Problem**: Protecting against common web vulnerabilities  
+**Solution**: Implemented multiple security layers including helmet for HTTP headers, express-rate-limit for DDoS protection, express-mongo-sanitize for NoSQL injection prevention, and parameter validation.
+
+### Challenge 4: Performance
+**Problem**: Handling large datasets efficiently  
+**Solution**: Implemented database indexing on frequently queried fields, used aggregation pipelines for complex queries, and added pagination to limit response sizes.
+
+## Real-World Applications
+
+This API demonstrates skills applicable to:
+
+- **E-commerce Backends**: Similar structure for product management
+- **Booking Platforms**: Hotels, flights, events booking systems
+- **Location-Based Services**: Apps requiring geospatial queries
+- **SaaS Platforms**: Multi-tenant applications with user management
+- **Enterprise APIs**: Large-scale API development
+
+## Outcome
+
+Natours API successfully demonstrates:
+
+- Proficiency in Node.js and Express.js backend development
+- Understanding of RESTful API design principles
+- Database design and optimization skills
+- Security implementation and best practices
+- Authentication and authorization patterns
+- Performance optimization techniques
+- API documentation and testing
+
+The project showcases production-ready backend development skills, making it an excellent portfolio piece for backend or full-stack developer roles.
+
+## Repository
+
+[View on GitHub](https://github.com/FarukhSaifi/Natours-API)
