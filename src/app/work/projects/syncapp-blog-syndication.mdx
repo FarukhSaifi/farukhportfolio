@@ -1,0 +1,140 @@
+---
+title: "SyncApp - Multi-Platform Blog Syndication Platform"
+publishedAt: "2026-01-22"
+summary: "A full-stack blog posts syndication platform that allows writers to publish content to multiple platforms simultaneously. Built with React, Node.js, Express, and MongoDB, featuring rich text editing, Markdown support, and integrations with Medium, DEV.to, and WordPress."
+images:
+  - "/images/projects/project-01/cover-02.jpg"
+team:
+  - name: "Farukh Saifi"
+    role: "Software Engineer"
+    avatar: "/images/avatar.jpg"
+    linkedIn: "https://www.linkedin.com/in/farukh-saifi"
+link: "https://github.com/FarukhSaifi/SyncApp"
+---
+
+## Overview
+
+SyncApp is a comprehensive blog syndication platform that solves the problem of content creators needing to publish the same content across multiple platforms. Built with modern web technologies, it enables writers to create content once and publish to Medium, DEV.to, WordPress, and export as MDX files for static site generators.
+
+## Key Features
+
+- **Rich Text Editor**: React Quill integration for WYSIWYG content creation
+- **Markdown Support**: Full Markdown editing with live preview
+- **Multi-Platform Publishing**: Publish to Medium, DEV.to, and WordPress simultaneously
+- **MDX Export**: Export posts as MDX files for static site generators
+- **Tagging System**: Organize content with tags and categories
+- **Cover Images**: Upload and manage cover images for posts
+- **Canonical URLs**: SEO-friendly canonical URL management
+- **Role-Based Authentication**: Secure user authentication with JWT
+- **Encrypted Credentials**: Secure storage of platform API credentials
+- **Dark Mode**: Beautiful dark mode with responsive design
+- **Real-time Preview**: Live preview of formatted content
+
+## Technologies Used
+
+### Frontend
+- **React 18**: Modern React with hooks and functional components
+- **Vite**: Lightning-fast build tool and dev server
+- **React Router v6**: Client-side routing
+- **Tailwind CSS**: Utility-first CSS framework
+- **React Quill**: Rich text editor component
+- **React Markdown**: Markdown rendering and preview
+
+### Backend
+- **Node.js**: Server-side JavaScript runtime
+- **Express.js**: Web application framework
+- **MongoDB**: NoSQL database with Mongoose ODM
+- **JWT**: JSON Web Tokens for authentication
+- **Joi**: Schema validation library
+- **bcrypt**: Password hashing
+- **External APIs**: Medium, DEV.to, WordPress API integrations
+
+## Technical Highlights
+
+- **RESTful API Design**: Clean, well-structured API endpoints
+- **Data Validation**: Comprehensive input validation using Joi
+- **Secure Authentication**: JWT-based authentication with encrypted password storage
+- **API Integration**: Seamless integration with multiple blogging platforms
+- **Error Handling**: Robust error handling and user feedback
+- **Responsive Design**: Mobile-first responsive design
+- **Performance Optimization**: Optimized rendering and API calls
+- **Code Organization**: Modular architecture with separation of concerns
+
+## Architecture
+
+The application follows a clean architecture pattern:
+
+- **Frontend**: React SPA with Vite for fast development and builds
+- **Backend**: RESTful API with Express.js
+- **Database**: MongoDB for flexible document storage
+- **Authentication**: JWT tokens for stateless authentication
+- **Validation**: Server-side validation with Joi schemas
+- **Security**: Encrypted storage of platform credentials
+
+## Key Functionalities
+
+### Content Creation
+- Rich text editor with formatting options
+- Markdown editor with live preview
+- Image upload and management
+- Tag and category assignment
+- SEO metadata configuration
+
+### Publishing Workflow
+1. Create content in editor
+2. Preview formatted output
+3. Select target platforms
+4. Configure platform-specific settings
+5. Publish simultaneously to all selected platforms
+6. Track publishing status
+
+### Platform Integrations
+- **Medium**: OAuth integration for publishing
+- **DEV.to**: API key-based publishing
+- **WordPress**: REST API integration
+- **MDX Export**: Static file generation for Jekyll, Gatsby, Next.js
+
+## Challenges and Solutions
+
+### Challenge 1: Multi-Platform API Integration
+**Problem**: Each platform has different API requirements and authentication methods  
+**Solution**: Created abstraction layer for platform integrations, allowing easy addition of new platforms. Implemented platform-specific adapters for Medium, DEV.to, and WordPress.
+
+### Challenge 2: Content Format Conversion
+**Problem**: Different platforms require different content formats (HTML, Markdown, etc.)  
+**Solution**: Built content transformation pipeline that converts between formats while preserving formatting and structure.
+
+### Challenge 3: Credential Security
+**Problem**: Securely storing API keys and OAuth tokens for multiple platforms  
+**Solution**: Implemented encryption for stored credentials using industry-standard encryption algorithms. Credentials are encrypted at rest and only decrypted when needed.
+
+### Challenge 4: Error Handling
+**Problem**: Handling failures when publishing to multiple platforms  
+**Solution**: Implemented transaction-like behavior with rollback capabilities. If one platform fails, others can still succeed, with detailed error reporting.
+
+## Real-World Applications
+
+This project demonstrates skills applicable to:
+
+- **Content Management Systems**: Building CMS platforms
+- **API Integration**: Working with multiple third-party APIs
+- **Content Syndication**: Cross-platform content distribution
+- **Developer Tools**: Tools that simplify developer workflows
+- **SaaS Platforms**: Software-as-a-Service applications
+
+## Outcome
+
+SyncApp successfully demonstrates:
+
+- Full-stack development capabilities (React + Node.js)
+- API integration and third-party service management
+- Secure authentication and authorization
+- Content management and transformation
+- Modern development practices and tooling
+- Problem-solving for real-world developer pain points
+
+The project showcases the ability to build complex applications that solve practical problems, integrate with multiple external services, and provide a seamless user experience.
+
+## Repository
+
+[View on GitHub](https://github.com/FarukhSaifi/SyncApp)
