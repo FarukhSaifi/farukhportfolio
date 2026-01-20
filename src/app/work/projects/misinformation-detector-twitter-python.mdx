@@ -1,0 +1,105 @@
+---
+title: "Misinformation Detector on Twitter - Python NLP Project"
+publishedAt: "2018-12-26"
+summary: "A Python-based algorithm to detect fake and falsy tweets by authenticating them against Times of India news API. Uses NLP techniques including keyword matching, sentiment analysis, and XOR operations to identify contradictory information."
+images:
+  - "/images/projects/project-01/cover-01.jpg"
+team:
+  - name: "Farukh Saifi"
+    role: "Software Engineer"
+    avatar: "/images/avatar.jpg"
+    linkedIn: "https://www.linkedin.com/in/farukh-saifi"
+link: "https://github.com/FarukhSaifi/Misinformation-Detector-on-Twitter"
+---
+
+## Overview
+
+Misinformation Detector on Twitter is a Python-based algorithm designed to identify fake and misleading tweets by cross-referencing them with authenticated news sources. The project demonstrates expertise in natural language processing, sentiment analysis, and algorithmic problem-solving to combat misinformation on social media platforms.
+
+## Key Features
+
+- **News API Integration**: Authenticates tweets against Times of India news API for fact-checking
+- **Keyword Matching**: Filters tweets based on contextual similarity with reference news articles
+- **Sentiment Analysis**: Determines if tweets are negative or assertive using NLP techniques
+- **XOR Logic**: Applies logical operations to detect contradictions between tweets and verified news
+- **Configurable Similarity**: Adjustable `SimilarityDegreeValue` for keyword matching precision
+- **Misinformation Detection**: Identifies tweets that contradict verified news sources
+
+## How It Works
+
+The algorithm follows a systematic approach to detect misinformation:
+
+### Step 1: Contextual Filtering
+- Filters tweets that are out of context by matching keywords with reference news
+- Uses configurable `SimilarityDegreeValue` to determine relevance
+- Ensures only relevant tweets are analyzed
+
+### Step 2: Sentiment Analysis
+- Applies NLP functions to detect negative operations in text
+- Classifies tweets as either **Negative** or **Assertive**
+- Uses pattern recognition to identify sentiment patterns
+
+### Step 3: XOR Operation
+- Performs XOR operation between tweet sentiment and news sentiment
+- Binary classification: 0 for negative, 1 for positive
+- Detects contradictions: If tweet (0) XOR news (1) = 1, the tweet contradicts the news
+
+### Step 4: Misinformation Identification
+- Flags tweets where XOR result is 1 (contradiction detected)
+- Identifies false information that contradicts verified news sources
+- Provides actionable results for fact-checking
+
+## Technologies Used
+
+- **Python**: Core programming language
+- **NLTK (Natural Language Toolkit)**: Natural language processing and text analysis
+- **Pattern**: Advanced pattern matching and sentiment analysis
+- **News API**: Times of India API for authenticated news sources
+- **Twitter API**: For fetching and analyzing tweets
+
+## Technical Highlights
+
+- Implemented sophisticated NLP algorithms for text analysis
+- Created configurable similarity matching system
+- Developed XOR-based contradiction detection logic
+- Integrated multiple APIs for comprehensive fact-checking
+- Built scalable architecture for processing large volumes of tweets
+
+## Challenges and Solutions
+
+### Challenge 1: Contextual Relevance
+**Problem**: Filtering relevant tweets from noise  
+**Solution**: Implemented keyword matching with configurable similarity thresholds, allowing fine-tuned control over what constitutes relevant content.
+
+### Challenge 2: Sentiment Classification
+**Problem**: Accurately determining tweet sentiment  
+**Solution**: Used NLTK and Pattern libraries for advanced sentiment analysis, detecting negative operations and classifying text accurately.
+
+### Challenge 3: Contradiction Detection
+**Problem**: Identifying when tweets contradict verified news  
+**Solution**: Implemented XOR logic to mathematically detect contradictions between tweet sentiment and news sentiment.
+
+## Real-World Applications
+
+This project has practical applications in:
+
+- **Social Media Monitoring**: Automated detection of misinformation on Twitter
+- **Fact-Checking Services**: Supporting human fact-checkers with automated analysis
+- **News Verification**: Cross-referencing social media claims with verified news sources
+- **Research**: Academic research on misinformation patterns and detection methods
+
+## Outcome
+
+The Misinformation Detector successfully demonstrates:
+
+- Proficiency in Python and NLP libraries (NLTK, Pattern)
+- Understanding of sentiment analysis and text classification
+- Ability to design algorithms for real-world problems
+- Integration of multiple APIs and data sources
+- Problem-solving skills in combating misinformation
+
+This project showcases early expertise in natural language processing and algorithmic thinking, demonstrating the ability to tackle complex problems in the information verification space.
+
+## Repository
+
+[View on GitHub](https://github.com/FarukhSaifi/Misinformation-Detector-on-Twitter)
