@@ -28,14 +28,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (!code) {
       return res
         .status(HTTP_STATUS.BAD_REQUEST)
-        .json(ApiUtils.createErrorResponse("Authorization code is required", HTTP_STATUS.BAD_REQUEST));
+        .json(
+          ApiUtils.createErrorResponse("Authorization code is required", HTTP_STATUS.BAD_REQUEST),
+        );
     }
 
     // Validate input type
     if (typeof code !== "string") {
       return res
         .status(HTTP_STATUS.BAD_REQUEST)
-        .json(ApiUtils.createErrorResponse("Invalid authorization code format", HTTP_STATUS.BAD_REQUEST));
+        .json(
+          ApiUtils.createErrorResponse(
+            "Invalid authorization code format",
+            HTTP_STATUS.BAD_REQUEST,
+          ),
+        );
     }
 
     // Sanitize authorization code
@@ -68,9 +75,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       console.error("❌ Spotify token exchange failed:", errorData);
 
       return res.status(HTTP_STATUS.BAD_REQUEST).json(
-        ApiUtils.createErrorResponse("Failed to exchange authorization code", HTTP_STATUS.BAD_REQUEST, {
-          details: errorData,
-        })
+        ApiUtils.createErrorResponse(
+          "Failed to exchange authorization code",
+          HTTP_STATUS.BAD_REQUEST,
+          {
+            details: errorData,
+          },
+        ),
       );
     }
 
@@ -87,7 +98,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (!tokenData.access_token || !tokenData.refresh_token) {
       return res
         .status(HTTP_STATUS.BAD_REQUEST)
-        .json(ApiUtils.createErrorResponse("Invalid token response from Spotify", HTTP_STATUS.BAD_REQUEST));
+        .json(
+          ApiUtils.createErrorResponse(
+            "Invalid token response from Spotify",
+            HTTP_STATUS.BAD_REQUEST,
+          ),
+        );
     }
 
     // Return the tokens to the client
@@ -99,8 +115,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           expires_in: tokenData.expires_in,
           token_type: tokenData.token_type || "Bearer",
         },
-        "Tokens exchanged successfully"
-      )
+        "Tokens exchanged successfully",
+      ),
     );
   } catch (error: any) {
     // Log error for debugging

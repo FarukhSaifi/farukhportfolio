@@ -183,7 +183,10 @@ export const DatabaseSpotifyProvider: React.FC<{ children: React.ReactNode }> = 
     }
 
     // Check if token is about to expire (5 minutes buffer)
-    if (tokens.accessTokenExpiry && ClientSpotifyUtils.isTokenAboutToExpire(tokens.accessTokenExpiry, 5)) {
+    if (
+      tokens.accessTokenExpiry &&
+      ClientSpotifyUtils.isTokenAboutToExpire(tokens.accessTokenExpiry, 5)
+    ) {
       console.log("🔄 Token is about to expire, refreshing...");
       const refreshed = await refreshAccessToken();
       if (refreshed) {
@@ -208,5 +211,9 @@ export const DatabaseSpotifyProvider: React.FC<{ children: React.ReactNode }> = 
     error,
   };
 
-  return <DatabaseSpotifyContext.Provider value={contextValue}>{children}</DatabaseSpotifyContext.Provider>;
+  return (
+    <DatabaseSpotifyContext.Provider value={contextValue}>
+      {children}
+    </DatabaseSpotifyContext.Provider>
+  );
 };

@@ -1,7 +1,17 @@
 "use client";
 
-import { mailchimp } from "@/app/resources";
-import { Background, Button, Flex, Heading, Input, Text } from "@/once-ui/components";
+import { mailchimp, newsletter } from "@/resources";
+import {
+  Background,
+  Button,
+  Column,
+  Heading,
+  Input,
+  opacity,
+  Row,
+  SpacingToken,
+  Text,
+} from "@once-ui-system/core";
 import { useState } from "react";
 
 function debounce<T extends (...args: any[]) => void>(func: T, delay: number): T {
@@ -12,13 +22,7 @@ function debounce<T extends (...args: any[]) => void>(func: T, delay: number): T
   }) as T;
 }
 
-type NewsletterProps = {
-  display: boolean;
-  title: string | JSX.Element;
-  description: string | JSX.Element;
-};
-
-export const Mailchimp = ({ newsletter }: { newsletter: NewsletterProps }) => {
+export const Mailchimp: React.FC<React.ComponentProps<typeof Column>> = ({ ...flex }) => {
   const [email, setEmail] = useState<string>("");
   const [error, setError] = useState<string>("");
   const [touched, setTouched] = useState<boolean>(false);
@@ -52,29 +56,33 @@ export const Mailchimp = ({ newsletter }: { newsletter: NewsletterProps }) => {
     }
   };
 
+  if (newsletter.display === false) return null;
+
   return (
-    <Flex
-      style={{ overflow: "hidden" }}
-      position="relative"
+    <Column
+      overflow="hidden"
       fillWidth
       padding="xl"
       radius="l"
       marginBottom="m"
-      direction="column"
-      alignItems="center"
+      horizontal="center"
       align="center"
       background="surface"
-      border="neutral-medium"
+      border="neutral-alpha-weak"
+      {...flex}
     >
       <Background
+        top="0"
+        position="absolute"
         mask={{
-          cursor: mailchimp.effects.mask.cursor,
           x: mailchimp.effects.mask.x,
           y: mailchimp.effects.mask.y,
           radius: mailchimp.effects.mask.radius,
+          cursor: mailchimp.effects.mask.cursor,
         }}
         gradient={{
           display: mailchimp.effects.gradient.display,
+          opacity: mailchimp.effects.gradient.opacity as opacity,
           x: mailchimp.effects.gradient.x,
           y: mailchimp.effects.gradient.y,
           width: mailchimp.effects.gradient.width,
@@ -82,51 +90,37 @@ export const Mailchimp = ({ newsletter }: { newsletter: NewsletterProps }) => {
           tilt: mailchimp.effects.gradient.tilt,
           colorStart: mailchimp.effects.gradient.colorStart,
           colorEnd: mailchimp.effects.gradient.colorEnd,
-          opacity: mailchimp.effects.gradient.opacity as
-            | 0
-            | 10
-            | 20
-            | 30
-            | 40
-            | 50
-            | 60
-            | 70
-            | 80
-            | 90
-            | 100,
         }}
         dots={{
           display: mailchimp.effects.dots.display,
+          opacity: mailchimp.effects.dots.opacity as opacity,
+          size: mailchimp.effects.dots.size as SpacingToken,
           color: mailchimp.effects.dots.color,
-          size: mailchimp.effects.dots.size as any,
-          opacity: mailchimp.effects.dots.opacity as any,
         }}
         grid={{
           display: mailchimp.effects.grid.display,
+          opacity: mailchimp.effects.grid.opacity as opacity,
           color: mailchimp.effects.grid.color,
-          width: mailchimp.effects.grid.width as any,
-          height: mailchimp.effects.grid.height as any,
-          opacity: mailchimp.effects.grid.opacity as any,
+          width: mailchimp.effects.grid.width,
+          height: mailchimp.effects.grid.height,
         }}
         lines={{
           display: mailchimp.effects.lines.display,
-          opacity: mailchimp.effects.lines.opacity as any,
+          opacity: mailchimp.effects.lines.opacity as opacity,
+          size: mailchimp.effects.lines.size as SpacingToken,
+          thickness: mailchimp.effects.lines.thickness,
+          angle: mailchimp.effects.lines.angle,
+          color: mailchimp.effects.lines.color,
         }}
       />
-      <Heading style={{ position: "relative" }} marginBottom="s" variant="display-strong-xs">
-        {newsletter.title}
-      </Heading>
-      <Text
-        style={{
-          position: "relative",
-          maxWidth: "var(--responsive-width-xs)",
-        }}
-        wrap="balance"
-        marginBottom="l"
-        onBackground="neutral-medium"
-      >
-        {newsletter.description}
-      </Text>
+      <Column maxWidth="xs" horizontal="center">
+        <Heading marginBottom="s" variant="display-strong-xs">
+          {newsletter.title}
+        </Heading>
+        <Text wrap="balance" marginBottom="l" variant="body-default-l" onBackground="neutral-weak">
+          {newsletter.description}
+        </Text>
+      </Column>
       <form
         style={{
           width: "100%",
@@ -138,14 +132,19 @@ export const Mailchimp = ({ newsletter }: { newsletter: NewsletterProps }) => {
         id="mc-embedded-subscribe-form"
         name="mc-embedded-subscribe-form"
       >
-        <Flex id="mc_embed_signup_scroll" fillWidth maxWidth={24} gap="8">
+        <Row
+          id="mc_embed_signup_scroll"
+          fillWidth
+          maxWidth={24}
+          s={{ direction: "column" }}
+          gap="8"
+        >
           <Input
             formNoValidate
-            labelAsPlaceholder
             id="mce-EMAIL"
             name="EMAIL"
             type="email"
-            label="Email"
+            placeholder="Email"
             required
             onChange={(e) => {
               if (error) {
@@ -181,14 +180,14 @@ export const Mailchimp = ({ newsletter }: { newsletter: NewsletterProps }) => {
             />
           </div>
           <div className="clear">
-            <Flex height="48" alignItems="center">
+            <Row height="48" vertical="center">
               <Button id="mc-embedded-subscribe" value="Subscribe" size="m" fillWidth>
                 Subscribe
               </Button>
-            </Flex>
+            </Row>
           </div>
-        </Flex>
+        </Row>
       </form>
-    </Flex>
+    </Column>
   );
 };

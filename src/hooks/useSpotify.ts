@@ -1,6 +1,6 @@
 import { useDatabaseSpotify } from "@/contexts/DatabaseSpotifyContext";
 import { API_ENDPOINTS, ERROR_MESSAGES, SPOTIFY_CONFIG } from "@/lib/constants";
-import { NowPlayingPayload, UseNowPlayingReturn } from "@/lib/types";
+import { NowPlayingPayload, UseNowPlayingReturn } from "@/lib/interfaces";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 /**
@@ -91,8 +91,9 @@ export function useSpotifyNowPlaying(): UseNowPlayingReturn {
       if (retryCountRef.current < SPOTIFY_CONFIG.RETRY_CONFIG.MAX_RETRIES) {
         retryCountRef.current++;
         const delay = Math.min(
-          SPOTIFY_CONFIG.RETRY_CONFIG.BASE_DELAY * Math.pow(2, retryCountRef.current - 1),
-          SPOTIFY_CONFIG.RETRY_CONFIG.MAX_DELAY
+          SPOTIFY_CONFIG.RETRY_CONFIG.BASE_DELAY *
+            Math.pow(2, retryCountRef.current - 1),
+          SPOTIFY_CONFIG.RETRY_CONFIG.MAX_DELAY,
         );
 
         setTimeout(() => {
@@ -165,7 +166,10 @@ export function useSpotifyNowPlaying(): UseNowPlayingReturn {
     };
   }, [fetchNowPlaying, startPolling, stopPolling]);
 
-  return useMemo(() => ({ payload, loading, error }), [payload, loading, error]);
+  return useMemo(
+    () => ({ payload, loading, error }),
+    [payload, loading, error],
+  );
 }
 
 /**
@@ -223,7 +227,10 @@ export function usePublicSpotifyNowPlaying(): UseNowPlayingReturn {
     return () => clearInterval(interval);
   }, [fetchPublicNowPlaying]);
 
-  return useMemo(() => ({ payload, loading, error }), [payload, loading, error]);
+  return useMemo(
+    () => ({ payload, loading, error }),
+    [payload, loading, error],
+  );
 }
 
 /**
