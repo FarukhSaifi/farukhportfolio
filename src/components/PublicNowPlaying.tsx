@@ -1,7 +1,7 @@
 "use client";
 
 import { usePublicSpotifyNowPlaying } from "@/hooks/useSpotify";
-import { Avatar, Button, Flex, RevealFx, Spinner } from "@/once-ui/components";
+import { Avatar, Button, Flex, RevealFx, Spinner } from "@once-ui-system/core";
 import { useState } from "react";
 import MarqueeTextCSS from "./MarqueeTextCSS";
 
@@ -10,7 +10,7 @@ export default function PublicNowPlaying() {
   const [hover, setHover] = useState(false);
   if (loading) {
     return (
-      <Flex gap="s" alignItems="center">
+      <Flex gap="s" vertical="center">
         <Spinner size="s" />
       </Flex>
     );
@@ -32,11 +32,22 @@ export default function PublicNowPlaying() {
       onMouseEnter={() => setHover((prev) => !prev)}
       onMouseLeave={() => setHover((prev) => !prev)}
     >
-      <RevealFx translateY="12" delay={0.4} justifyContent="flex-start">
-        <Button id="about" data-border="rounded" href={track.songUrl || "#"} variant="secondary" size="l" arrowIcon>
-          <Flex gap="8" alignItems="center">
+      <RevealFx translateY="12" delay={0.4} horizontal="start">
+        <Button
+          id="about"
+          data-border="rounded"
+          href={track.songUrl || "#"}
+          variant="secondary"
+          size="l"
+          arrowIcon
+        >
+          <Flex gap="8" vertical="center">
             {track.imageUrl && (
-              <Avatar style={{ marginLeft: "-1.5rem", marginRight: "0.25rem" }} src={track.imageUrl} size="l" />
+              <Avatar
+                style={{ marginLeft: "-1.5rem", marginRight: "0.25rem" }}
+                src={track.imageUrl}
+                size="l"
+              />
             )}
             <MarqueeTextCSS maxWidth={180}>{track.title}</MarqueeTextCSS>
           </Flex>
@@ -58,10 +69,15 @@ export default function PublicNowPlaying() {
             padding: "12px",
           }}
         >
-          <Flex gap="12" alignItems="center">
+          <Flex gap="12" vertical="center">
             {track.imageUrl && <Avatar src={track.imageUrl} size="l" />}
             <Flex direction="column" gap="4" style={{ minWidth: 0 }}>
-              <div style={{ color: "var(--on-background-strong)", fontWeight: 600 }}>
+              <div
+                style={{
+                  color: "var(--on-background-strong)",
+                  fontWeight: 600,
+                }}
+              >
                 <MarqueeTextCSS maxWidth={200}>{track.title}</MarqueeTextCSS>
               </div>
               <div style={{ color: "var(--neutral-weak)", fontSize: 12 }}>
