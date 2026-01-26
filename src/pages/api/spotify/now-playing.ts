@@ -34,12 +34,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const { access_token, refresh_token } = tokenResult.data;
 
     // Get current playing track from Spotify API
-    const spotifyResponse = await fetch(`${SPOTIFY_CONFIG.API_BASE_URL}/me/player/currently-playing`, {
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-        "Content-Type": "application/json",
+    const spotifyResponse = await fetch(
+      `${SPOTIFY_CONFIG.API_BASE_URL}/me/player/currently-playing`,
+      {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+          "Content-Type": "application/json",
+        },
       },
-    });
+    );
 
     // Handle no content response (not playing anything)
     if (spotifyResponse.status === HTTP_STATUS.NO_CONTENT) {
@@ -47,7 +50,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         ApiUtils.createSuccessResponse({
           isPlaying: false,
           track: null,
-        })
+        }),
       );
     }
 
@@ -61,8 +64,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           .json(
             ApiUtils.createErrorResponse(
               "Refresh token not available. Please re-authenticate.",
-              HTTP_STATUS.UNAUTHORIZED
-            )
+              HTTP_STATUS.UNAUTHORIZED,
+            ),
           );
       }
 
@@ -76,12 +79,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         });
 
         // Retry with new token
-        const retryResponse = await fetch(`${SPOTIFY_CONFIG.API_BASE_URL}/me/player/currently-playing`, {
-          headers: {
-            Authorization: `Bearer ${refreshResult.access_token}`,
-            "Content-Type": "application/json",
+        const retryResponse = await fetch(
+          `${SPOTIFY_CONFIG.API_BASE_URL}/me/player/currently-playing`,
+          {
+            headers: {
+              Authorization: `Bearer ${refreshResult.access_token}`,
+              "Content-Type": "application/json",
+            },
           },
-        });
+        );
 
         if (retryResponse.ok) {
           const retryData = await retryResponse.json();
@@ -92,13 +98,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           return res
             .status(retryResponse.status)
             .json(
-              ApiUtils.createErrorResponse("Failed to get current playing track after refresh", retryResponse.status)
+              ApiUtils.createErrorResponse(
+                "Failed to get current playing track after refresh",
+                retryResponse.status,
+              ),
             );
         }
       } else {
         return res
           .status(HTTP_STATUS.UNAUTHORIZED)
-          .json(ApiUtils.createErrorResponse("Failed to refresh Spotify token", HTTP_STATUS.UNAUTHORIZED));
+          .json(
+            ApiUtils.createErrorResponse("Failed to refresh Spotify token", HTTP_STATUS.UNAUTHORIZED),
+          );
       }
     }
 
@@ -106,7 +117,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (!spotifyResponse.ok) {
       return res
         .status(spotifyResponse.status)
-        .json(ApiUtils.createErrorResponse("Failed to get current playing track from Spotify", spotifyResponse.status));
+        .json(
+          ApiUtils.createErrorResponse(
+            "Failed to get current playing track from Spotify",
+            spotifyResponse.status,
+          ),
+        );
     }
 
     // Parse successful response

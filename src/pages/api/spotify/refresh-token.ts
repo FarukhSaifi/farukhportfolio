@@ -36,7 +36,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (typeof refresh_token !== "string") {
       return res
         .status(HTTP_STATUS.BAD_REQUEST)
-        .json(ApiUtils.createErrorResponse("Invalid refresh token format", HTTP_STATUS.BAD_REQUEST));
+        .json(
+          ApiUtils.createErrorResponse("Invalid refresh token format", HTTP_STATUS.BAD_REQUEST),
+        );
     }
 
     // Sanitize refresh token
@@ -71,8 +73,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           expires_in: refreshResult.expires_in,
           token_type: refreshResult.token_type,
         },
-        "Token refreshed successfully"
-      )
+        "Token refreshed successfully",
+      ),
     );
   } catch (error: any) {
     // Log error for debugging

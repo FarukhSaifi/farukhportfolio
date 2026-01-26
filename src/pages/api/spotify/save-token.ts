@@ -29,7 +29,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (!access_token || !refresh_token) {
       return res
         .status(HTTP_STATUS.BAD_REQUEST)
-        .json(ApiUtils.createErrorResponse("Access token and refresh token are required", HTTP_STATUS.BAD_REQUEST));
+        .json(
+          ApiUtils.createErrorResponse(
+            "Access token and refresh token are required",
+            HTTP_STATUS.BAD_REQUEST,
+          ),
+        );
     }
 
     // Validate token format
@@ -63,8 +68,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         .json(
           ApiUtils.createErrorResponse(
             result.error || "Failed to save Spotify token",
-            HTTP_STATUS.INTERNAL_SERVER_ERROR
-          )
+            HTTP_STATUS.INTERNAL_SERVER_ERROR,
+          ),
         );
     }
   } catch (error: any) {
