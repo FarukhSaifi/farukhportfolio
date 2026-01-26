@@ -27,7 +27,12 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     if (!clientId) {
       return res
         .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
-        .json(ApiUtils.createErrorResponse("Spotify client ID not configured", HTTP_STATUS.INTERNAL_SERVER_ERROR));
+        .json(
+          ApiUtils.createErrorResponse(
+            "Spotify client ID not configured",
+            HTTP_STATUS.INTERNAL_SERVER_ERROR,
+          ),
+        );
     }
 
     // Get redirect URI based on environment

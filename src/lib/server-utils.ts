@@ -1,5 +1,5 @@
 import { ERROR_MESSAGES, HTTP_STATUS } from "./constants";
-import { AppError } from "./types";
+import { AppError } from "./interfaces";
 
 /**
  * Database Utilities (Server-side only)
@@ -72,7 +72,11 @@ export class ApiUtils {
    * @param {number} statusCode - HTTP status code
    * @returns {object} Standardized success response
    */
-  static createSuccessResponse<T>(data: T, message: string = "Success", statusCode: number = HTTP_STATUS.OK): any {
+  static createSuccessResponse<T>(
+    data: T,
+    message: string = "Success",
+    statusCode: number = HTTP_STATUS.OK,
+  ): any {
     return { success: true, data, message, statusCode };
   }
 
@@ -87,7 +91,7 @@ export class ApiUtils {
   static createErrorResponse(
     message: string,
     statusCode: number = HTTP_STATUS.INTERNAL_SERVER_ERROR,
-    details?: any
+    details?: any,
   ): any {
     return { success: false, error: message, statusCode, data: details };
   }
@@ -165,7 +169,10 @@ export class SpotifyUtils {
    * @param {number} bufferMinutes - Buffer time in minutes
    * @returns {boolean} True if token is about to expire
    */
-  static isTokenAboutToExpire(expiry: number, bufferMinutes: number = 5): boolean {
+  static isTokenAboutToExpire(
+    expiry: number,
+    bufferMinutes: number = 5,
+  ): boolean {
     const bufferMs = bufferMinutes * 60 * 1000;
     return Date.now() >= expiry - bufferMs;
   }
@@ -208,7 +215,7 @@ export class SpotifyUtils {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
           Authorization: `Basic ${Buffer.from(
-            `${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`
+            `${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`,
           ).toString("base64")}`,
         },
         body: new URLSearchParams({
@@ -218,7 +225,11 @@ export class SpotifyUtils {
       });
 
       if (!response.ok) {
-        console.error("Failed to refresh Spotify token:", response.status, response.statusText);
+        console.error(
+          "Failed to refresh Spotify token:",
+          response.status,
+          response.statusText,
+        );
         return null;
       }
 
@@ -288,7 +299,10 @@ export class PerformanceUtils {
    * @param {number} delay - Delay in milliseconds
    * @returns {Function} Debounced function
    */
-  static debounce<T extends (...args: any[]) => any>(func: T, delay: number): (...args: Parameters<T>) => void {
+  static debounce<T extends (...args: any[]) => any>(
+    func: T,
+    delay: number,
+  ): (...args: Parameters<T>) => void {
     let timeoutId: NodeJS.Timeout;
     return (...args: Parameters<T>) => {
       clearTimeout(timeoutId);
@@ -303,7 +317,10 @@ export class PerformanceUtils {
    * @param {number} limit - Time limit in milliseconds
    * @returns {Function} Throttled function
    */
-  static throttle<T extends (...args: any[]) => any>(func: T, limit: number): (...args: Parameters<T>) => void {
+  static throttle<T extends (...args: any[]) => any>(
+    func: T,
+    limit: number,
+  ): (...args: Parameters<T>) => void {
     let inThrottle: boolean;
     return (...args: Parameters<T>) => {
       if (!inThrottle) {
@@ -411,12 +428,16 @@ export class DateUtils {
 
     if (includeRelative) {
       const now = new Date();
-      const diffInSeconds = Math.floor((now.getTime() - dateObj.getTime()) / 1000);
+      const diffInSeconds = Math.floor(
+        (now.getTime() - dateObj.getTime()) / 1000,
+      );
 
       if (diffInSeconds < 60) return "just now";
       if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
-      if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
-      if (diffInSeconds < 2592000) return `${Math.floor(diffInSeconds / 86400)}d ago`;
+      if (diffInSeconds < 86400)
+        return `${Math.floor(diffInSeconds / 3600)}h ago`;
+      if (diffInSeconds < 2592000)
+        return `${Math.floor(diffInSeconds / 86400)}d ago`;
     }
 
     return dateObj.toLocaleDateString("en-US", {
@@ -478,7 +499,8 @@ export class StringUtils {
    * @returns {string} Random ID string
    */
   static generateId(length = 8): string {
-    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    const chars =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     let result = "";
     for (let i = 0; i < length; i++) {
       result += chars.charAt(Math.floor(Math.random() * chars.length));

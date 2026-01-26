@@ -1,125 +1,254 @@
-# **Build your portfolio with Once UI's Magic Portfolio**
+# Farukh Saifi's Portfolio
+
+A modern, clean, and professional portfolio website built with Next.js 16 and Once UI. This portfolio showcases my work as a Software Engineer specializing in MERN Stack development, featuring an MDX-based content system for projects and blog posts, an about/CV page, and a gallery.
 
 View the [demo here](https://farukh.me)
 
-![Farukh Portfolio](public/images/cover.png)
+![Farukh Saifi Portfolio](public/images/cover.png)
 
-# **Getting started**
+## 🚀 Getting Started
 
-Magic Portfolio was built with [Once UI](https://once-ui.com) for [Next.js](https://nextjs.org). It requires Node.js v18.17+.
+### Prerequisites
+
+- Node.js v18.17 or higher
+- npm or yarn package manager
+
+### Installation
 
 **1. Clone the repository**
 
-```
-git clone https://github.com/once-ui-system/magic-portfolio.git
+```bash
+git clone https://github.com/FarukhSaifi/magic-portfolio.git
+cd magic-portfolio
 ```
 
 **2. Install dependencies**
 
-```
+```bash
 npm install
 ```
 
-**3. Run dev server**
+**3. Run development server**
 
-```
+```bash
 npm run dev
 ```
 
-**4. Edit config**
+Open [http://localhost:3000](http://localhost:3000) in your browser to see the result.
+
+**4. Configure your portfolio**
+
+Edit the configuration file:
 
 ```
-src/app/resources/config
+src/resources/once-ui.config.ts
 ```
 
-**5. Edit content**
+**5. Update your content**
+
+Edit your personal information, work experience, and projects:
 
 ```
-src/app/resources/content
+src/resources/content.tsx
 ```
 
-**6. Create blog posts / projects**
+**6. Add blog posts and projects**
 
-```
-Add a new .mdx file to src/app/blog/posts or src/app/work/projects
-```
+Create new `.mdx` files in:
 
-# **Cleanup & Maintenance**
+- Blog posts: `src/app/blog/posts/`
+- Projects: `src/app/work/projects/`
 
-Magic Portfolio includes comprehensive cleanup scripts to help maintain your project:
+## ✨ Features
 
-## **Quick Cleanup Commands**
+### 🔍 SEO Optimized
 
-```bash
-# Clean build artifacts and cache
-npm run clean
+- Automatic Open Graph and X (Twitter) image generation with `next/og`
+- Automatic schema.org structured data and metadata generation
+- Optimized for search engines
 
-# Full cleanup including node_modules
-npm run clean:all
+### 🎯 Design
 
-# Reinstall dependencies
-npm run reinstall
+- **Responsive Layout**: Optimized for all screen sizes (mobile, tablet, desktop)
+- **Timeless Design**: Clean, professional aesthetic without heavy animations
+- **Customizable**: Endless customization options through [data attributes](https://once-ui.com/docs/theming)
+- **Dark Mode**: Built-in theme support
 
-# Complete fresh start
-npm run fresh
-```
+### 📝 Content Management
 
-## **Advanced Cleanup Scripts**
+- **MDX Support**: Write blog posts and project descriptions in MDX format
+- **Conditional Rendering**: Show/hide sections based on content configuration
+- **Flexible Pages**: Enable or disable pages for blog, work, gallery, and about/CV
+- **Social Links**: Automatically generate and display social media links
+- **Password Protection**: Set up password protection for specific routes
 
-For more control, use the dedicated cleanup scripts:
-
-```bash
-# Unix/macOS/Linux
-./scripts/cleanup.sh [option]
-
-# Windows
-scripts\cleanup.bat [option]
-```
-
-**Options:**
-- `clean` - Default cleanup (build artifacts + cache)
-- `full` - Full cleanup including dependencies
-- `reinstall` - Clean modules and reinstall
-- `fresh` - Complete project reset
-
-See [scripts/README.md](scripts/README.md) for detailed documentation.
-
-# **Features**
-
-## **Once UI**
-
-- All tokens, components & features of [Once UI](https://once-ui.com)
-
-## **SEO**
-
-- Automatic open-graph and X image generation with next/og
-- Automatic schema and metadata generation based on the content file
-
-## **Design**
-
-- Responsive layout optimized for all screen sizes
-- Timeless design without heavy animations and motion
-- Endless customization options through [data attributes](https://once-ui.com/docs/theming)
-
-## **Content**
-
-- Render sections conditionally based on the content file
-- Enable or disable pages for blog, work, gallery and about / CV
-- Generate and display social links automatically
-- Set up password protection for URLs
-
-## **Localization**
+### 🌐 Internationalization
 
 - A localized version of Magic Portfolio is available with the next-intl library
 - To use localization, switch to the 'i18n' branch
 
-# **Authors**
+## 🛠️ Tech Stack
 
-Connect with us on Threads or LinkedIn.
+- **Framework**: [Next.js 16](https://nextjs.org) with App Router
+- **UI Library**: [Once UI System](https://once-ui.com) - Core components
+- **Styling**: SCSS with CSS Modules
+- **Content**: MDX for blog posts and projects
+- **Language**: TypeScript
+- **Deployment**: Optimized for Vercel
 
-**Farukh Saifi :** [Threads](https://www.threads.net/@FarukhSaifi), [LinkedIn](https://www.linkedin.com/in/farukh-saifi/)
+## 📦 Project Structure
 
-<!-- # **Deploy with Vercel** -->
+```
+src/
+├── app/                    # Next.js App Router pages
+│   ├── about/             # About page
+│   ├── blog/               # Blog pages and posts
+│   ├── work/               # Work/projects pages
+│   ├── gallery/            # Gallery page
+│   └── layout.tsx          # Root layout
+├── components/              # React components
+│   ├── about/              # About page components
+│   ├── blog/               # Blog components
+│   └── work/               # Work/projects components
+├── resources/               # Configuration and content
+│   ├── content.tsx         # Personal info, work experience, etc.
+│   ├── once-ui.config.ts   # UI configuration
+│   └── icons.ts            # Custom icons
+└── types/                  # TypeScript type definitions
+```
 
-<!--
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fonce-ui-system%2Fmagic-portfolio&project-name=portfolio&repository-name=portfolio&redirect-url=https%3A%2F%2Fgithub.com%2Fonce-ui-system%2Fmagic-portfolio&demo-title=Magic%20Portfolio&demo-description=Showcase%20your%20designers%20or%20developer%20portfolio&demo-url=https%3A%2F%2Fdemo.magic-portfolio.com&demo-image=%2F%2Fraw.githubusercontent.com%2Fonce-ui-system%2Fmagic-portfolio%2Fmain%2Fpublic%2Fimages%2Fcover.png) -->
+## 🎯 Key Sections
+
+### Home Page
+
+- Hero section with introduction
+- Featured projects
+- Latest blog posts
+- Newsletter subscription
+
+### About Page
+
+- Personal introduction
+- Work experience timeline
+- Education background
+- Technical skills showcase
+- Social media links
+
+### Work/Projects Page
+
+- Grid layout showcasing projects (2x2 on desktop)
+- Project case studies with MDX content
+- Links to GitHub repositories
+- Project images and descriptions
+
+### Blog Page
+
+- MDX-based blog posts
+- SEO optimized
+- Share functionality
+- Reading time estimates
+
+### Gallery Page
+
+- Photo gallery with masonry layout
+- Horizontal and vertical image support
+
+## 🔧 Configuration
+
+### Environment Variables
+
+Create a `.env.local` file:
+
+```env
+PAGE_ACCESS_PASSWORD=your-password-here
+```
+
+### Customization
+
+1. **Personal Information**: Edit `src/resources/content.tsx`
+2. **UI Theme**: Edit `src/resources/once-ui.config.ts`
+3. **Styling**: Modify SCSS files in `src/components/`
+4. **Icons**: Add custom icons in `src/resources/icons.ts`
+
+## 📝 Adding Content
+
+### Create a Blog Post
+
+Create a new `.mdx` file in `src/app/blog/posts/`:
+
+```mdx
+---
+title: "My Blog Post Title"
+publishedAt: "2025-01-20"
+summary: "A brief summary of the post"
+---
+
+## Introduction
+
+Your blog post content here...
+```
+
+### Create a Project
+
+Create a new `.mdx` file in `src/app/work/projects/`:
+
+```mdx
+---
+title: "Project Name"
+publishedAt: "2025-01-20"
+summary: "Project description"
+images:
+  - "/images/projects/project-01/cover-01.jpg"
+team:
+  - name: "Your Name"
+    role: "Role"
+    avatar: "/images/avatar.jpg"
+link: "https://github.com/yourusername/project"
+---
+
+## Overview
+
+Your project description...
+```
+
+## 🚀 Deployment
+
+### Deploy to Vercel
+
+The easiest way to deploy is using [Vercel](https://vercel.com):
+
+1. Push your code to GitHub
+2. Import your repository in Vercel
+3. Vercel will automatically detect Next.js and deploy
+
+### Build for Production
+
+```bash
+npm run build
+npm start
+```
+
+## 📄 License
+
+This project is open source and available under the [MIT License](LICENSE).
+
+## 👨‍💻 About Me
+
+**Farukh Saifi** - Software Engineer | MERN Stack
+
+- 📍 Location: New Delhi, India
+- 💼 Currently: Senior Consultant at Xebia India
+- 🌐 Website: [www.farukh.me](https://www.farukh.me)
+- 📧 Email: <farook1x95@gmail.com>
+- 💻 GitHub: [@FarukhSaifi](https://github.com/FarukhSaifi)
+- 💼 LinkedIn: [farukh-saifi](https://www.linkedin.com/in/farukh-saifi)
+
+## 🙏 Acknowledgments
+
+- Built with [Once UI System](https://once-ui.com)
+- Portfolio template by [Once UI System](https://github.com/once-ui-system/magic-portfolio)
+- Powered by [Next.js](https://nextjs.org)
+
+---
+
+**Built with ❤️ by Farukh Saifi**

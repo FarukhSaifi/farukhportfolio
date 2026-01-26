@@ -1,38 +1,35 @@
-"use client";
-
-import { baseURL } from "@/app/resources";
-import { about, person, social } from "@/app/resources/content";
-import NowPlaying from "@/components/NowPlaying";
 import TableOfContents from "@/components/about/TableOfContents";
+import SpotifyStatusNotification from "@/components/about/SpotifyStatusNotification";
 import styles from "@/components/about/about.module.scss";
-import { Avatar, Button, Flex, Heading, Icon, IconButton, RevealFx, SmartImage, Tag, Text } from "@/once-ui/components";
-import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { about, baseURL, person, social } from "@/resources";
+import {
+  Avatar,
+  Button,
+  Column,
+  Flex,
+  Heading,
+  Icon,
+  IconButton,
+  Media,
+  Meta,
+  Row,
+  Schema,
+  Tag,
+  Text,
+} from "@once-ui-system/core";
+import React from "react";
 
-interface ImageType {
-  src: string;
-  alt: string;
-  width: number;
-  height: number;
+export async function generateMetadata() {
+  return Meta.generate({
+    title: about.title,
+    description: about.description,
+    baseURL: baseURL,
+    image: `/api/og/generate?title=${encodeURIComponent(about.title)}`,
+    path: about.path,
+  });
 }
 
 export default function About() {
-  const searchParams = useSearchParams();
-  const [spotifyStatus, setSpotifyStatus] = useState<string | null>(null);
-  const [refreshToken, setRefreshToken] = useState<string | null>(null);
-
-  useEffect(() => {
-    const spotify = searchParams?.get("spotify");
-    const token = searchParams?.get("token");
-
-    if (spotify) {
-      setSpotifyStatus(spotify);
-      if (token) {
-        setRefreshToken(token);
-      }
-    }
-  }, [searchParams]);
-
   const structure = [
     {
       title: about.intro.title,
@@ -56,368 +53,345 @@ export default function About() {
     },
   ];
   return (
-    <Flex maxWidth="m" direction="column">
-      {/* Spotify Authorization Status */}
-      {spotifyStatus && (
-        <Flex
-          direction="column"
-          fillWidth
-          gap="m"
-          marginBottom="xl"
-          padding="l"
-          background={spotifyStatus === "success" ? "brand-alpha-weak" : "accent-alpha-weak"}
-          border={spotifyStatus === "success" ? "brand-alpha-medium" : "accent-alpha-medium"}
-          radius="m"
-        >
-          <Heading variant="heading-strong-m" onBackground={spotifyStatus === "success" ? "brand-weak" : "accent-weak"}>
-            {spotifyStatus === "success" ? "✅ Spotify Connected!" : "❌ Spotify Error"}
-          </Heading>
-
-          {spotifyStatus === "success" && refreshToken && (
-            <>
-              <Text variant="body-default-m" onBackground="brand-weak">
-                Your Spotify account has been successfully connected!
-              </Text>
-              <Text variant="body-default-s" onBackground="brand-weak">
-                <strong>Refresh Token:</strong> {refreshToken}
-              </Text>
-              <Text variant="body-default-xs" onBackground="brand-weak">
-                Copy this token and add it to your .env.local file as SPOTIFY_REFRESH_TOKEN
-              </Text>
-            </>
-          )}
-
-          {spotifyStatus === "error" && (
-            <Text variant="body-default-m" onBackground="accent-weak">
-              There was an error connecting to Spotify. Please try again.
-            </Text>
-          )}
-        </Flex>
-      )}
-      <script
-        type="application/ld+json"
-        suppressHydrationWarning
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Person",
-            name: person.name,
-            jobTitle: person.role,
-            description: about.intro.description,
-            url: `https://${baseURL}/about`,
-            image: `${baseURL}/images/${person.avatar}`,
-            sameAs: social
-              .filter((item) => item.link && !item.link.startsWith("mailto:")) // Filter out empty links and email links
-              .map((item) => item.link),
-            worksFor: {
-              "@type": "Organization",
-              name: about.work.experiences[0]?.company || "",
-            },
-          }),
+    <Column maxWidth="m">
+      <SpotifyStatusNotification />
+      <Schema
+        as="webPage"
+        baseURL={baseURL}
+        title={about.title}
+        description={about.description}
+        path={about.path}
+        image={`/api/og/generate?title=${encodeURIComponent(about.title)}`}
+        author={{
+          name: person.name,
+          url: `${baseURL}${about.path}`,
+          image: `${baseURL}${person.avatar}`,
         }}
       />
       {about.tableOfContent.display && (
-        <Flex
-          style={{ left: "0", top: "50%", transform: "translateY(-50%)" }}
+        <Column
+          left="0"
+          style={{ top: "50%", transform: "translateY(-50%)" }}
           position="fixed"
           paddingLeft="24"
           gap="32"
-          direction="column"
-          hide="s"
+          s={{ hide: true }}
         >
           <TableOfContents structure={structure} about={about} />
-        </Flex>
+        </Column>
       )}
-      <Flex fillWidth mobileDirection="column" justifyContent="center">
+      <Row fillWidth s={{ direction: "column" }} horizontal="center">
         {about.avatar.display && (
-          <Flex
+          <Column
             className={styles.avatar}
+            top="64"
+            fitHeight
+            position="sticky"
+            s={{ position: "relative", style: { top: "auto" } }}
+            xs={{ style: { top: "auto" } }}
             minWidth="160"
             paddingX="l"
             paddingBottom="xl"
             gap="m"
             flex={3}
-            direction="column"
-            alignItems="center"
+            horizontal="center"
           >
-            <RevealFx translateY="4" delay={0.1} justifyContent="center" alignItems="center">
-              <Avatar src={person.avatar} size="xl" />
-            </RevealFx>
-            <RevealFx translateY="8" delay={0.2} justifyContent="center" alignItems="center">
-              <Flex gap="8" alignItems="center">
-                <Icon onBackground="accent-weak" name="globe" />
-                {person.location}
-              </Flex>
-            </RevealFx>
-            {/* Spotify Now Playing Banner */}
-            <RevealFx translateY="12" delay={0.3} justifyContent="center" alignItems="center">
-              <NowPlaying />
-            </RevealFx>
-            {person.languages.length > 0 && (
-              <RevealFx translateY="16" delay={0.4} justifyContent="center" alignItems="center">
-                <Flex wrap gap="8">
-                  {person.languages.map((language, index) => (
-                    <Tag key={index} size="l">
-                      {language}
-                    </Tag>
-                  ))}
-                </Flex>
-              </RevealFx>
+            <Avatar src={person.avatar} size="xl" />
+            <Row gap="8" vertical="center">
+              <Icon onBackground="accent-weak" name="globe" />
+              {person.location}
+            </Row>
+            {person.languages && person.languages.length > 0 && (
+              <Row wrap gap="8">
+                {person.languages.map((language, index) => (
+                  <Tag key={index} size="l">
+                    {language}
+                  </Tag>
+                ))}
+              </Row>
             )}
-          </Flex>
+          </Column>
         )}
-        <Flex className={styles.blockAlign} flex={9} maxWidth={40} direction="column">
-          <Flex
+        <Column className={styles.blockAlign} flex={9} maxWidth={40}>
+          <Column
             id={about.intro.title}
             fillWidth
             minHeight="160"
-            direction="column"
-            justifyContent="center"
+            vertical="center"
             marginBottom="32"
           >
             {about.calendar.display && (
-              <RevealFx
-                translateY="4"
-                delay={0.1}
-                justifyContent="flex-start"
-                alignItems="center"
-                className="s-justify-center"
+              <Row
+                fitWidth
+                border="brand-alpha-medium"
+                background="brand-alpha-weak"
+                radius="full"
+                padding="4"
+                gap="8"
+                marginBottom="m"
+                vertical="center"
+                className={styles.blockAlign}
+                style={{
+                  backdropFilter: "blur(var(--static-space-1))",
+                }}
               >
-                <Flex
-                  fitWidth
-                  border="brand-alpha-medium"
-                  className={styles.blockAlign}
-                  style={{
-                    backdropFilter: "blur(var(--static-space-1))",
-                  }}
-                  background="brand-alpha-weak"
-                  radius="full"
-                  padding="4"
-                  gap="8"
-                  marginBottom="m"
-                  alignItems="center"
-                >
-                  <Flex paddingLeft="12">
-                    <Icon name="calendar" onBackground="brand-weak" />
-                  </Flex>
-                  <Flex paddingX="8">Schedule a call</Flex>
-                  <IconButton
-                    href={about.calendar.link}
-                    data-border="rounded"
-                    variant="secondary"
-                    icon="chevronRight"
-                  />
-                </Flex>
-              </RevealFx>
+                <Icon
+                  paddingLeft="12"
+                  name="calendar"
+                  onBackground="brand-weak"
+                />
+                <Row paddingX="8">Schedule a call</Row>
+                <IconButton
+                  href={about.calendar.link}
+                  data-border="rounded"
+                  variant="secondary"
+                  icon="chevronRight"
+                />
+              </Row>
             )}
-            <RevealFx
-              translateY="8"
-              delay={0.2}
-              justifyContent="flex-start"
-              alignItems="center"
-              className="s-justify-center"
+            <Heading className={styles.textAlign} variant="display-strong-xl">
+              {person.name}
+            </Heading>
+            <Text
+              className={styles.textAlign}
+              variant="display-default-xs"
+              onBackground="neutral-weak"
             >
-              <Heading className={styles.textAlign} variant="display-strong-xl">
-                {person.name}
-              </Heading>
-            </RevealFx>
-            <RevealFx
-              translateY="12"
-              delay={0.3}
-              justifyContent="flex-start"
-              alignItems="center"
-              className="s-justify-center"
-            >
-              <Text className={styles.textAlign} variant="display-default-xs" onBackground="neutral-weak">
-                {person.role}
-              </Text>
-            </RevealFx>
+              {person.role}
+            </Text>
             {social.length > 0 && (
-              <RevealFx
-                translateY="16"
-                delay={0.4}
-                justifyContent="flex-start"
-                alignItems="center"
-                className="s-justify-center"
+              <Row
+                className={styles.blockAlign}
+                paddingTop="20"
+                paddingBottom="8"
+                gap="8"
+                wrap
+                horizontal="center"
+                fitWidth
+                data-border="rounded"
               >
-                <Flex className={styles.blockAlign} paddingTop="20" paddingBottom="8" gap="8" wrap>
-                  {social.map(
+                {social
+                  .filter((item) => item.essential)
+                  .map(
                     (item) =>
                       item.link && (
-                        <Button
-                          key={item.name}
-                          href={item.link}
-                          prefixIcon={item.icon}
-                          label={item.name}
-                          size="s"
-                          variant="secondary"
-                        />
-                      )
+                        <React.Fragment key={item.name}>
+                          <Row s={{ hide: true }}>
+                            <Button
+                              key={item.name}
+                              href={item.link}
+                              prefixIcon={item.icon}
+                              label={item.name}
+                              size="s"
+                              weight="default"
+                              variant="secondary"
+                            />
+                          </Row>
+                          <Row hide s={{ hide: false }}>
+                            <IconButton
+                              size="l"
+                              key={`${item.name}-icon`}
+                              href={item.link}
+                              icon={item.icon}
+                              variant="secondary"
+                            />
+                          </Row>
+                        </React.Fragment>
+                      ),
                   )}
-                </Flex>
-              </RevealFx>
+              </Row>
             )}
-          </Flex>
+          </Column>
 
           {about.intro.display && (
-            <RevealFx
-              translateY="20"
-              delay={0.5}
-              justifyContent="flex-start"
-              alignItems="center"
-              className="s-justify-center"
+            <Column
+              textVariant="body-default-l"
+              fillWidth
+              gap="m"
+              marginBottom="xl"
             >
-              <Flex direction="column" textVariant="body-default-l" fillWidth gap="m" marginBottom="xl">
-                {about.intro.description}
-              </Flex>
-            </RevealFx>
+              {about.intro.description}
+            </Column>
           )}
 
           {about.work.display && (
             <>
-              <RevealFx translateY="24" delay={0.6} justifyContent="flex-start" alignItems="center">
-                <Heading as="h2" id={about.work.title} variant="display-strong-s" marginBottom="m">
-                  {about.work.title}
-                </Heading>
-              </RevealFx>
-              <Flex direction="column" fillWidth gap="l" marginBottom="40">
+              <Heading
+                as="h2"
+                id={about.work.title}
+                variant="display-strong-s"
+                marginBottom="m"
+              >
+                {about.work.title}
+              </Heading>
+              <Column fillWidth gap="l" marginBottom="40">
                 {about.work.experiences.map((experience, index) => (
-                  <RevealFx
+                  <Column
                     key={`${experience.company}-${experience.role}-${index}`}
-                    translateY={28}
-                    delay={0.7 + index * 0.1}
-                    justifyContent="flex-start"
-                    alignItems="center"
+                    fillWidth
                   >
-                    <Flex fillWidth direction="column">
-                      <Flex fillWidth justifyContent="space-between" alignItems="flex-end" marginBottom="4">
-                        <Text id={experience.company} variant="heading-strong-l">
-                          {experience.company}
-                        </Text>
-                        <Text variant="heading-default-xs" onBackground="neutral-weak">
-                          {experience.timeframe}
-                        </Text>
-                      </Flex>
-                      <Text variant="body-default-s" onBackground="brand-weak" marginBottom="m">
-                        {experience.role}
+                    <Row
+                      fillWidth
+                      horizontal="between"
+                      vertical="end"
+                      marginBottom="4"
+                    >
+                      <Text id={experience.company} variant="heading-strong-l">
+                        {experience.company}
                       </Text>
-                      <Flex as="ul" direction="column" gap="16">
-                        {experience.achievements.map((achievement: JSX.Element, index: number) => (
-                          <Text as="li" variant="body-default-m" key={`${experience.company}-${index}`}>
+                      <Text
+                        variant="heading-default-xs"
+                        onBackground="neutral-weak"
+                      >
+                        {experience.timeframe}
+                      </Text>
+                    </Row>
+                    <Text
+                      variant="body-default-s"
+                      onBackground="brand-weak"
+                      marginBottom="m"
+                    >
+                      {experience.role}
+                    </Text>
+                    <Column as="ul" gap="16">
+                      {experience.achievements.map(
+                        (achievement: React.ReactNode, index: number) => (
+                          <Text
+                            as="li"
+                            variant="body-default-m"
+                            key={`${experience.company}-${index}`}
+                          >
                             {achievement}
                           </Text>
-                        ))}
-                      </Flex>
-                      {experience.images.length > 0 && (
-                        <Flex fillWidth paddingTop="m" paddingLeft="40" wrap>
-                          {experience.images.map((image: ImageType, index) => (
-                            <Flex
-                              key={index}
-                              border="neutral-medium"
-                              radius="m"
-                              minWidth={image.width}
-                              height={image.height}
-                            >
-                              <SmartImage
-                                enlarge
-                                radius="m"
-                                sizes={image.width.toString()}
-                                alt={image.alt}
-                                src={image.src}
-                              />
-                            </Flex>
-                          ))}
-                        </Flex>
+                        ),
                       )}
-                    </Flex>
-                  </RevealFx>
+                    </Column>
+                    {experience.images && experience.images.length > 0 && (
+                      <Row
+                        fillWidth
+                        paddingTop="m"
+                        paddingLeft="40"
+                        gap="12"
+                        wrap
+                      >
+                        {experience.images.map((image, index) => (
+                          <Row
+                            key={index}
+                            border="neutral-medium"
+                            radius="m"
+                            minWidth={image.width}
+                            height={image.height}
+                          >
+                            <Media
+                              enlarge
+                              priority={index < 2}
+                              radius="m"
+                              sizes={image.width.toString()}
+                              alt={image.alt || "Experience image"}
+                              src={image.src}
+                            />
+                          </Row>
+                        ))}
+                      </Row>
+                    )}
+                  </Column>
                 ))}
-              </Flex>
+              </Column>
             </>
           )}
 
           {about.studies.display && (
             <>
-              <RevealFx translateY="32" delay={0.8} justifyContent="flex-start" alignItems="center">
-                <Heading as="h2" id={about.studies.title} variant="display-strong-s" marginBottom="m">
-                  {about.studies.title}
-                </Heading>
-              </RevealFx>
-              <Flex direction="column" fillWidth gap="l" marginBottom="40">
+              <Heading
+                as="h2"
+                id={about.studies.title}
+                variant="display-strong-s"
+                marginBottom="m"
+              >
+                {about.studies.title}
+              </Heading>
+              <Column fillWidth gap="l" marginBottom="40">
                 {about.studies.institutions.map((institution, index) => (
-                  <RevealFx
+                  <Column
                     key={`${institution.name}-${index}`}
-                    translateY={36}
-                    delay={0.9 + index * 0.1}
-                    justifyContent="flex-start"
-                    alignItems="center"
-                    className="s-justify-center"
+                    fillWidth
+                    gap="4"
                   >
-                    <Flex fillWidth gap="4" direction="column">
-                      <Text id={institution.name} variant="heading-strong-l">
-                        {institution.name}
-                      </Text>
-                      <Text variant="heading-default-xs" onBackground="neutral-weak">
-                        {institution.description}
-                      </Text>
-                    </Flex>
-                  </RevealFx>
+                    <Text id={institution.name} variant="heading-strong-l">
+                      {institution.name}
+                    </Text>
+                    <Text
+                      variant="heading-default-xs"
+                      onBackground="neutral-weak"
+                    >
+                      {institution.description}
+                    </Text>
+                  </Column>
                 ))}
-              </Flex>
+              </Column>
             </>
           )}
 
           {about.technical.display && (
             <>
-              <RevealFx translateY="40" delay={1.0} justifyContent="flex-start" alignItems="center">
-                <Heading as="h2" id={about.technical.title} variant="display-strong-s" marginBottom="40">
-                  {about.technical.title}
-                </Heading>
-              </RevealFx>
-              <Flex direction="column" fillWidth gap="l">
+              <Heading
+                as="h2"
+                id={about.technical.title}
+                variant="display-strong-s"
+                marginBottom="40"
+              >
+                {about.technical.title}
+              </Heading>
+              <Column fillWidth gap="l">
                 {about.technical.skills.map((skill, index) => (
-                  <RevealFx
-                    key={`${skill}-${index}`}
-                    translateY={44}
-                    delay={1.1 + index * 0.1}
-                    justifyContent="flex-start"
-                    alignItems="center"
-                    className="s-justify-center"
-                  >
-                    <Flex fillWidth gap="4" direction="column">
-                      <Text variant="heading-strong-l">{skill.title}</Text>
-                      <Text variant="body-default-m" onBackground="neutral-weak">
-                        {skill.description}
-                      </Text>
-                      {skill.images && skill.images.length > 0 && (
-                        <Flex fillWidth paddingTop="m" gap="12" wrap>
-                          {skill.images.map((image: ImageType, index) => (
-                            <Flex
-                              key={index}
-                              border="neutral-medium"
+                  <Column key={`${skill}-${index}`} fillWidth gap="4">
+                    <Text id={skill.title} variant="heading-strong-l">
+                      {skill.title}
+                    </Text>
+                    <Text variant="body-default-m" onBackground="neutral-weak">
+                      {skill.description}
+                    </Text>
+                    {skill.tags && skill.tags.length > 0 && (
+                      <Row wrap gap="8" paddingTop="8">
+                        {skill.tags.map((tag, tagIndex) => (
+                          <Tag
+                            key={`${skill.title}-${tagIndex}`}
+                            size="l"
+                            prefixIcon={tag.icon}
+                          >
+                            {tag.name}
+                          </Tag>
+                        ))}
+                      </Row>
+                    )}
+                    {skill.images && skill.images.length > 0 && (
+                      <Row fillWidth paddingTop="m" gap="12" wrap>
+                        {skill.images.map((image, index) => (
+                          <Row
+                            key={index}
+                            border="neutral-medium"
+                            radius="m"
+                            minWidth={image.width}
+                            height={image.height}
+                          >
+                            <Media
+                              enlarge
                               radius="m"
-                              minWidth={image.width}
-                              height={image.height}
-                            >
-                              <SmartImage
-                                enlarge
-                                radius="m"
-                                sizes={image.width.toString()}
-                                alt={image.alt}
-                                src={image.src}
-                              />
-                            </Flex>
-                          ))}
-                        </Flex>
-                      )}
-                    </Flex>
-                  </RevealFx>
+                              sizes={image.width.toString()}
+                              alt={image.alt}
+                              src={image.src}
+                            />
+                          </Row>
+                        ))}
+                      </Row>
+                    )}
+                  </Column>
                 ))}
-              </Flex>
+              </Column>
             </>
           )}
-        </Flex>
-      </Flex>
-    </Flex>
+        </Column>
+      </Row>
+    </Column>
   );
 }

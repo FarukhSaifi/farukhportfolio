@@ -39,15 +39,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
               last_updated: result.data.last_updated,
             },
           },
-          "Spotify token retrieved successfully"
-        )
+          "Spotify token retrieved successfully",
+        ),
       );
     }
 
     // Handle no token found
     return res
       .status(HTTP_STATUS.NOT_FOUND)
-      .json(ApiUtils.createErrorResponse(result.error || "No active Spotify token found", HTTP_STATUS.NOT_FOUND));
+      .json(
+        ApiUtils.createErrorResponse(
+          result.error || "No active Spotify token found",
+          HTTP_STATUS.NOT_FOUND,
+        ),
+      );
   } catch (error: any) {
     // Log error for debugging
     console.error("Error getting Spotify token:", error);
