@@ -1,12 +1,12 @@
-import TableOfContents from "@/components/about/TableOfContents";
-import SpotifyStatusNotification from "@/components/about/SpotifyStatusNotification";
 import styles from "@/components/about/about.module.scss";
+import SpotifyStatusNotification from "@/components/about/SpotifyStatusNotification";
+import TableOfContents from "@/components/about/TableOfContents";
+import NowPlaying from "@/components/NowPlaying";
 import { about, baseURL, person, social } from "@/resources";
 import {
   Avatar,
   Button,
   Column,
-  Flex,
   Heading,
   Icon,
   IconButton,
@@ -15,7 +15,7 @@ import {
   Row,
   Schema,
   Tag,
-  Text,
+  Text
 } from "@once-ui-system/core";
 import React from "react";
 
@@ -110,6 +110,8 @@ export default function About() {
                 ))}
               </Row>
             )}
+            {/* Spotify Now Playing Banner */}
+            <NowPlaying />
           </Column>
         )}
         <Column className={styles.blockAlign} flex={9} maxWidth={40}>
