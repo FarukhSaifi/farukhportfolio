@@ -1,6 +1,7 @@
 "use client";
 
 import { DatabaseSpotifyProvider } from "@/contexts/DatabaseSpotifyContext";
+import { APP_CONFIG } from "@/lib/constants";
 import {
   BorderStyle,
   ChartMode,
@@ -55,7 +56,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
             </ToastProvider>
           </DataThemeProvider>
         </DatabaseSpotifyProvider>
-        <Analytics />
+        {APP_CONFIG.IS_PRODUCTION && <Analytics />}
         {/* <ConditionalToastContainer /> */}
       </ThemeProvider>
     </LayoutProvider>

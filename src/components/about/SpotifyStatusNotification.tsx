@@ -1,10 +1,9 @@
 "use client";
 
 import {
-  Column,
   Flex,
   Heading,
-  Text,
+  Text
 } from "@once-ui-system/core";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";

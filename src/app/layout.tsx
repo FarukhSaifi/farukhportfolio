@@ -45,6 +45,7 @@ export default async function RootLayout({
       )}
     >
       <head>
+        <meta name="mobile-web-app-capable" content="yes" />
         <script
           id="theme-init"
           dangerouslySetInnerHTML={{
