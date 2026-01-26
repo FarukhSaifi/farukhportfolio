@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-export default function ScrollToHash() {
+export function ScrollToHash() {
   const router = useRouter();
 
   useEffect(() => {

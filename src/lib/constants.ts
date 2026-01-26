@@ -16,7 +16,11 @@ export const API_ENDPOINTS = {
 
 // Spotify Configuration
 export const SPOTIFY_CONFIG = {
-  SCOPES: ["user-read-currently-playing", "user-read-playback-state", "user-read-recently-played"],
+  SCOPES: [
+    "user-read-currently-playing",
+    "user-read-playback-state",
+    "user-read-recently-played",
+  ],
   API_BASE_URL: "https://api.spotify.com/v1",
   AUTH_BASE_URL: "https://accounts.spotify.com/api/token",
   AUTHORIZE_URL: "https://accounts.spotify.com/authorize",
@@ -52,7 +56,7 @@ export const DATABASE_CONFIG = {
 
 // Application Configuration
 export const APP_CONFIG = {
-  NAME: "Farukh's Portfolio",
+  NAME: "Farukh Saifi Portfolio",
   VERSION: "1.5.0",
   BASE_URL: process.env.NEXT_PUBLIC_BASE_URL || "localhost:3000",
   ENVIRONMENT: process.env.NODE_ENV || "development",

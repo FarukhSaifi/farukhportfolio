@@ -1,7 +1,7 @@
 import { HTTP_STATUS, SPOTIFY_CONFIG } from "@/lib/constants";
 import { databaseService } from "@/lib/database";
+import { PublicNowPlayingPayload } from "@/lib/interfaces";
 import { ApiUtils, SpotifyUtils } from "@/lib/server-utils";
-import { PublicNowPlayingPayload } from "@/lib/types";
 import { NextApiRequest, NextApiResponse } from "next";
 
 /**
@@ -35,12 +35,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const { access_token } = tokenResult.data;
 
     // Get current playing track from Spotify API
-    const spotifyResponse = await fetch(`${SPOTIFY_CONFIG.API_BASE_URL}/me/player/currently-playing`, {
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-        "Content-Type": "application/json",
+    const spotifyResponse = await fetch(
+      `${SPOTIFY_CONFIG.API_BASE_URL}/me/player/currently-playing`,
+      {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+          "Content-Type": "application/json",
+        },
       },
-    });
+    );
 
     // Handle no content response (not playing anything)
     if (spotifyResponse.status === HTTP_STATUS.NO_CONTENT) {
@@ -57,7 +60,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (!spotifyResponse.ok) {
       return res
         .status(spotifyResponse.status)
-        .json(ApiUtils.createErrorResponse("Failed to get current playing track from Spotify", spotifyResponse.status));
+        .json(
+          ApiUtils.createErrorResponse(
+            "Failed to get current playing track from Spotify",
+            spotifyResponse.status,
+          ),
+        );
     }
 
     // Parse successful response

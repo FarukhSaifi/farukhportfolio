@@ -2,7 +2,14 @@
 
 import { useDatabaseSpotify } from "@/contexts/DatabaseSpotifyContext";
 import { useToast } from "@/hooks/useToast";
-import { Button, Card, Flex, Heading, Spinner, Text } from "@/once-ui/components";
+import {
+  Button,
+  Card,
+  Flex,
+  Heading,
+  Spinner,
+  Text,
+} from "@once-ui-system/core";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 export default function SpotifySuccessPage() {
@@ -52,7 +59,10 @@ export default function SpotifySuccessPage() {
           updateAccessToken(tokenData.access_token, tokenData.expires_in);
 
           // Show success toast
-          success("Spotify Connected!", "Your tokens have been saved to the database and are now publicly accessible.");
+          success(
+            "Spotify Connected!",
+            "Your tokens have been saved to the database and are now publicly accessible.",
+          );
         } else {
           const saveError = await saveResponse.json();
           const errorMessage = `Failed to save token: ${saveError.error}`;
@@ -82,16 +92,23 @@ export default function SpotifySuccessPage() {
     return (
       <Flex
         direction="column"
-        alignItems="center"
-        justifyContent="center"
         fillWidth
-        style={{ minHeight: "100vh" }}
+        style={{
+          minHeight: "100vh",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
         gap="xl"
         padding="xl"
         background="neutral-weak"
       >
-        <Card padding="xl" background="neutral-strong" border="neutral-medium" radius="m">
-          <Flex direction="column" gap="l" alignItems="center">
+        <Card
+          padding="xl"
+          background="neutral-strong"
+          border="neutral-medium"
+          radius="m"
+        >
+          <Flex direction="column" gap="l" style={{ alignItems: "center" }}>
             <Spinner size="l" />
             <Heading variant="display-strong-l">🔄 Processing...</Heading>
             <Text variant="body-default-l" onBackground="neutral-weak">
@@ -107,20 +124,32 @@ export default function SpotifySuccessPage() {
     return (
       <Flex
         direction="column"
-        alignItems="center"
-        justifyContent="center"
         fillWidth
-        style={{ minHeight: "100vh" }}
+        style={{
+          minHeight: "100vh",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
         gap="xl"
         padding="xl"
         background="neutral-weak"
       >
-        <Card padding="xl" background="accent-alpha-weak" border="accent-alpha-medium" radius="m" maxWidth="l">
-          <Flex direction="column" gap="l" alignItems="center">
+        <Card
+          padding="xl"
+          background="accent-alpha-weak"
+          border="accent-alpha-medium"
+          radius="m"
+          maxWidth="l"
+        >
+          <Flex direction="column" gap="l" style={{ alignItems: "center" }}>
             <Heading variant="display-strong-m" onBackground="accent-weak">
               ❌ Error
             </Heading>
-            <Text variant="body-default-m" onBackground="accent-weak" style={{ textAlign: "center" }}>
+            <Text
+              variant="body-default-m"
+              onBackground="accent-weak"
+              style={{ textAlign: "center" }}
+            >
               {error}
             </Text>
             <Button href="/spotify-auth" variant="primary" size="l">
@@ -133,16 +162,21 @@ export default function SpotifySuccessPage() {
   }
 
   return (
-    <Flex justifyContent="center" alignItems="center" style={{ minHeight: "50vh" }}>
+    <Flex
+      style={{ minHeight: "50vh", justifyContent: "center", alignItems: "center" }}
+    >
       <Card padding="xl" maxWidth="m">
-        <Flex direction="column" gap="l" alignItems="center">
+        <Flex direction="column" gap="l" style={{ alignItems: "center" }}>
           <Heading variant="display-strong-m">🎉 Spotify Connected!</Heading>
 
-          <Flex direction="column" gap="m" alignItems="center">
-            <Text variant="body-default-m">Your Spotify account has been successfully connected!</Text>
+          <Flex direction="column" gap="m" style={{ alignItems: "center" }}>
+            <Text variant="body-default-m">
+              Your Spotify account has been successfully connected!
+            </Text>
 
             <Text variant="body-default-s" onBackground="neutral-weak">
-              Your tokens have been saved to the database and are now publicly accessible.
+              Your tokens have been saved to the database and are now publicly
+              accessible.
             </Text>
           </Flex>
 

@@ -1,5 +1,5 @@
 import { ERROR_MESSAGES, HTTP_STATUS } from "./constants";
-import { AppError } from "./types";
+import { AppError } from "./interfaces";
 
 /**
  * API Utilities (Client-side)
@@ -30,7 +30,10 @@ export class ApiUtils {
    * @param {number} statusCode - HTTP status code
    * @returns {object} Standardized error response
    */
-  static createErrorResponse(error: string, statusCode: number = HTTP_STATUS.INTERNAL_SERVER_ERROR) {
+  static createErrorResponse(
+    error: string,
+    statusCode: number = HTTP_STATUS.INTERNAL_SERVER_ERROR,
+  ) {
     return {
       success: false,
       error,
@@ -86,7 +89,10 @@ export class ClientSpotifyUtils {
    * @param {number} bufferMinutes - Buffer time in minutes
    * @returns {boolean} True if token is about to expire
    */
-  static isTokenAboutToExpire(expiry: number, bufferMinutes: number = 5): boolean {
+  static isTokenAboutToExpire(
+    expiry: number,
+    bufferMinutes: number = 5,
+  ): boolean {
     const bufferMs = bufferMinutes * 60 * 1000;
     return Date.now() >= expiry - bufferMs;
   }
