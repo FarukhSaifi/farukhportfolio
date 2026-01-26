@@ -1,6 +1,14 @@
 "use client";
 
-import { AvatarGroup, Carousel, Flex, Heading, SmartLink, Text } from "@/once-ui/components";
+import {
+  AvatarGroup,
+  Carousel,
+  Column,
+  Flex,
+  Heading,
+  SmartLink,
+  Text,
+} from "@once-ui-system/core";
 
 interface ProjectCardProps {
   href: string;
@@ -21,18 +29,21 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   description,
   avatars,
   link,
+  priority,
 }) => {
   return (
-    <Flex fillWidth gap="m" direction="column">
+    <Column fillWidth gap="m">
       <Carousel
+        priority={priority}
         sizes="(max-width: 960px) 100vw, 960px"
-        images={images.map((image) => ({
-          src: image,
+        items={images.map((image, index) => ({
+          slide: image,
           alt: title,
+          priority: priority && index === 0,
         }))}
       />
       <Flex
-        mobileDirection="column"
+        s={{ direction: "column" }}
         fillWidth
         paddingX="s"
         paddingTop="12"
@@ -47,15 +58,22 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
           </Flex>
         )}
         {(avatars?.length > 0 || description?.trim() || content?.trim()) && (
-          <Flex flex={7} direction="column" gap="16">
-            {avatars?.length > 0 && <AvatarGroup avatars={avatars} size="m" reverse />}
+          <Column flex={7} gap="16">
+            {avatars?.length > 0 && (
+              <AvatarGroup avatars={avatars} size="m" reverse />
+            )}
             {description?.trim() && (
-              <Text wrap="balance" variant="body-default-s" onBackground="neutral-weak">
+              <Text
+                wrap="balance"
+                variant="body-default-s"
+                onBackground="neutral-weak"
+              >
                 {description}
               </Text>
             )}
             <Flex gap="24" wrap>
-              {content?.trim() && (
+              {/* FULL CONTENT LINK IS DISABLED FOR NOW */}
+              {/* {content?.trim() && (
                 <SmartLink
                   suffixIcon="arrowRight"
                   style={{ margin: "0", width: "fit-content" }}
@@ -63,7 +81,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                 >
                   <Text variant="body-default-s">Read case study</Text>
                 </SmartLink>
-              )}
+              )} */}
               {link && (
                 <SmartLink
                   suffixIcon="arrowUpRightFromSquare"
@@ -74,9 +92,9 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                 </SmartLink>
               )}
             </Flex>
-          </Flex>
+          </Column>
         )}
       </Flex>
-    </Flex>
+    </Column>
   );
 };
