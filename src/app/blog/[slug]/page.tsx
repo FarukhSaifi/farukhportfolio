@@ -1,6 +1,7 @@
 import { CustomMDX, ScrollToHash } from "@/components";
 import { Posts } from "@/components/blog/Posts";
 import { ShareSection } from "@/components/blog/ShareSection";
+import { API_ENDPOINTS, ROUTES } from "@/lib/constants";
 import { about, baseURL, blog, person } from "@/resources";
 import { formatDate } from "@/utils/formatDate";
 import { getPosts } from "@/utils/utils";
@@ -47,7 +48,8 @@ export async function generateMetadata({
     description: post.metadata.summary,
     baseURL: baseURL,
     image:
-      post.metadata.image || `/api/og/generate?title=${post.metadata.title}`,
+      post.metadata.image ||
+      `${API_ENDPOINTS.OG_GENERATE}?title=${post.metadata.title}`,
     path: `${blog.path}/${post.slug}`,
   });
 }
@@ -96,7 +98,7 @@ export default async function Blog({
             dateModified={post.metadata.publishedAt}
             image={
               post.metadata.image ||
-              `/api/og/generate?title=${encodeURIComponent(post.metadata.title)}`
+              `${API_ENDPOINTS.OG_GENERATE}?title=${encodeURIComponent(post.metadata.title)}`
             }
             author={{
               name: person.name,
@@ -105,7 +107,7 @@ export default async function Blog({
             }}
           />
           <Column maxWidth="s" gap="16" horizontal="center" align="center">
-            <SmartLink href="/blog">
+            <SmartLink href={ROUTES.BLOG}>
               <Text variant="label-strong-m">Blog</Text>
             </SmartLink>
             <Text

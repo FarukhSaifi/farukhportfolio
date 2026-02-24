@@ -2,6 +2,7 @@ import styles from "@/components/about/about.module.scss";
 import SpotifyStatusNotification from "@/components/about/SpotifyStatusNotification";
 import TableOfContents from "@/components/about/TableOfContents";
 import NowPlaying from "@/components/NowPlaying";
+import { API_ENDPOINTS } from "@/lib/constants";
 import { about, baseURL, person, social } from "@/resources";
 import {
   Avatar,
@@ -15,7 +16,7 @@ import {
   Row,
   Schema,
   Tag,
-  Text
+  Text,
 } from "@once-ui-system/core";
 import React from "react";
 
@@ -24,7 +25,7 @@ export async function generateMetadata() {
     title: about.title,
     description: about.description,
     baseURL: baseURL,
-    image: `/api/og/generate?title=${encodeURIComponent(about.title)}`,
+    image: `${API_ENDPOINTS.OG_GENERATE}?title=${encodeURIComponent(about.title)}`,
     path: about.path,
   });
 }
@@ -61,7 +62,7 @@ export default function About() {
         title={about.title}
         description={about.description}
         path={about.path}
-        image={`/api/og/generate?title=${encodeURIComponent(about.title)}`}
+        image={`${API_ENDPOINTS.OG_GENERATE}?title=${encodeURIComponent(about.title)}`}
         author={{
           name: person.name,
           url: `${baseURL}${about.path}`,

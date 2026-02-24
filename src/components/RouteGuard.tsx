@@ -1,6 +1,7 @@
 "use client";
 
 import NotFound from "@/app/not-found";
+import { API_ENDPOINTS, ROUTES, ROUTE_GUARD_UI } from "@/lib/constants";
 import { protectedRoutes, routes } from "@/resources";
 import {
   Button,
@@ -41,12 +42,12 @@ const RouteGuard: React.FC<RouteGuardProps> = ({ children }) => {
         }
 
         const dynamicRoutes = [
-          "/blog",
-          "/work",
-          "/admin",
-          "/spotify-auth",
-          "/spotify-success",
-          "/spotify-test",
+          ROUTES.BLOG,
+          ROUTES.WORK,
+          ROUTES.ADMIN,
+          ROUTES.SPOTIFY_AUTH,
+          ROUTES.SPOTIFY_SUCCESS,
+          ROUTES.SPOTIFY_TEST,
         ] as const;
         for (const route of dynamicRoutes) {
           if (pathname?.startsWith(route) && routes[route]) {
@@ -63,7 +64,7 @@ const RouteGuard: React.FC<RouteGuardProps> = ({ children }) => {
       if (protectedRoutes[pathname as keyof typeof protectedRoutes]) {
         setIsPasswordRequired(true);
 
-        const response = await fetch("/api/check-auth");
+        const response = await fetch(API_ENDPOINTS.AUTH.CHECK_AUTH);
         if (response.ok) {
           setIsAuthenticated(true);
         }
@@ -76,7 +77,7 @@ const RouteGuard: React.FC<RouteGuardProps> = ({ children }) => {
   }, [pathname]);
 
   const handlePasswordSubmit = async () => {
-    const response = await fetch("/api/authenticate", {
+    const response = await fetch(API_ENDPOINTS.AUTH.AUTHENTICATE, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ password }),
@@ -86,7 +87,7 @@ const RouteGuard: React.FC<RouteGuardProps> = ({ children }) => {
       setIsAuthenticated(true);
       setError(undefined);
     } else {
-      setError("Incorrect password");
+      setError(ROUTE_GUARD_UI.INCORRECT_PASSWORD);
     }
   };
 
@@ -106,17 +107,19 @@ const RouteGuard: React.FC<RouteGuardProps> = ({ children }) => {
     return (
       <Column paddingY="128" maxWidth={24} gap="24" center>
         <Heading align="center" wrap="balance">
-          This page is password protected
+          {ROUTE_GUARD_UI.PASSWORD_PROTECTED}
         </Heading>
         <Column fillWidth gap="8" horizontal="center">
           <PasswordInput
             id="password"
-            label="Password"
+            label={ROUTE_GUARD_UI.PASSWORD_LABEL}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             errorMessage={error}
           />
-          <Button onClick={handlePasswordSubmit}>Submit</Button>
+          <Button onClick={handlePasswordSubmit}>
+            {ROUTE_GUARD_UI.SUBMIT}
+          </Button>
         </Column>
       </Column>
     );

@@ -43,7 +43,7 @@ class DatabaseService {
       const uri = EnvironmentUtils.getMongodbUri();
       this.client = new MongoClient(uri, DATABASE_CONFIG.CONNECTION_OPTIONS);
       await this.client.connect();
-      this.db = this.client.db("syncapp");
+      this.db = this.client.db(DATABASE_CONFIG.DATABASE_NAME);
       console.log("✅ Connected to MongoDB");
     } catch (error) {
       console.error("❌ MongoDB connection failed:", error);
