@@ -1,10 +1,11 @@
 "use client";
 
 import {
-  Flex,
-  Heading,
-  Text
-} from "@once-ui-system/core";
+  SPOTIFY_QUERY_KEYS,
+  SPOTIFY_STATUS,
+  SPOTIFY_UI,
+} from "@/lib/constants";
+import { Flex, Heading, Text } from "@once-ui-system/core";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -18,8 +19,8 @@ export default function SpotifyStatusNotification() {
   const [refreshToken, setRefreshToken] = useState<string | null>(null);
 
   useEffect(() => {
-    const spotify = searchParams?.get("spotify");
-    const token = searchParams?.get("token");
+    const spotify = searchParams?.get(SPOTIFY_QUERY_KEYS.SPOTIFY);
+    const token = searchParams?.get(SPOTIFY_QUERY_KEYS.TOKEN);
 
     if (spotify) {
       setSpotifyStatus(spotify);
@@ -33,6 +34,8 @@ export default function SpotifyStatusNotification() {
     return null;
   }
 
+  const isSuccess = spotifyStatus === SPOTIFY_STATUS.SUCCESS;
+
   return (
     <Flex
       direction="column"
@@ -40,47 +43,34 @@ export default function SpotifyStatusNotification() {
       gap="m"
       marginBottom="xl"
       padding="l"
-      background={
-        spotifyStatus === "success"
-          ? "brand-alpha-weak"
-          : "accent-alpha-weak"
-      }
-      border={
-        spotifyStatus === "success"
-          ? "brand-alpha-medium"
-          : "accent-alpha-medium"
-      }
+      background={isSuccess ? "brand-alpha-weak" : "accent-alpha-weak"}
+      border={isSuccess ? "brand-alpha-medium" : "accent-alpha-medium"}
       radius="m"
     >
       <Heading
         variant="heading-strong-m"
-        onBackground={
-          spotifyStatus === "success" ? "brand-weak" : "accent-weak"
-        }
+        onBackground={isSuccess ? "brand-weak" : "accent-weak"}
       >
-        {spotifyStatus === "success"
-          ? "✅ Spotify Connected!"
-          : "❌ Spotify Error"}
+        {isSuccess ? SPOTIFY_UI.TITLE_CONNECTED : SPOTIFY_UI.TITLE_ERROR}
       </Heading>
 
-      {spotifyStatus === "success" && refreshToken && (
+      {isSuccess && refreshToken && (
         <>
           <Text variant="body-default-m" onBackground="brand-weak">
-            Your Spotify account has been successfully connected!
+            {SPOTIFY_UI.MESSAGE_CONNECTED}
           </Text>
           <Text variant="body-default-s" onBackground="brand-weak">
-            <strong>Refresh Token:</strong> {refreshToken}
+            <strong>{SPOTIFY_UI.LABEL_REFRESH_TOKEN}</strong> {refreshToken}
           </Text>
           <Text variant="body-default-xs" onBackground="brand-weak">
-            Copy this token and add it to your .env.local file as
-            SPOTIFY_REFRESH_TOKEN
+            {SPOTIFY_UI.INSTRUCTION_TOKEN} {SPOTIFY_UI.ENV_VAR_NAME}
           </Text>
         </>
       )}
 
-      {spotifyStatus === "error" && (
+      {spotifyStatus === SPOTIFY_STATUS.ERROR && (
         <Text variant="body-default-m" onBackground="accent-weak">
-          There was an error connecting to Spotify. Please try again.
+          {SPOTIFY_UI.MESSAGE_ERROR}
         </Text>
       )}
     </Flex>
