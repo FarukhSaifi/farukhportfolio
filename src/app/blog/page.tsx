@@ -1,5 +1,6 @@
 import { Mailchimp } from "@/components";
 import { Posts } from "@/components/blog/Posts";
+import { API_ENDPOINTS } from "@/lib/constants";
 import { baseURL, blog, person } from "@/resources";
 import { Column, Heading, Meta, Schema } from "@once-ui-system/core";
 
@@ -8,7 +9,7 @@ export async function generateMetadata() {
     title: blog.title,
     description: blog.description,
     baseURL: baseURL,
-    image: `/api/og/generate?title=${encodeURIComponent(blog.title)}`,
+    image: `${API_ENDPOINTS.OG_GENERATE}?title=${encodeURIComponent(blog.title)}`,
     path: blog.path,
   });
 }
@@ -22,7 +23,7 @@ export default function Blog() {
         title={blog.title}
         description={blog.description}
         path={blog.path}
-        image={`/api/og/generate?title=${encodeURIComponent(blog.title)}`}
+        image={`${API_ENDPOINTS.OG_GENERATE}?title=${encodeURIComponent(blog.title)}`}
         author={{
           name: person.name,
           url: `${baseURL}/blog`,

@@ -1,5 +1,6 @@
 import { CustomMDX, ScrollToHash } from "@/components";
 import { Projects } from "@/components/work/Projects";
+import { API_ENDPOINTS, ROUTES } from "@/lib/constants";
 import { about, baseURL, person, work } from "@/resources";
 import { formatDate } from "@/utils/formatDate";
 import { getPosts } from "@/utils/utils";
@@ -45,7 +46,8 @@ export async function generateMetadata({
     description: post.metadata.summary,
     baseURL: baseURL,
     image:
-      post.metadata.image || `/api/og/generate?title=${post.metadata.title}`,
+      post.metadata.image ||
+      `${API_ENDPOINTS.OG_GENERATE}?title=${post.metadata.title}`,
     path: `${work.path}/${post.slug}`,
   });
 }
@@ -85,7 +87,7 @@ export default async function Project({
         dateModified={post.metadata.publishedAt}
         image={
           post.metadata.image ||
-          `/api/og/generate?title=${encodeURIComponent(post.metadata.title)}`
+          `${API_ENDPOINTS.OG_GENERATE}?title=${encodeURIComponent(post.metadata.title)}`
         }
         author={{
           name: person.name,
@@ -94,7 +96,7 @@ export default async function Project({
         }}
       />
       <Column maxWidth="s" gap="16" horizontal="center" align="center">
-        <SmartLink href="/work">
+        <SmartLink href={ROUTES.WORK}>
           <Text variant="label-strong-m">Projects</Text>
         </SmartLink>
         <Text

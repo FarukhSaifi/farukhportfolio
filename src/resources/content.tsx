@@ -1,3 +1,4 @@
+import { ROUTES } from "@/lib/constants";
 import {
   About,
   Blog,
@@ -63,7 +64,7 @@ const social: Social = [
 ];
 
 const home: Home = {
-  path: "/",
+  path: ROUTES.HOME,
   image: "/images/og/home.jpg",
   label: "Home",
   title: `${person.name} - Portfolio`,
@@ -82,7 +83,7 @@ const home: Home = {
         </Text>
       </Row>
     ),
-    href: "/work",
+    href: ROUTES.WORK,
   },
   subline: (
     <>
@@ -97,7 +98,7 @@ const home: Home = {
 };
 
 const about: About = {
-  path: "/about",
+  path: ROUTES.ABOUT,
   label: "About",
   title: `About – ${person.name}`,
   description: `Meet ${person.name}, ${person.role} from ${person.location}`,
@@ -350,7 +351,7 @@ const about: About = {
 };
 
 const blog: Blog = {
-  path: "/blog",
+  path: ROUTES.BLOG,
   label: "Blog",
   title: "Writing about design and tech...",
   description: `Read what ${person.name} has been up to recently`,
@@ -359,7 +360,7 @@ const blog: Blog = {
 };
 
 const work: Work = {
-  path: "/work",
+  path: ROUTES.WORK,
   label: "Work",
   title: `Projects – ${person.name}`,
   description: `Design and dev projects by ${person.name}`,
@@ -368,7 +369,7 @@ const work: Work = {
 };
 
 const gallery: Gallery = {
-  path: "/gallery",
+  path: ROUTES.GALLERY,
   label: "Gallery",
   title: `Photo gallery – ${person.name}`,
   description: `A photo collection by ${person.name}`,
