@@ -1,4 +1,5 @@
 import GalleryView from "@/components/gallery/GalleryView";
+import { API_ENDPOINTS } from "@/lib/constants";
 import { baseURL, gallery, person } from "@/resources";
 import { Flex, Meta, Schema } from "@once-ui-system/core";
 
@@ -21,7 +22,7 @@ export default function Gallery() {
         title={gallery.title}
         description={gallery.description}
         path={gallery.path}
-        image={`/api/og/generate?title=${encodeURIComponent(gallery.title)}`}
+        image={`${API_ENDPOINTS.OG_GENERATE}?title=${encodeURIComponent(gallery.title)}`}
         author={{
           name: person.name,
           url: `${baseURL}${gallery.path}`,

@@ -1,5 +1,6 @@
 "use client";
 
+import { API_ENDPOINTS } from "@/lib/constants";
 import { useEffect, useState } from "react";
 import { ToastContainer } from "./ToastContainer";
 
@@ -21,7 +22,7 @@ export default function ConditionalToastContainer() {
      */
     const checkAuthStatus = async () => {
       try {
-        const response = await fetch("/api/check-auth");
+        const response = await fetch(API_ENDPOINTS.AUTH.CHECK_AUTH);
         const data = await response.json();
         setIsAuthenticated(data.success && data.data?.isAuthenticated);
       } catch (error) {

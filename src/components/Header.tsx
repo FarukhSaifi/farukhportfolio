@@ -12,6 +12,7 @@ import {
   ToggleButton,
 } from "@once-ui-system/core";
 
+import { ROUTES } from "@/lib/constants";
 import {
   about,
   blog,
@@ -129,86 +130,86 @@ export const Header = () => {
               textVariant="body-default-s"
               suppressHydrationWarning
             >
-              {routes["/"] && (
+              {routes[ROUTES.HOME] && (
                 <ToggleButton
                   prefixIcon="home"
-                  href="/"
-                  selected={pathname === "/"}
+                  href={ROUTES.HOME}
+                  selected={pathname === ROUTES.HOME}
                 />
               )}
               <Line background="neutral-alpha-medium" vert maxHeight="24" />
-              {routes["/about"] && (
+              {routes[ROUTES.ABOUT] && (
                 <>
                   <Row s={{ hide: true }}>
                     <ToggleButton
                       prefixIcon="person"
-                      href="/about"
+                      href={ROUTES.ABOUT}
                       label={about.label}
-                      selected={pathname === "/about"}
+                      selected={pathname === ROUTES.ABOUT}
                     />
                   </Row>
                   <Row hide s={{ hide: false }}>
                     <ToggleButton
                       prefixIcon="person"
-                      href="/about"
-                      selected={pathname === "/about"}
+                      href={ROUTES.ABOUT}
+                      selected={pathname === ROUTES.ABOUT}
                     />
                   </Row>
                 </>
               )}
-              {routes["/work"] && (
+              {routes[ROUTES.WORK] && (
                 <>
                   <Row s={{ hide: true }}>
                     <ToggleButton
                       prefixIcon="grid"
-                      href="/work"
+                      href={ROUTES.WORK}
                       label={work.label}
-                      selected={pathname.startsWith("/work")}
+                      selected={pathname.startsWith(ROUTES.WORK)}
                     />
                   </Row>
                   <Row hide s={{ hide: false }}>
                     <ToggleButton
                       prefixIcon="grid"
-                      href="/work"
-                      selected={pathname.startsWith("/work")}
+                      href={ROUTES.WORK}
+                      selected={pathname.startsWith(ROUTES.WORK)}
                     />
                   </Row>
                 </>
               )}
-              {routes["/blog"] && (
+              {routes[ROUTES.BLOG] && (
                 <>
                   <Row s={{ hide: true }}>
                     <ToggleButton
                       prefixIcon="book"
-                      href="/blog"
+                      href={ROUTES.BLOG}
                       label={blog.label}
-                      selected={pathname.startsWith("/blog")}
+                      selected={pathname.startsWith(ROUTES.BLOG)}
                     />
                   </Row>
                   <Row hide s={{ hide: false }}>
                     <ToggleButton
                       prefixIcon="book"
-                      href="/blog"
-                      selected={pathname.startsWith("/blog")}
+                      href={ROUTES.BLOG}
+                      selected={pathname.startsWith(ROUTES.BLOG)}
                     />
                   </Row>
                 </>
               )}
-              {routes["/gallery"] && (
+              {routes[ROUTES.GALLERY] && (
                 <>
                   <Row s={{ hide: true }}>
                     <ToggleButton
                       prefixIcon="gallery"
-                      href="/gallery"
+                      href={ROUTES.GALLERY}
                       label={gallery.label}
-                      selected={pathname.startsWith("/gallery")}
+                      selected={pathname.startsWith(ROUTES.GALLERY)}
                     />
                   </Row>
                   <Row hide s={{ hide: false }}>
                     <ToggleButton
                       prefixIcon="gallery"
-                      href="/gallery"
-                      selected={pathname.startsWith("/gallery")}
+                      href={ROUTES.GALLERY}
+                      selected={pathname.startsWith(ROUTES.GALLERY)}
                     />
                   </Row>
                 </>
