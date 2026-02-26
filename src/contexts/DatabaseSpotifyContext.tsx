@@ -24,17 +24,23 @@ interface SpotifyContextType {
   error: string | null;
 }
 
-const DatabaseSpotifyContext = createContext<SpotifyContextType | undefined>(undefined);
+const DatabaseSpotifyContext = createContext<SpotifyContextType | undefined>(
+  undefined,
+);
 
 export const useDatabaseSpotify = () => {
   const context = useContext(DatabaseSpotifyContext);
   if (!context) {
-    throw new Error("useDatabaseSpotify must be used within a DatabaseSpotifyProvider");
+    throw new Error(
+      "useDatabaseSpotify must be used within a DatabaseSpotifyProvider",
+    );
   }
   return context;
 };
 
-export const DatabaseSpotifyProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const DatabaseSpotifyProvider: React.FC<{
+  children: React.ReactNode;
+}> = ({ children }) => {
   const [tokens, setTokens] = useState<SpotifyTokens>({
     refreshToken: null,
     accessToken: null,
@@ -48,7 +54,9 @@ export const DatabaseSpotifyProvider: React.FC<{ children: React.ReactNode }> = 
   useEffect(() => {
     const loadTokensFromDatabase = async () => {
       try {
-        console.log("🔍 DatabaseSpotifyContext: Loading tokens from database...");
+        console.log(
+          "🔍 DatabaseSpotifyContext: Loading tokens from database...",
+        );
         setLoading(true);
         setError(null);
 
@@ -66,9 +74,14 @@ export const DatabaseSpotifyProvider: React.FC<{ children: React.ReactNode }> = 
               accessToken: access_token,
               accessTokenExpiry: expiry,
             });
-            info("Spotify Connected", "Your Spotify tokens are loaded from the database");
+            info(
+              "Spotify Connected",
+              "Your Spotify tokens are loaded from the database",
+            );
           } else {
-            console.log("ℹ️ DatabaseSpotifyContext: No tokens found in database");
+            console.log(
+              "ℹ️ DatabaseSpotifyContext: No tokens found in database",
+            );
             setTokens({
               refreshToken: null,
               accessToken: null,
@@ -76,7 +89,9 @@ export const DatabaseSpotifyProvider: React.FC<{ children: React.ReactNode }> = 
             });
           }
         } else {
-          console.log("⚠️ DatabaseSpotifyContext: Failed to load tokens from database");
+          console.log(
+            "⚠️ DatabaseSpotifyContext: Failed to load tokens from database",
+          );
           setTokens({
             refreshToken: null,
             accessToken: null,
@@ -86,7 +101,10 @@ export const DatabaseSpotifyProvider: React.FC<{ children: React.ReactNode }> = 
       } catch (err: any) {
         console.error("❌ DatabaseSpotifyContext: Error loading tokens:", err);
         setError(err.message);
-        showError("Database Error", `Failed to load Spotify tokens: ${err.message}`);
+        showError(
+          "Database Error",
+          `Failed to load Spotify tokens: ${err.message}`,
+        );
         setTokens({
           refreshToken: null,
           accessToken: null,
@@ -108,7 +126,11 @@ export const DatabaseSpotifyProvider: React.FC<{ children: React.ReactNode }> = 
   const updateAccessToken = async (token: string, expiresIn: number = 3600) => {
     console.log("🔄 DatabaseSpotifyContext: Updating access token");
     const expiry = Date.now() + expiresIn * 1000;
-    setTokens((prev) => ({ ...prev, accessToken: token, accessTokenExpiry: expiry }));
+    setTokens((prev) => ({
+      ...prev,
+      accessToken: token,
+      accessTokenExpiry: expiry,
+    }));
   };
 
   const clearTokens = async () => {
