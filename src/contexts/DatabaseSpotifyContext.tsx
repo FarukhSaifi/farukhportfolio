@@ -1,6 +1,11 @@
 "use client";
 
 import { useToast } from "@/hooks/useToast";
+import {
+  API_ENDPOINTS,
+  ERROR_MESSAGES,
+  SUCCESS_MESSAGES,
+} from "@/lib/constants";
 import { ClientSpotifyUtils } from "@/lib/utils";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
@@ -60,7 +65,7 @@ export const DatabaseSpotifyProvider: React.FC<{
         setLoading(true);
         setError(null);
 
-        const response = await fetch("/api/spotify/get-token");
+        const response = await fetch(API_ENDPOINTS.SPOTIFY.GET_TOKEN);
 
         if (response.ok) {
           const data = await response.json();
@@ -75,7 +80,7 @@ export const DatabaseSpotifyProvider: React.FC<{
               accessTokenExpiry: expiry,
             });
             info(
-              "Spotify Connected",
+              SUCCESS_MESSAGES.SPOTIFY.CONNECTED_TOAST_TITLE,
               "Your Spotify tokens are loaded from the database",
             );
           } else {
@@ -103,7 +108,7 @@ export const DatabaseSpotifyProvider: React.FC<{
         setError(err.message);
         showError(
           "Database Error",
-          `Failed to load Spotify tokens: ${err.message}`,
+          `${ERROR_MESSAGES.DATABASE.FETCH_FAILED} ${err.message}`,
         );
         setTokens({
           refreshToken: null,
@@ -178,7 +183,7 @@ export const DatabaseSpotifyProvider: React.FC<{
       console.log("🔄 Refreshing access token...");
 
       // Call the API to refresh the token
-      const response = await fetch("/api/spotify/refresh-token", {
+      const response = await fetch(API_ENDPOINTS.SPOTIFY.REFRESH_TOKEN, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ refresh_token: tokens.refreshToken }),
@@ -194,7 +199,7 @@ export const DatabaseSpotifyProvider: React.FC<{
       }
     } catch (error) {
       console.error("Failed to refresh token:", error);
-      showError("Token Refresh Failed", "Failed to refresh Spotify token");
+      showError("Token Refresh Failed", ERROR_MESSAGES.SPOTIFY.API_ERROR);
     }
     return false;
   };

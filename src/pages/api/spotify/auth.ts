@@ -17,7 +17,12 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "GET") {
     return res
       .status(HTTP_STATUS.METHOD_NOT_ALLOWED)
-      .json(ApiUtils.createErrorResponse("Method not allowed", HTTP_STATUS.METHOD_NOT_ALLOWED));
+      .json(
+        ApiUtils.createErrorResponse(
+          "Method not allowed",
+          HTTP_STATUS.METHOD_NOT_ALLOWED,
+        ),
+      );
   }
 
   try {
@@ -37,7 +42,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 
     // Get redirect URI based on environment
     const redirectUri = EnvironmentUtils.isProduction()
-      ? `${EnvironmentUtils.getBaseUrl()}/spotify-success`
+      ? SPOTIFY_CONFIG.REDIRECT_URI.PRODUCTION
       : SPOTIFY_CONFIG.REDIRECT_URI.DEVELOPMENT;
 
     // Build Spotify authorization URL
@@ -58,6 +63,11 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     const errorResponse = ApiUtils.handleApiError(error);
     return res
       .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
-      .json(ApiUtils.createErrorResponse(errorResponse.message, HTTP_STATUS.INTERNAL_SERVER_ERROR));
+      .json(
+        ApiUtils.createErrorResponse(
+          errorResponse.message,
+          HTTP_STATUS.INTERNAL_SERVER_ERROR,
+        ),
+      );
   }
 }

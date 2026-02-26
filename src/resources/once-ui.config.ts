@@ -1,3 +1,4 @@
+import { ROUTES } from "@/lib/constants";
 import {
   DataStyleConfig,
   DisplayConfig,
@@ -17,14 +18,14 @@ import { home } from "./index";
 const baseURL: string = "https://farukh.me";
 
 const routes: RoutesConfig = {
-  "/": true,
-  "/about": true,
-  "/work": true,
-  "/admin": true,
-  "/blog": true,
-  "/spotify-auth": true,
-  "/spotify-success": true,
-  "/gallery": false,
+  [ROUTES.HOME]: true,
+  [ROUTES.ABOUT]: true,
+  [ROUTES.WORK]: true,
+  [ROUTES.ADMIN]: true,
+  [ROUTES.BLOG]: true,
+  [ROUTES.SPOTIFY_AUTH]: true,
+  [ROUTES.SPOTIFY_SUCCESS]: true,
+  [ROUTES.GALLERY]: false,
 };
 
 const display: DisplayConfig = {
@@ -36,8 +37,8 @@ const display: DisplayConfig = {
 // Enable password protection on selected routes
 // Set password in the .env file, refer to .env.example
 const protectedRoutes: ProtectedRoutesConfig = {
-  "/admin": true,
-  "/work/automate-design-handovers-with-a-figma-to-code-pipeline": true,
+  [ROUTES.ADMIN]: true,
+  [`${ROUTES.WORK}/automate-design-handovers-with-a-figma-to-code-pipeline`]: true,
 };
 
 // Import and set font for each variant

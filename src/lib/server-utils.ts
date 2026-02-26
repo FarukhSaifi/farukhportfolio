@@ -1,4 +1,4 @@
-import { ERROR_MESSAGES, HTTP_STATUS } from "./constants";
+import { ERROR_MESSAGES, HTTP_STATUS, SPOTIFY_CONFIG } from "./constants";
 import { AppError } from "./interfaces";
 
 /**
@@ -194,8 +194,8 @@ export class SpotifyUtils {
    */
   static getRedirectUri(): string {
     return process.env.NODE_ENV === "production"
-      ? `${process.env.NEXT_PUBLIC_BASE_URL}/spotify-success`
-      : "http://localhost:3000/spotify-success";
+      ? SPOTIFY_CONFIG.REDIRECT_URI.PRODUCTION
+      : SPOTIFY_CONFIG.REDIRECT_URI.DEVELOPMENT;
   }
 
   /**
@@ -210,7 +210,7 @@ export class SpotifyUtils {
     token_type: string;
   } | null> {
     try {
-      const response = await fetch("https://accounts.spotify.com/api/token", {
+      const response = await fetch(SPOTIFY_CONFIG.AUTH_BASE_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
