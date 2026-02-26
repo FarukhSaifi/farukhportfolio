@@ -3,6 +3,13 @@
 import { useDatabaseSpotify } from "@/contexts/DatabaseSpotifyContext";
 import { useToast } from "@/hooks/useToast";
 import {
+  API_ENDPOINTS,
+  ERROR_MESSAGES,
+  ROUTES,
+  SPOTIFY_UI,
+  SUCCESS_MESSAGES,
+} from "@/lib/constants";
+import {
   Button,
   Card,
   Flex,
@@ -28,11 +35,11 @@ export default function SpotifySuccessPage() {
       const code = urlParams.get("code");
 
       if (!code) {
-        setError("No authorization code found");
+        setError(ERROR_MESSAGES.SPOTIFY.NO_AUTH_CODE);
         return;
       }
 
-      const response = await fetch("/api/spotify/exchange-code", {
+      const response = await fetch(API_ENDPOINTS.SPOTIFY.EXCHANGE_CODE, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ code }),
@@ -42,7 +49,7 @@ export default function SpotifySuccessPage() {
         const tokenData = await response.json();
 
         // Save token to MongoDB for public access
-        const saveResponse = await fetch("/api/spotify/save-token", {
+        const saveResponse = await fetch(API_ENDPOINTS.SPOTIFY.SAVE_TOKEN, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -60,8 +67,8 @@ export default function SpotifySuccessPage() {
 
           // Show success toast
           success(
-            "Spotify Connected!",
-            "Your tokens have been saved to the database and are now publicly accessible.",
+            SUCCESS_MESSAGES.SPOTIFY.CONNECTED_TOAST_TITLE,
+            SUCCESS_MESSAGES.SPOTIFY.TOKENS_SAVED_TOAST,
           );
         } else {
           const saveError = await saveResponse.json();
@@ -110,9 +117,11 @@ export default function SpotifySuccessPage() {
         >
           <Flex direction="column" gap="l" style={{ alignItems: "center" }}>
             <Spinner size="l" />
-            <Heading variant="display-strong-l">🔄 Processing...</Heading>
+            <Heading variant="display-strong-l">
+              {SPOTIFY_UI.LOADING_PROCESSING}
+            </Heading>
             <Text variant="body-default-l" onBackground="neutral-weak">
-              Exchanging authorization code for tokens...
+              {SPOTIFY_UI.LOADING_EXCHANGING}
             </Text>
           </Flex>
         </Card>
@@ -143,7 +152,7 @@ export default function SpotifySuccessPage() {
         >
           <Flex direction="column" gap="l" style={{ alignItems: "center" }}>
             <Heading variant="display-strong-m" onBackground="accent-weak">
-              ❌ Error
+              {SPOTIFY_UI.ERROR_TITLE}
             </Heading>
             <Text
               variant="body-default-m"
@@ -152,8 +161,8 @@ export default function SpotifySuccessPage() {
             >
               {error}
             </Text>
-            <Button href="/spotify-auth" variant="primary" size="l">
-              Try Again
+            <Button href={ROUTES.SPOTIFY_AUTH} variant="primary" size="l">
+              {SPOTIFY_UI.TRY_AGAIN}
             </Button>
           </Flex>
         </Card>
@@ -163,26 +172,29 @@ export default function SpotifySuccessPage() {
 
   return (
     <Flex
-      style={{ minHeight: "50vh", justifyContent: "center", alignItems: "center" }}
+      style={{
+        minHeight: "50vh",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
     >
       <Card padding="xl" maxWidth="m">
         <Flex direction="column" gap="l" style={{ alignItems: "center" }}>
-          <Heading variant="display-strong-m">🎉 Spotify Connected!</Heading>
+          <Heading variant="display-strong-m">
+            {SPOTIFY_UI.SUCCESS_TITLE}
+          </Heading>
 
           <Flex direction="column" gap="m" style={{ alignItems: "center" }}>
-            <Text variant="body-default-m">
-              Your Spotify account has been successfully connected!
-            </Text>
+            <Text variant="body-default-m">{SPOTIFY_UI.MESSAGE_CONNECTED}</Text>
 
             <Text variant="body-default-s" onBackground="neutral-weak">
-              Your tokens have been saved to the database and are now publicly
-              accessible.
+              {SPOTIFY_UI.TOKENS_SAVED_MESSAGE}
             </Text>
           </Flex>
 
           <Flex gap="m">
-            <Button href="/" variant="primary">
-              Go to Home
+            <Button href={ROUTES.HOME} variant="primary">
+              {SPOTIFY_UI.GO_TO_HOME}
             </Button>
           </Flex>
         </Flex>

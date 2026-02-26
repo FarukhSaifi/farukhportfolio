@@ -1,10 +1,15 @@
 "use client";
 
+import {
+  API_ENDPOINTS,
+  ERROR_MESSAGES,
+  SPOTIFY_AUTH_ERROR,
+  SPOTIFY_UI,
+  STORAGE_KEYS,
+} from "@/lib/constants";
 import { Button, Card, Flex, Heading, Text } from "@once-ui-system/core";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-
-const STORAGE_KEY = "spotify_refresh_token";
 
 export default function SpotifyAuthPage() {
   const searchParams = useSearchParams();
@@ -18,7 +23,7 @@ export default function SpotifyAuthPage() {
     console.log("Search params:", searchParams);
 
     // Check if there's a stored token
-    const storedToken = localStorage.getItem(STORAGE_KEY);
+    const storedToken = localStorage.getItem(STORAGE_KEYS.SPOTIFY_REFRESH_TOKEN);
     setHasStoredToken(!!storedToken);
     console.log("Stored token exists:", storedToken ? "✅ Yes" : "❌ No");
     if (storedToken) {
@@ -42,11 +47,11 @@ export default function SpotifyAuthPage() {
   const handleAuth = () => {
     console.log("SpotifyAuthPage: handleAuth called");
     setIsLoading(true);
-    window.location.href = "/api/spotify/auth";
+    window.location.href = API_ENDPOINTS.SPOTIFY.AUTH;
   };
 
   const clearStoredToken = () => {
-    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(STORAGE_KEYS.SPOTIFY_REFRESH_TOKEN);
     setHasStoredToken(false);
     console.log("🗑️ Stored token cleared from localStorage");
   };
@@ -76,9 +81,9 @@ export default function SpotifyAuthPage() {
           radius="m"
         >
           <Flex direction="column" gap="l" horizontal="center">
-            <Heading variant="display-strong-l">🔄 Loading...</Heading>
+            <Heading variant="display-strong-l">{SPOTIFY_UI.AUTH_LOADING}</Heading>
             <Text variant="body-default-l" onBackground="neutral-weak">
-              Please wait...
+              {SPOTIFY_UI.AUTH_PLEASE_WAIT}
             </Text>
           </Flex>
         </Card>
@@ -105,7 +110,7 @@ export default function SpotifyAuthPage() {
         maxWidth="l"
       >
         <Flex direction="column" gap="l" horizontal="center" fillWidth>
-          <Heading variant="display-strong-l">🎵 Spotify Authorization</Heading>
+          <Heading variant="display-strong-l">{SPOTIFY_UI.AUTH_TITLE}</Heading>
           {error ? (
             <Flex direction="column" gap="l" horizontal="center">
               <Card
@@ -120,32 +125,30 @@ export default function SpotifyAuthPage() {
                     variant="heading-strong-m"
                     onBackground="accent-weak"
                   >
-                    ❌ Authorization Error
+                    {SPOTIFY_UI.AUTH_ERROR_TITLE}
                   </Heading>
 
-                  {error === "auth_failed" && (
+                  {error === SPOTIFY_AUTH_ERROR.AUTH_FAILED && (
                     <Text
                       variant="body-default-m"
                       onBackground="accent-weak"
                       style={{ textAlign: "center" }}
                     >
-                      The Spotify authorization was cancelled or failed. Please
-                      try again.
+                      {ERROR_MESSAGES.SPOTIFY.AUTH_CANCELLED}
                     </Text>
                   )}
 
-                  {error === "no_code" && (
+                  {error === SPOTIFY_AUTH_ERROR.NO_CODE && (
                     <Text
                       variant="body-default-m"
                       onBackground="accent-weak"
                       style={{ textAlign: "center" }}
                     >
-                      No authorization code received from Spotify. Please try
-                      again.
+                      {ERROR_MESSAGES.SPOTIFY.NO_CODE_RECEIVED}
                     </Text>
                   )}
 
-                  {error === "token_exchange_failed" && (
+                  {error === SPOTIFY_AUTH_ERROR.TOKEN_EXCHANGE_FAILED && (
                     <Text
                       variant="body-default-m"
                       onBackground="accent-weak"
@@ -157,7 +160,7 @@ export default function SpotifyAuthPage() {
                   )}
 
                   <Button onClick={handleAuth} variant="primary" size="l">
-                    Try Again
+                    {SPOTIFY_UI.AUTH_TRY_AGAIN}
                   </Button>
                 </Flex>
               </Card>
@@ -182,7 +185,7 @@ export default function SpotifyAuthPage() {
                       variant="secondary"
                       size="s"
                     >
-                      Clear Token
+                      {SPOTIFY_UI.AUTH_CLEAR_TOKEN}
                     </Button>
                   </Flex>
                 </Card>
@@ -193,8 +196,7 @@ export default function SpotifyAuthPage() {
                 onBackground="neutral-strong"
                 style={{ textAlign: "center" }}
               >
-                To enable the Spotify Now Playing feature, you need to authorize
-                this app to access your Spotify account.
+                {SPOTIFY_UI.AUTH_INTRO}
               </Text>
 
               <Text
@@ -202,8 +204,7 @@ export default function SpotifyAuthPage() {
                 onBackground="neutral-weak"
                 style={{ textAlign: "center" }}
               >
-                This will allow the app to see what you&apos;re currently
-                playing on Spotify and display it in the header.
+                {SPOTIFY_UI.AUTH_INTRO_DETAIL}
               </Text>
 
               <Card
@@ -215,7 +216,7 @@ export default function SpotifyAuthPage() {
               >
                 <Flex direction="column" gap="m">
                   <Text variant="body-default-s" onBackground="neutral-weak">
-                    <strong>Required Permissions:</strong>
+                    <strong>{SPOTIFY_UI.AUTH_REQUIRED_PERMISSIONS}</strong>
                   </Text>
                   <Flex
                     direction="column"
@@ -241,12 +242,11 @@ export default function SpotifyAuthPage() {
                 onBackground="neutral-weak"
                 style={{ textAlign: "center" }}
               >
-                After authorization, you&apos;ll receive a refresh token that
-                will be stored in your browser and can be used for API calls.
+                {SPOTIFY_UI.AUTH_AFTER_MESSAGE}
               </Text>
 
               <Button onClick={handleAuth} variant="primary" size="l">
-                Authorize with Spotify
+                {SPOTIFY_UI.AUTH_AUTHORIZE_BUTTON}
               </Button>
             </Flex>
           )}
