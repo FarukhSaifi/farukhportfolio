@@ -1,4 +1,5 @@
 import { Projects } from "@/components/work/Projects";
+import { API_ENDPOINTS } from "@/lib/constants";
 import { about, baseURL, person, work } from "@/resources";
 import { Column, Heading, Meta, Schema } from "@once-ui-system/core";
 
@@ -7,7 +8,7 @@ export async function generateMetadata() {
     title: work.title,
     description: work.description,
     baseURL: baseURL,
-    image: `/api/og/generate?title=${encodeURIComponent(work.title)}`,
+    image: `${API_ENDPOINTS.OG_GENERATE}?title=${encodeURIComponent(work.title)}`,
     path: work.path,
   });
 }
@@ -21,7 +22,7 @@ export default function Work() {
         path={work.path}
         title={work.title}
         description={work.description}
-        image={`/api/og/generate?title=${encodeURIComponent(work.title)}`}
+        image={`${API_ENDPOINTS.OG_GENERATE}?title=${encodeURIComponent(work.title)}`}
         author={{
           name: person.name,
           url: `${baseURL}${about.path}`,

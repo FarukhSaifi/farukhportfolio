@@ -2,6 +2,7 @@
 
 import { useSpotifyNowPlaying } from "@/hooks/useSpotify";
 import { useToast } from "@/hooks/useToast";
+import { API_ENDPOINTS, ROUTES } from "@/lib/constants";
 import {
   Avatar,
   Button,
@@ -25,7 +26,7 @@ export default function NowPlaying() {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await fetch("/api/check-auth");
+        const response = await fetch(API_ENDPOINTS.AUTH.CHECK_AUTH);
         const data = await response.json();
         setIsAuthenticated(data.success && data.data?.isAuthenticated);
       } catch (error) {
@@ -91,7 +92,7 @@ export default function NowPlaying() {
       <Button
         variant="secondary"
         size="s"
-        onClick={() => (window.location.href = "/spotify-auth")}
+        onClick={() => (window.location.href = ROUTES.SPOTIFY_AUTH)}
         className="text-sm text-blue-500 hover:underline"
         title={error}
       >
