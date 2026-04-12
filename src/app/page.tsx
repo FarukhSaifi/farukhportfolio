@@ -1,6 +1,4 @@
-import { Mailchimp } from "@/components";
-import { Posts } from "@/components/blog/Posts";
-import { Projects } from "@/components/work/Projects";
+import dynamic from "next/dynamic";
 import { API_ENDPOINTS } from "@/lib/constants";
 import { about, baseURL, home, person, routes } from "@/resources";
 import {
@@ -16,6 +14,10 @@ import {
   Schema,
   Text,
 } from "@once-ui-system/core";
+
+const Projects = dynamic(() => import("@/components/work/Projects").then((mod) => mod.Projects));
+const Posts = dynamic(() => import("@/components/blog/Posts").then((mod) => mod.Posts));
+const Mailchimp = dynamic(() => import("@/components").then((mod) => mod.Mailchimp));
 
 export async function generateMetadata() {
   return Meta.generate({
@@ -47,6 +49,7 @@ export default function Home() {
         <Column maxWidth="s" horizontal="center" align="center">
           {home.featured.display && (
             <RevealFx
+              revealedByDefault={true}
               fillWidth
               horizontal="center"
               paddingTop="16"
@@ -67,6 +70,7 @@ export default function Home() {
             </RevealFx>
           )}
           <RevealFx
+            revealedByDefault={true}
             translateY="4"
             fillWidth
             horizontal="center"
@@ -77,8 +81,9 @@ export default function Home() {
             </Heading>
           </RevealFx>
           <RevealFx
+            revealedByDefault={true}
             translateY="8"
-            delay={0.2}
+            delay={0.1}
             fillWidth
             horizontal="center"
             paddingBottom="32"
@@ -93,7 +98,7 @@ export default function Home() {
           </RevealFx>
           <RevealFx
             paddingTop="12"
-            delay={0.4}
+            delay={0.2}
             horizontal="center"
             paddingLeft="12"
           >
@@ -121,7 +126,7 @@ export default function Home() {
           </RevealFx>
         </Column>
       </Column>
-      <RevealFx translateY="16" delay={0.6}>
+      <RevealFx translateY="16" delay={0.4}>
         <Projects range={[1, 1]} />
       </RevealFx>
       {routes["/blog"] && (
