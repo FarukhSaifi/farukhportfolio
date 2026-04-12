@@ -58,11 +58,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const result = await databaseService.saveSpotifyToken(tokenData);
 
     // Handle database operation result
-    if (result.success) {
-      return res
-        .status(HTTP_STATUS.OK)
-        .json(ApiUtils.createSuccessResponse(result.data, "Spotify token saved successfully"));
-    } else {
+    if (!result.success) {
       return res
         .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
         .json(
@@ -72,14 +68,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           ),
         );
     }
+
+    return res
+      .status(HTTP_STATUS.OK)
+      .json(ApiUtils.createSuccessResponse(result.data, "Spotify token saved successfully"));
   } catch (error: any) {
     // Log error for debugging
     console.error("Error saving Spotify token:", error);
 
     // Handle and return standardized error response
-    const errorResponse = ApiUtils.handleApiError(error);
-    return res
-      .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
-      .json(ApiUtils.createErrorResponse(errorResponse.message, HTTP_STATUS.INTERNAL_SERVER_ERROR));
+    const apiError = ApiUtils.handleApiError(error);
+    const statusCode = HTTP_STATUS.INTERNAL_SERVER_ERROR;
+    return res.status(statusCode).json(ApiUtils.createErrorResponse(apiError.message, statusCode));
   }
 }

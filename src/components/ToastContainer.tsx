@@ -89,8 +89,7 @@ function ToastItem({ toast, onRemove }: ToastProps) {
   return (
     <div
       style={{
-        transform:
-          isVisible && !isLeaving ? "translateX(0)" : "translateX(100%)",
+        transform: isVisible && !isLeaving ? "translateX(0)" : "translateX(100%)",
         opacity: isVisible && !isLeaving ? 1 : 0,
         transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
         marginBottom: "8px",
@@ -109,18 +108,10 @@ function ToastItem({ toast, onRemove }: ToastProps) {
           boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
         }}
       >
-        <Icon
-          name={getToastIcon(toast.type)}
-          onBackground={colors.icon}
-          size="s"
-        />
+        <Icon name={getToastIcon(toast.type)} onBackground={colors.icon} size="s" />
 
         <Flex direction="column" gap="xs" flex={1}>
-          <Text
-            variant="body-default-s"
-            onBackground={colors.title}
-            style={{ fontWeight: 600 }}
-          >
+          <Text variant="body-default-s" onBackground={colors.title} style={{ fontWeight: 600 }}>
             {toast.title}
           </Text>
           {toast.message && (
@@ -140,12 +131,7 @@ function ToastItem({ toast, onRemove }: ToastProps) {
           )}
         </Flex>
 
-        <Button
-          variant="secondary"
-          size="s"
-          onClick={handleRemove}
-          style={{ padding: "4px", minWidth: "auto" }}
-        >
+        <Button variant="secondary" size="s" onClick={handleRemove} style={{ padding: "4px", minWidth: "auto" }}>
           <Icon name="close" size="xs" onBackground="neutral-weak" />
         </Button>
       </Flex>
@@ -177,11 +163,7 @@ export function ToastContainer() {
       }}
     >
       {toasts.map((toast) => (
-        <ToastItem
-          key={toast.id}
-          toast={toast}
-          onRemove={(id) => toastService.remove(id)}
-        />
+        <ToastItem key={toast.id} toast={toast} onRemove={(id) => toastService.remove(id)} />
       ))}
     </div>
   );

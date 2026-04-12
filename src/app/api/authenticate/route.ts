@@ -30,10 +30,7 @@ export async function POST(request: NextRequest) {
     // Validate required fields
     if (!email || !password) {
       return NextResponse.json(
-        ApiUtils.createErrorResponse(
-          "Email and password are required",
-          HTTP_STATUS.BAD_REQUEST,
-        ),
+        ApiUtils.createErrorResponse("Email and password are required", HTTP_STATUS.BAD_REQUEST),
         { status: HTTP_STATUS.BAD_REQUEST },
       );
     }
@@ -41,11 +38,10 @@ export async function POST(request: NextRequest) {
     // Validate input types
     if (typeof email !== "string" || typeof password !== "string") {
       return NextResponse.json(
-        ApiUtils.createErrorResponse(
-          "Invalid credentials format",
-          HTTP_STATUS.BAD_REQUEST,
-        ),
-        { status: HTTP_STATUS.BAD_REQUEST },
+        ApiUtils.createErrorResponse("Invalid credentials format", HTTP_STATUS.BAD_REQUEST),
+        {
+          status: HTTP_STATUS.BAD_REQUEST,
+        },
       );
     }
 
@@ -93,11 +89,10 @@ export async function POST(request: NextRequest) {
       return response;
     } else {
       return NextResponse.json(
-        ApiUtils.createErrorResponse(
-          "Invalid credentials",
-          HTTP_STATUS.UNAUTHORIZED,
-        ),
-        { status: HTTP_STATUS.UNAUTHORIZED },
+        ApiUtils.createErrorResponse("Invalid credentials", HTTP_STATUS.UNAUTHORIZED),
+        {
+          status: HTTP_STATUS.UNAUTHORIZED,
+        },
       );
     }
   } catch (error: any) {
@@ -107,11 +102,10 @@ export async function POST(request: NextRequest) {
     // Handle and return standardized error response
     const errorResponse = ApiUtils.handleApiError(error);
     return NextResponse.json(
-      ApiUtils.createErrorResponse(
-        errorResponse.message,
-        HTTP_STATUS.INTERNAL_SERVER_ERROR,
-      ),
-      { status: HTTP_STATUS.INTERNAL_SERVER_ERROR },
+      ApiUtils.createErrorResponse(errorResponse.message, HTTP_STATUS.INTERNAL_SERVER_ERROR),
+      {
+        status: HTTP_STATUS.INTERNAL_SERVER_ERROR,
+      },
     );
   }
 }

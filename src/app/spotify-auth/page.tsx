@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  API_ENDPOINTS,
-  ERROR_MESSAGES,
-  SPOTIFY_AUTH_ERROR,
-  SPOTIFY_UI,
-  STORAGE_KEYS,
-} from "@/lib/constants";
+import { API_ENDPOINTS, ERROR_MESSAGES, SPOTIFY_AUTH_ERROR, SPOTIFY_UI, STORAGE_KEYS } from "@/lib/constants";
 import { Button, Card, Flex, Heading, Text } from "@once-ui-system/core";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -74,12 +68,7 @@ export default function SpotifyAuthPage() {
         gap="xl"
         padding="xl"
       >
-        <Card
-          padding="xl"
-          background="neutral-strong"
-          border="neutral-medium"
-          radius="m"
-        >
+        <Card padding="xl" background="neutral-strong" border="neutral-medium" radius="m">
           <Flex direction="column" gap="l" horizontal="center">
             <Heading variant="display-strong-l">{SPOTIFY_UI.AUTH_LOADING}</Heading>
             <Text variant="body-default-l" onBackground="neutral-weak">
@@ -102,60 +91,32 @@ export default function SpotifyAuthPage() {
       padding="xl"
       // background="neutral-weak"
     >
-      <Card
-        padding="xl"
-        background="neutral-weak"
-        border="neutral-alpha-medium"
-        radius="m"
-        maxWidth="l"
-      >
+      <Card padding="xl" background="neutral-weak" border="neutral-alpha-medium" radius="m" maxWidth="l">
         <Flex direction="column" gap="l" horizontal="center" fillWidth>
           <Heading variant="display-strong-l">{SPOTIFY_UI.AUTH_TITLE}</Heading>
           {error ? (
             <Flex direction="column" gap="l" horizontal="center">
-              <Card
-                padding="l"
-                background="accent-alpha-weak"
-                border="accent-alpha-medium"
-                radius="m"
-                fillWidth
-              >
+              <Card padding="l" background="accent-alpha-weak" border="accent-alpha-medium" radius="m" fillWidth>
                 <Flex direction="column" gap="m" horizontal="center">
-                  <Heading
-                    variant="heading-strong-m"
-                    onBackground="accent-weak"
-                  >
+                  <Heading variant="heading-strong-m" onBackground="accent-weak">
                     {SPOTIFY_UI.AUTH_ERROR_TITLE}
                   </Heading>
 
                   {error === SPOTIFY_AUTH_ERROR.AUTH_FAILED && (
-                    <Text
-                      variant="body-default-m"
-                      onBackground="accent-weak"
-                      style={{ textAlign: "center" }}
-                    >
+                    <Text variant="body-default-m" onBackground="accent-weak" style={{ textAlign: "center" }}>
                       {ERROR_MESSAGES.SPOTIFY.AUTH_CANCELLED}
                     </Text>
                   )}
 
                   {error === SPOTIFY_AUTH_ERROR.NO_CODE && (
-                    <Text
-                      variant="body-default-m"
-                      onBackground="accent-weak"
-                      style={{ textAlign: "center" }}
-                    >
+                    <Text variant="body-default-m" onBackground="accent-weak" style={{ textAlign: "center" }}>
                       {ERROR_MESSAGES.SPOTIFY.NO_CODE_RECEIVED}
                     </Text>
                   )}
 
                   {error === SPOTIFY_AUTH_ERROR.TOKEN_EXCHANGE_FAILED && (
-                    <Text
-                      variant="body-default-m"
-                      onBackground="accent-weak"
-                      style={{ textAlign: "center" }}
-                    >
-                      Failed to exchange the authorization code for tokens:{" "}
-                      {message}
+                    <Text variant="body-default-m" onBackground="accent-weak" style={{ textAlign: "center" }}>
+                      Failed to exchange the authorization code for tokens: {message}
                     </Text>
                   )}
 
@@ -168,62 +129,32 @@ export default function SpotifyAuthPage() {
           ) : (
             <Flex direction="column" gap="l" horizontal="center">
               {hasStoredToken && (
-                <Card
-                  padding="m"
-                  background="brand-alpha-weak"
-                  border="brand-alpha-medium"
-                  radius="m"
-                  fillWidth
-                >
+                <Card padding="m" background="brand-alpha-weak" border="brand-alpha-medium" radius="m" fillWidth>
                   <Flex vertical="center" gap="m" horizontal="between">
                     <Text variant="body-default-s" onBackground="brand-weak">
-                      💡{" "}
-                      <strong>You already have a stored refresh token!</strong>
+                      💡 <strong>You already have a stored refresh token!</strong>
                     </Text>
-                    <Button
-                      onClick={clearStoredToken}
-                      variant="secondary"
-                      size="s"
-                    >
+                    <Button onClick={clearStoredToken} variant="secondary" size="s">
                       {SPOTIFY_UI.AUTH_CLEAR_TOKEN}
                     </Button>
                   </Flex>
                 </Card>
               )}
 
-              <Text
-                variant="body-default-l"
-                onBackground="neutral-strong"
-                style={{ textAlign: "center" }}
-              >
+              <Text variant="body-default-l" onBackground="neutral-strong" style={{ textAlign: "center" }}>
                 {SPOTIFY_UI.AUTH_INTRO}
               </Text>
 
-              <Text
-                variant="body-default-m"
-                onBackground="neutral-weak"
-                style={{ textAlign: "center" }}
-              >
+              <Text variant="body-default-m" onBackground="neutral-weak" style={{ textAlign: "center" }}>
                 {SPOTIFY_UI.AUTH_INTRO_DETAIL}
               </Text>
 
-              <Card
-                padding="l"
-                background="neutral-alpha-weak"
-                border="neutral-alpha-medium"
-                radius="m"
-                fillWidth
-              >
+              <Card padding="l" background="neutral-alpha-weak" border="neutral-alpha-medium" radius="m" fillWidth>
                 <Flex direction="column" gap="m">
                   <Text variant="body-default-s" onBackground="neutral-weak">
                     <strong>{SPOTIFY_UI.AUTH_REQUIRED_PERMISSIONS}</strong>
                   </Text>
-                  <Flex
-                    direction="column"
-                    gap="xs"
-                    horizontal="start"
-                    style={{ marginLeft: "1rem" }}
-                  >
+                  <Flex direction="column" gap="xs" horizontal="start" style={{ marginLeft: "1rem" }}>
                     <Text variant="body-default-xs" onBackground="neutral-weak">
                       • See what you&apos;re currently playing
                     </Text>
@@ -237,11 +168,7 @@ export default function SpotifyAuthPage() {
                 </Flex>
               </Card>
 
-              <Text
-                variant="body-default-xs"
-                onBackground="neutral-weak"
-                style={{ textAlign: "center" }}
-              >
+              <Text variant="body-default-xs" onBackground="neutral-weak" style={{ textAlign: "center" }}>
                 {SPOTIFY_UI.AUTH_AFTER_MESSAGE}
               </Text>
 
