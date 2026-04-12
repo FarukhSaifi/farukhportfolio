@@ -4,18 +4,7 @@ import { API_ENDPOINTS, ROUTES } from "@/lib/constants";
 import { about, baseURL, person, work } from "@/resources";
 import { formatDate } from "@/utils/formatDate";
 import { getPosts } from "@/utils/utils";
-import {
-  AvatarGroup,
-  Column,
-  Heading,
-  Line,
-  Media,
-  Meta,
-  Row,
-  Schema,
-  SmartLink,
-  Text,
-} from "@once-ui-system/core";
+import { AvatarGroup, Column, Heading, Line, Media, Meta, Row, Schema, SmartLink, Text } from "@once-ui-system/core";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -32,9 +21,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string | string[] }>;
 }): Promise<Metadata> {
   const routeParams = await params;
-  const slugPath = Array.isArray(routeParams.slug)
-    ? routeParams.slug.join("/")
-    : routeParams.slug || "";
+  const slugPath = Array.isArray(routeParams.slug) ? routeParams.slug.join("/") : routeParams.slug || "";
 
   const posts = getPosts(["src", "app", "work", "projects"]);
   let post = posts.find((post) => post.slug === slugPath);
@@ -45,26 +32,16 @@ export async function generateMetadata({
     title: post.metadata.title,
     description: post.metadata.summary,
     baseURL: baseURL,
-    image:
-      post.metadata.image ||
-      `${API_ENDPOINTS.OG_GENERATE}?title=${post.metadata.title}`,
+    image: post.metadata.image || `${API_ENDPOINTS.OG_GENERATE}?title=${post.metadata.title}`,
     path: `${work.path}/${post.slug}`,
   });
 }
 
-export default async function Project({
-  params,
-}: {
-  params: Promise<{ slug: string | string[] }>;
-}) {
+export default async function Project({ params }: { params: Promise<{ slug: string | string[] }> }) {
   const routeParams = await params;
-  const slugPath = Array.isArray(routeParams.slug)
-    ? routeParams.slug.join("/")
-    : routeParams.slug || "";
+  const slugPath = Array.isArray(routeParams.slug) ? routeParams.slug.join("/") : routeParams.slug || "";
 
-  let post = getPosts(["src", "app", "work", "projects"]).find(
-    (post) => post.slug === slugPath,
-  );
+  let post = getPosts(["src", "app", "work", "projects"]).find((post) => post.slug === slugPath);
 
   if (!post) {
     notFound();
@@ -85,10 +62,7 @@ export default async function Project({
         description={post.metadata.summary}
         datePublished={post.metadata.publishedAt}
         dateModified={post.metadata.publishedAt}
-        image={
-          post.metadata.image ||
-          `${API_ENDPOINTS.OG_GENERATE}?title=${encodeURIComponent(post.metadata.title)}`
-        }
+        image={post.metadata.image || `${API_ENDPOINTS.OG_GENERATE}?title=${encodeURIComponent(post.metadata.title)}`}
         author={{
           name: person.name,
           url: `${baseURL}${about.path}`,
@@ -96,23 +70,17 @@ export default async function Project({
         }}
       />
       <Column maxWidth="s" gap="16" horizontal="center" align="center">
-        <SmartLink href={ROUTES.WORK}>
+        <SmartLink href={ROUTES.WORK} aria-label="Back to all projects">
           <Text variant="label-strong-m">Projects</Text>
         </SmartLink>
-        <Text
-          variant="body-default-xs"
-          onBackground="neutral-weak"
-          marginBottom="12"
-        >
+        <Text variant="body-default-xs" onBackground="neutral-weak" marginBottom="12">
           {post.metadata.publishedAt && formatDate(post.metadata.publishedAt)}
         </Text>
         <Heading variant="display-strong-m">{post.metadata.title}</Heading>
       </Column>
       <Row marginBottom="32" horizontal="center">
         <Row gap="16" vertical="center">
-          {post.metadata.team && (
-            <AvatarGroup reverse avatars={avatars} size="s" />
-          )}
+          {post.metadata.team && <AvatarGroup reverse avatars={avatars} size="s" />}
           <Text variant="label-default-m" onBackground="brand-weak">
             {post.metadata.team?.map((member, idx) => (
               <span key={idx}>
@@ -121,7 +89,9 @@ export default async function Project({
                     ,{" "}
                   </Text>
                 )}
-                <SmartLink href={member.linkedIn}>{member.name}</SmartLink>
+                <SmartLink href={member.linkedIn} aria-label={`Visit ${member.name}'s LinkedIn profile`}>
+                  {member.name}
+                </SmartLink>
               </span>
             ))}
           </Text>

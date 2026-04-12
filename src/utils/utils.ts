@@ -164,10 +164,7 @@ export class ClientSpotifyUtils {
    * @param {number} bufferMinutes - Buffer time in minutes
    * @returns {boolean} True if token is about to expire
    */
-  static isTokenAboutToExpire(
-    expiry: number,
-    bufferMinutes: number = 5,
-  ): boolean {
+  static isTokenAboutToExpire(expiry: number, bufferMinutes: number = 5): boolean {
     const bufferMs = bufferMinutes * 60 * 1000;
     return Date.now() >= expiry - bufferMs;
   }

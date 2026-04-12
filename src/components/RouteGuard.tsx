@@ -3,14 +3,7 @@
 import NotFound from "@/app/not-found";
 import { API_ENDPOINTS, ROUTES, ROUTE_GUARD_UI } from "@/lib/constants";
 import { protectedRoutes, routes } from "@/resources";
-import {
-  Button,
-  Column,
-  Flex,
-  Heading,
-  PasswordInput,
-  Spinner,
-} from "@once-ui-system/core";
+import { Button, Column, Flex, Heading, PasswordInput, Spinner } from "@once-ui-system/core";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -117,9 +110,7 @@ const RouteGuard: React.FC<RouteGuardProps> = ({ children }) => {
             onChange={(e) => setPassword(e.target.value)}
             errorMessage={error}
           />
-          <Button onClick={handlePasswordSubmit}>
-            {ROUTE_GUARD_UI.SUBMIT}
-          </Button>
+          <Button onClick={handlePasswordSubmit}>{ROUTE_GUARD_UI.SUBMIT}</Button>
         </Column>
       </Column>
     );

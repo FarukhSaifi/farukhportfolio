@@ -69,11 +69,10 @@ export async function GET(request: NextRequest) {
     // Handle and return standardized error response
     const errorResponse = ApiUtils.handleApiError(error);
     return NextResponse.json(
-      ApiUtils.createErrorResponse(
-        errorResponse.message,
-        HTTP_STATUS.INTERNAL_SERVER_ERROR,
-      ),
-      { status: HTTP_STATUS.INTERNAL_SERVER_ERROR },
+      ApiUtils.createErrorResponse(errorResponse.message, HTTP_STATUS.INTERNAL_SERVER_ERROR),
+      {
+        status: HTTP_STATUS.INTERNAL_SERVER_ERROR,
+      },
     );
   }
 }

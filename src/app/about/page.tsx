@@ -116,7 +116,13 @@ export default function About() {
           </Column>
         )}
         <Column className={styles.blockAlign} flex={9} maxWidth={40}>
-          <Column id={about.intro.title} fillWidth minHeight="160" vertical="center" marginBottom="32">
+          <Column
+            id={about.intro.title}
+            fillWidth
+            minHeight="160"
+            vertical="center"
+            marginBottom="32"
+          >
             {about.calendar.display && (
               <Row
                 fitWidth
@@ -134,13 +140,22 @@ export default function About() {
               >
                 <Icon paddingLeft="12" name="calendar" onBackground="brand-weak" />
                 <Row paddingX="8">Schedule a call</Row>
-                <IconButton href={about.calendar.link} data-border="rounded" variant="secondary" icon="chevronRight" />
+                <IconButton
+                  href={about.calendar.link}
+                  data-border="rounded"
+                  variant="secondary"
+                  icon="chevronRight"
+                />
               </Row>
             )}
             <Heading className={styles.textAlign} variant="display-strong-xl">
               {person.name}
             </Heading>
-            <Text className={styles.textAlign} variant="display-default-xs" onBackground="neutral-weak">
+            <Text
+              className={styles.textAlign}
+              variant="display-default-xs"
+              onBackground="neutral-weak"
+            >
               {person.role}
             </Text>
             {social.length > 0 && (
@@ -213,11 +228,17 @@ export default function About() {
                       {experience.role}
                     </Text>
                     <Column as="ul" gap="16">
-                      {experience.achievements.map((achievement: React.ReactNode, index: number) => (
-                        <Text as="li" variant="body-default-m" key={`${experience.company}-${index}`}>
-                          {achievement}
-                        </Text>
-                      ))}
+                      {experience.achievements.map(
+                        (achievement: React.ReactNode, index: number) => (
+                          <Text
+                            as="li"
+                            variant="body-default-m"
+                            key={`${experience.company}-${index}`}
+                          >
+                            {achievement}
+                          </Text>
+                        ),
+                      )}
                     </Column>
                     {experience.images && experience.images.length > 0 && (
                       <Row fillWidth paddingTop="m" paddingLeft="40" gap="12" wrap>
@@ -269,7 +290,12 @@ export default function About() {
 
           {about.technical.display && (
             <>
-              <Heading as="h2" id={about.technical.title} variant="display-strong-s" marginBottom="40">
+              <Heading
+                as="h2"
+                id={about.technical.title}
+                variant="display-strong-s"
+                marginBottom="40"
+              >
                 {about.technical.title}
               </Heading>
               <Column fillWidth gap="l">
@@ -300,7 +326,13 @@ export default function About() {
                             minWidth={image.width}
                             height={image.height}
                           >
-                            <Media enlarge radius="m" sizes={image.width.toString()} alt={image.alt} src={image.src} />
+                            <Media
+                              enlarge
+                              radius="m"
+                              sizes={image.width.toString()}
+                              alt={image.alt}
+                              src={image.src}
+                            />
                           </Row>
                         ))}
                       </Row>

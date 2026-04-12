@@ -97,9 +97,7 @@ class DatabaseService {
    * @param {Omit<SpotifyCredential, "last_updated">} credential - Spotify credential data
    * @returns {Promise<ApiResponse>} Save operation result
    */
-  async saveSpotifyToken(
-    credential: Omit<SpotifyCredential, "last_updated">,
-  ): Promise<ApiResponse> {
+  async saveSpotifyToken(credential: Omit<SpotifyCredential, "last_updated">): Promise<ApiResponse> {
     try {
       const collection = await this.getCredentialsCollection();
 
@@ -154,15 +152,12 @@ class DatabaseService {
 
       // Check if token is about to expire and refresh if needed
       const now = Date.now();
-      const tokenExpiry =
-        token.last_updated.getTime() + token.expires_in * 1000;
+      const tokenExpiry = token.last_updated.getTime() + token.expires_in * 1000;
 
       if (SpotifyUtils.isTokenAboutToExpire(tokenExpiry, 5)) {
         console.log("🔄 Token is about to expire, refreshing...");
 
-        const refreshResult = await SpotifyUtils.refreshSpotifyToken(
-          token.refresh_token,
-        );
+        const refreshResult = await SpotifyUtils.refreshSpotifyToken(token.refresh_token);
         if (refreshResult) {
           // Update token in database
           const updatedToken = await collection.findOneAndUpdate(
@@ -209,9 +204,7 @@ class DatabaseService {
    * @param {Partial<SpotifyCredential>} updates - Token updates
    * @returns {Promise<ApiResponse>} Update operation result
    */
-  async updateSpotifyToken(
-    updates: Partial<SpotifyCredential>,
-  ): Promise<ApiResponse> {
+  async updateSpotifyToken(updates: Partial<SpotifyCredential>): Promise<ApiResponse> {
     try {
       const collection = await this.getCredentialsCollection();
 

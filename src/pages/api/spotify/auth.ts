@@ -17,12 +17,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "GET") {
     return res
       .status(HTTP_STATUS.METHOD_NOT_ALLOWED)
-      .json(
-        ApiUtils.createErrorResponse(
-          "Method not allowed",
-          HTTP_STATUS.METHOD_NOT_ALLOWED,
-        ),
-      );
+      .json(ApiUtils.createErrorResponse("Method not allowed", HTTP_STATUS.METHOD_NOT_ALLOWED));
   }
 
   try {
@@ -63,11 +58,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     const errorResponse = ApiUtils.handleApiError(error);
     return res
       .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)
-      .json(
-        ApiUtils.createErrorResponse(
-          errorResponse.message,
-          HTTP_STATUS.INTERNAL_SERVER_ERROR,
-        ),
-      );
+      .json(ApiUtils.createErrorResponse(errorResponse.message, HTTP_STATUS.INTERNAL_SERVER_ERROR));
   }
 }
