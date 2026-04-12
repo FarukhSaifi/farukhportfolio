@@ -2,21 +2,8 @@
 
 import { useDatabaseSpotify } from "@/contexts/DatabaseSpotifyContext";
 import { useToast } from "@/hooks/useToast";
-import {
-  API_ENDPOINTS,
-  ERROR_MESSAGES,
-  ROUTES,
-  SPOTIFY_UI,
-  SUCCESS_MESSAGES,
-} from "@/lib/constants";
-import {
-  Button,
-  Card,
-  Flex,
-  Heading,
-  Spinner,
-  Text,
-} from "@once-ui-system/core";
+import { API_ENDPOINTS, ERROR_MESSAGES, ROUTES, SPOTIFY_UI, SUCCESS_MESSAGES } from "@/lib/constants";
+import { Button, Card, Flex, Heading, Spinner, Text } from "@once-ui-system/core";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 export default function SpotifySuccessPage() {
@@ -66,10 +53,7 @@ export default function SpotifySuccessPage() {
           updateAccessToken(tokenData.access_token, tokenData.expires_in);
 
           // Show success toast
-          success(
-            SUCCESS_MESSAGES.SPOTIFY.CONNECTED_TOAST_TITLE,
-            SUCCESS_MESSAGES.SPOTIFY.TOKENS_SAVED_TOAST,
-          );
+          success(SUCCESS_MESSAGES.SPOTIFY.CONNECTED_TOAST_TITLE, SUCCESS_MESSAGES.SPOTIFY.TOKENS_SAVED_TOAST);
         } else {
           const saveError = await saveResponse.json();
           const errorMessage = `Failed to save token: ${saveError.error}`;
@@ -109,17 +93,10 @@ export default function SpotifySuccessPage() {
         padding="xl"
         background="neutral-weak"
       >
-        <Card
-          padding="xl"
-          background="neutral-strong"
-          border="neutral-medium"
-          radius="m"
-        >
+        <Card padding="xl" background="neutral-strong" border="neutral-medium" radius="m">
           <Flex direction="column" gap="l" style={{ alignItems: "center" }}>
             <Spinner size="l" />
-            <Heading variant="display-strong-l">
-              {SPOTIFY_UI.LOADING_PROCESSING}
-            </Heading>
+            <Heading variant="display-strong-l">{SPOTIFY_UI.LOADING_PROCESSING}</Heading>
             <Text variant="body-default-l" onBackground="neutral-weak">
               {SPOTIFY_UI.LOADING_EXCHANGING}
             </Text>
@@ -143,22 +120,12 @@ export default function SpotifySuccessPage() {
         padding="xl"
         background="neutral-weak"
       >
-        <Card
-          padding="xl"
-          background="accent-alpha-weak"
-          border="accent-alpha-medium"
-          radius="m"
-          maxWidth="l"
-        >
+        <Card padding="xl" background="accent-alpha-weak" border="accent-alpha-medium" radius="m" maxWidth="l">
           <Flex direction="column" gap="l" style={{ alignItems: "center" }}>
             <Heading variant="display-strong-m" onBackground="accent-weak">
               {SPOTIFY_UI.ERROR_TITLE}
             </Heading>
-            <Text
-              variant="body-default-m"
-              onBackground="accent-weak"
-              style={{ textAlign: "center" }}
-            >
+            <Text variant="body-default-m" onBackground="accent-weak" style={{ textAlign: "center" }}>
               {error}
             </Text>
             <Button href={ROUTES.SPOTIFY_AUTH} variant="primary" size="l">
@@ -180,9 +147,7 @@ export default function SpotifySuccessPage() {
     >
       <Card padding="xl" maxWidth="m">
         <Flex direction="column" gap="l" style={{ alignItems: "center" }}>
-          <Heading variant="display-strong-m">
-            {SPOTIFY_UI.SUCCESS_TITLE}
-          </Heading>
+          <Heading variant="display-strong-m">{SPOTIFY_UI.SUCCESS_TITLE}</Heading>
 
           <Flex direction="column" gap="m" style={{ alignItems: "center" }}>
             <Text variant="body-default-m">{SPOTIFY_UI.MESSAGE_CONNECTED}</Text>

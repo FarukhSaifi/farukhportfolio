@@ -31,11 +31,7 @@ export const API_ENDPOINTS = {
 
 // Spotify Configuration
 export const SPOTIFY_CONFIG = {
-  SCOPES: [
-    "user-read-currently-playing",
-    "user-read-playback-state",
-    "user-read-recently-played",
-  ],
+  SCOPES: ["user-read-currently-playing", "user-read-playback-state", "user-read-recently-played"],
   API_BASE_URL: "https://api.spotify.com/v1",
   AUTH_BASE_URL: "https://accounts.spotify.com/api/token",
   AUTHORIZE_URL: "https://accounts.spotify.com/authorize",
@@ -93,10 +89,8 @@ export const ERROR_MESSAGES = {
     NO_TOKEN: "Spotify token not available. Please connect to Spotify.",
     NO_AUTH_CODE: "No authorization code found",
     AUTH_FAILED: "Spotify authentication failed. Please try again.",
-    AUTH_CANCELLED:
-      "The Spotify authorization was cancelled or failed. Please try again.",
-    NO_CODE_RECEIVED:
-      "No authorization code received from Spotify. Please try again.",
+    AUTH_CANCELLED: "The Spotify authorization was cancelled or failed. Please try again.",
+    NO_CODE_RECEIVED: "No authorization code received from Spotify. Please try again.",
     API_ERROR: "Failed to fetch Spotify data. Please try again.",
     TOKEN_EXPIRED: "Spotify token expired. Please reconnect.",
   },
@@ -117,8 +111,7 @@ export const SUCCESS_MESSAGES = {
   SPOTIFY: {
     CONNECTED: "Spotify connected successfully!",
     CONNECTED_TOAST_TITLE: "Spotify Connected!",
-    TOKENS_SAVED_TOAST:
-      "Your tokens have been saved to the database and are now publicly accessible.",
+    TOKENS_SAVED_TOAST: "Your tokens have been saved to the database and are now publicly accessible.",
     TOKEN_SAVED: "Spotify token saved to database.",
     TOKEN_REFRESHED: "Spotify token refreshed successfully.",
   },
@@ -183,8 +176,7 @@ export const SPOTIFY_UI = {
   TRY_AGAIN: "Try Again",
   GO_TO_HOME: "Go to Home",
   SUCCESS_TITLE: "🎉 Spotify Connected!",
-  TOKENS_SAVED_MESSAGE:
-    "Your tokens have been saved to the database and are now publicly accessible.",
+  TOKENS_SAVED_MESSAGE: "Your tokens have been saved to the database and are now publicly accessible.",
   // Auth page
   AUTH_LOADING: "🔄 Loading...",
   AUTH_PLEASE_WAIT: "Please wait...",

@@ -86,32 +86,19 @@ function slugify(str: string): string {
 }
 
 function createHeading(as: "h1" | "h2" | "h3" | "h4" | "h5" | "h6") {
-  const CustomHeading = ({
-    children,
-    ...props
-  }: Omit<React.ComponentProps<typeof HeadingLink>, "as" | "id">) => {
+  const CustomHeading = ({ children, ...props }: Omit<React.ComponentProps<typeof HeadingLink>, "as" | "id">) => {
     // Safely convert children to string for slugify
     const childrenString =
       typeof children === "string"
         ? children
         : Array.isArray(children)
-          ? children
-              .map((child) =>
-                typeof child === "string" ? child : String(child),
-              )
-              .join("")
+          ? children.map((child) => (typeof child === "string" ? child : String(child))).join("")
           : children != null
             ? String(children)
             : "";
     const slug = slugify(childrenString);
     return (
-      <HeadingLink
-        marginTop="24"
-        marginBottom="12"
-        as={as}
-        id={slug}
-        {...props}
-      >
+      <HeadingLink marginTop="24" marginBottom="12" as={as} id={slug} {...props}>
         {children}
       </HeadingLink>
     );
@@ -142,17 +129,12 @@ function createInlineCode({ children }: { children: ReactNode }) {
 
 function createCodeBlock(props: any) {
   // For pre tags that contain code blocks
-  if (
-    props.children &&
-    props.children.props &&
-    props.children.props.className
-  ) {
+  if (props.children && props.children.props && props.children.props.className) {
     const { className, children } = props.children.props;
 
     // Extract language from className (format: language-xxx)
     // Ensure className is a string before calling replace
-    const classNameStr =
-      typeof className === "string" ? className : String(className || "");
+    const classNameStr = typeof className === "string" ? className : String(className || "");
     const language = classNameStr.replace("language-", "");
     const label = language.charAt(0).toUpperCase() + language.slice(1);
 
@@ -177,9 +159,7 @@ function createCodeBlock(props: any) {
 }
 
 function createList(as: "ul" | "ol") {
-  return ({ children }: { children: ReactNode }) => (
-    <List as={as}>{children}</List>
-  );
+  return ({ children }: { children: ReactNode }) => <List as={as}>{children}</List>;
 }
 
 function createListItem({ children }: { children: ReactNode }) {
@@ -238,10 +218,6 @@ type CustomMDXProps = MDXRemoteProps & {
 
 export function CustomMDX(props: CustomMDXProps) {
   return (
-    <MDXRemote
-      options={{ blockJS: false }}
-      {...props}
-      components={{ ...components, ...(props.components || {}) }}
-    />
+    <MDXRemote options={{ blockJS: false }} {...props} components={{ ...components, ...(props.components || {}) }} />
   );
 }

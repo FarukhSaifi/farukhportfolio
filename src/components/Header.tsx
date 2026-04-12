@@ -1,27 +1,11 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
 
-import {
-  Fade,
-  Flex,
-  IconButton,
-  Line,
-  Row,
-  ToggleButton,
-} from "@once-ui-system/core";
+import { Fade, Flex, Line, Row, ToggleButton } from "@once-ui-system/core";
 
 import { ROUTES } from "@/lib/constants";
-import {
-  about,
-  blog,
-  display,
-  gallery,
-  person,
-  routes,
-  work,
-} from "@/resources";
+import { about, blog, display, gallery, person, routes, work } from "@/resources";
 import styles from "./Header.module.scss";
 import { ThemeToggle } from "./ThemeToggle";
 
@@ -61,37 +45,10 @@ type TimeDisplayProps = {
 export const Header = () => {
   const pathname = usePathname() ?? "";
 
-  const [theme, setTheme] = useState("dark");
-
-  useEffect(() => {
-    const root = document.documentElement;
-    root.setAttribute("data-theme", theme);
-  }, [theme]);
-
-  // Toggle between light and dark
-  const handleThemeToggle = () => {
-    setTheme(theme === "light" ? "dark" : "light");
-  };
-
   return (
     <>
-      <Fade
-        s={{ hide: true }}
-        fillWidth
-        position="fixed"
-        height="80"
-        zIndex={9}
-      />
-      <Fade
-        hide
-        s={{ hide: false }}
-        fillWidth
-        position="fixed"
-        bottom="0"
-        to="top"
-        height="80"
-        zIndex={9}
-      />
+      <Fade s={{ hide: true }} fillWidth position="fixed" height="80" zIndex={9} />
+      <Fade hide s={{ hide: false }} fillWidth position="fixed" bottom="0" to="top" height="80" zIndex={9} />
       <Row
         fitHeight
         className={styles.position}
@@ -106,12 +63,7 @@ export const Header = () => {
           position: "fixed",
         }}
       >
-        <Row
-          paddingLeft="12"
-          fillWidth
-          vertical="center"
-          textVariant="body-default-s"
-        >
+        <Row paddingLeft="12" fillWidth vertical="center" textVariant="body-default-s">
           {display.location && <Row s={{ hide: true }}>{person.location}</Row>}
         </Row>
         <Row fillWidth horizontal="center">
@@ -124,17 +76,13 @@ export const Header = () => {
             horizontal="center"
             zIndex={1}
           >
-            <Row
-              gap="4"
-              vertical="center"
-              textVariant="body-default-s"
-              suppressHydrationWarning
-            >
+            <Row gap="4" vertical="center" textVariant="body-default-s" suppressHydrationWarning>
               {routes[ROUTES.HOME] && (
                 <ToggleButton
                   prefixIcon="home"
                   href={ROUTES.HOME}
                   selected={pathname === ROUTES.HOME}
+                  aria-label="Home"
                 />
               )}
               <Line background="neutral-alpha-medium" vert maxHeight="24" />
@@ -146,6 +94,7 @@ export const Header = () => {
                       href={ROUTES.ABOUT}
                       label={about.label}
                       selected={pathname === ROUTES.ABOUT}
+                      aria-label="About"
                     />
                   </Row>
                   <Row hide s={{ hide: false }}>
@@ -153,6 +102,7 @@ export const Header = () => {
                       prefixIcon="person"
                       href={ROUTES.ABOUT}
                       selected={pathname === ROUTES.ABOUT}
+                      aria-label="About"
                     />
                   </Row>
                 </>
@@ -165,6 +115,7 @@ export const Header = () => {
                       href={ROUTES.WORK}
                       label={work.label}
                       selected={pathname.startsWith(ROUTES.WORK)}
+                      aria-label="Work"
                     />
                   </Row>
                   <Row hide s={{ hide: false }}>
@@ -172,6 +123,7 @@ export const Header = () => {
                       prefixIcon="grid"
                       href={ROUTES.WORK}
                       selected={pathname.startsWith(ROUTES.WORK)}
+                      aria-label="Work"
                     />
                   </Row>
                 </>
@@ -184,6 +136,7 @@ export const Header = () => {
                       href={ROUTES.BLOG}
                       label={blog.label}
                       selected={pathname.startsWith(ROUTES.BLOG)}
+                      aria-label="Blog"
                     />
                   </Row>
                   <Row hide s={{ hide: false }}>
@@ -191,6 +144,7 @@ export const Header = () => {
                       prefixIcon="book"
                       href={ROUTES.BLOG}
                       selected={pathname.startsWith(ROUTES.BLOG)}
+                      aria-label="Blog"
                     />
                   </Row>
                 </>
@@ -203,6 +157,7 @@ export const Header = () => {
                       href={ROUTES.GALLERY}
                       label={gallery.label}
                       selected={pathname.startsWith(ROUTES.GALLERY)}
+                      aria-label="Gallery"
                     />
                   </Row>
                   <Row hide s={{ hide: false }}>
@@ -210,6 +165,7 @@ export const Header = () => {
                       prefixIcon="gallery"
                       href={ROUTES.GALLERY}
                       selected={pathname.startsWith(ROUTES.GALLERY)}
+                      aria-label="Gallery"
                     />
                   </Row>
                 </>
@@ -224,21 +180,8 @@ export const Header = () => {
           </Row>
         </Row>
         <Flex fillWidth horizontal="end" vertical="center">
-          <Flex
-            paddingRight="12"
-            horizontal="end"
-            vertical="center"
-            textVariant="body-default-s"
-            gap="20"
-          >
-            <div onClick={handleThemeToggle}>
-              <IconButton
-                size="l"
-                key={`theme-icon`}
-                icon={theme === "dark" ? "sun" : "moon"}
-                variant="secondary"
-              />
-            </div>
+          <Flex paddingRight="12" horizontal="end" vertical="center" textVariant="body-default-s" gap="20">
+            <ThemeToggle />
             {/* <Flex hide="s">{display.time && <TimeDisplay timeZone={person.location} />}</Flex> */}
           </Flex>
         </Flex>

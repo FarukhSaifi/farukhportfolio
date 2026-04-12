@@ -7,10 +7,7 @@ export async function GET(request: NextRequest) {
     const imageUrl = url.searchParams.get("url");
 
     if (!imageUrl) {
-      return NextResponse.json(
-        { error: "Missing URL parameter" },
-        { status: 400 },
-      );
+      return NextResponse.json({ error: "Missing URL parameter" }, { status: 400 });
     }
 
     // Fetch the image
@@ -40,9 +37,6 @@ export async function GET(request: NextRequest) {
     });
   } catch (error) {
     console.error("Error proxying image:", error);
-    return NextResponse.json(
-      { error: "Failed to proxy image" },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: "Failed to proxy image" }, { status: 500 });
   }
 }

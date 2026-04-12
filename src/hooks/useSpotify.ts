@@ -91,8 +91,7 @@ export function useSpotifyNowPlaying(): UseNowPlayingReturn {
       if (retryCountRef.current < SPOTIFY_CONFIG.RETRY_CONFIG.MAX_RETRIES) {
         retryCountRef.current++;
         const delay = Math.min(
-          SPOTIFY_CONFIG.RETRY_CONFIG.BASE_DELAY *
-            Math.pow(2, retryCountRef.current - 1),
+          SPOTIFY_CONFIG.RETRY_CONFIG.BASE_DELAY * Math.pow(2, retryCountRef.current - 1),
           SPOTIFY_CONFIG.RETRY_CONFIG.MAX_DELAY,
         );
 
@@ -166,10 +165,7 @@ export function useSpotifyNowPlaying(): UseNowPlayingReturn {
     };
   }, [fetchNowPlaying, startPolling, stopPolling]);
 
-  return useMemo(
-    () => ({ payload, loading, error }),
-    [payload, loading, error],
-  );
+  return useMemo(() => ({ payload, loading, error }), [payload, loading, error]);
 }
 
 /**
@@ -227,10 +223,7 @@ export function usePublicSpotifyNowPlaying(): UseNowPlayingReturn {
     return () => clearInterval(interval);
   }, [fetchPublicNowPlaying]);
 
-  return useMemo(
-    () => ({ payload, loading, error }),
-    [payload, loading, error],
-  );
+  return useMemo(() => ({ payload, loading, error }), [payload, loading, error]);
 }
 
 /**
