@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  SPOTIFY_QUERY_KEYS,
-  SPOTIFY_STATUS,
-  SPOTIFY_UI,
-} from "@/lib/constants";
+import { SPOTIFY_QUERY_KEYS, SPOTIFY_STATUS, SPOTIFY_UI } from "@/lib/constants";
 import { Flex, Heading, Text } from "@once-ui-system/core";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -47,10 +43,7 @@ export default function SpotifyStatusNotification() {
       border={isSuccess ? "brand-alpha-medium" : "accent-alpha-medium"}
       radius="m"
     >
-      <Heading
-        variant="heading-strong-m"
-        onBackground={isSuccess ? "brand-weak" : "accent-weak"}
-      >
+      <Heading variant="heading-strong-m" onBackground={isSuccess ? "brand-weak" : "accent-weak"}>
         {isSuccess ? SPOTIFY_UI.TITLE_CONNECTED : SPOTIFY_UI.TITLE_ERROR}
       </Heading>
 

@@ -108,7 +108,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res
           .status(HTTP_STATUS.UNAUTHORIZED)
           .json(
-            ApiUtils.createErrorResponse("Failed to refresh Spotify token", HTTP_STATUS.UNAUTHORIZED),
+            ApiUtils.createErrorResponse(
+              "Failed to refresh Spotify token",
+              HTTP_STATUS.UNAUTHORIZED,
+            ),
           );
       }
     }

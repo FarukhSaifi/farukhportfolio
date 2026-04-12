@@ -4,7 +4,6 @@ import "@once-ui-system/core/css/tokens.css";
 
 import classNames from "classnames";
 
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Footer, Header, Providers, RouteGuard } from "@/components";
 import { baseURL, dataStyle, effects, fonts, home, person, style } from "@/resources";
 import {
@@ -16,6 +15,7 @@ import {
   RevealFx,
   SpacingToken,
 } from "@once-ui-system/core";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export async function generateMetadata() {
   return Meta.generate({
@@ -47,6 +47,12 @@ export default async function RootLayout({
     >
       <head>
         <meta name="mobile-web-app-capable" content="yes" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+        <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+        <link rel="preconnect" href="https://i.scdn.co" />
+        <link rel="dns-prefetch" href="https://i.scdn.co" />
         <link rel="preload" href={person.avatar} as="image" />
         <script
           id="theme-init"

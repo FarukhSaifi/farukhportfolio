@@ -40,6 +40,7 @@ export const Footer = () => {
                   tooltip={item.name}
                   size="s"
                   variant="ghost"
+                  aria-label={item.name}
                 />
               ),
           )}

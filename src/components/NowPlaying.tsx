@@ -3,14 +3,7 @@
 import { useSpotifyNowPlaying } from "@/hooks/useSpotify";
 import { useToast } from "@/hooks/useToast";
 import { API_ENDPOINTS, ROUTES } from "@/lib/constants";
-import {
-  Avatar,
-  Button,
-  Flex,
-  Icon,
-  RevealFx,
-  Spinner,
-} from "@once-ui-system/core";
+import { Avatar, Button, Flex, Icon, RevealFx, Spinner } from "@once-ui-system/core";
 import { useEffect, useState } from "react";
 import MarqueeTextCSS from "./MarqueeTextCSS";
 import PublicNowPlaying from "./PublicNowPlaying";
@@ -44,10 +37,7 @@ export default function NowPlaying() {
       const currentTrack = `${payload.track.title} - ${payload.track.artist}`;
 
       if (lastTrack && lastTrack !== currentTrack) {
-        info(
-          "Now Playing",
-          `🎵 ${payload.track.title} by ${payload.track.artist}`,
-        );
+        info("Now Playing", `🎵 ${payload.track.title} by ${payload.track.artist}`);
       }
 
       setLastTrack(currentTrack);
@@ -123,21 +113,10 @@ export default function NowPlaying() {
       onMouseLeave={() => setHover(false)}
     >
       <RevealFx translateY="12" delay={0.4} horizontal="start">
-        <Button
-          id="about"
-          data-border="rounded"
-          href={track.songUrl || "#"}
-          variant="secondary"
-          size="l"
-          arrowIcon
-        >
+        <Button id="about" data-border="rounded" href={track.songUrl || "#"} variant="secondary" size="l" arrowIcon>
           <Flex gap="8" vertical="center">
             {track.imageUrl && (
-              <Avatar
-                style={{ marginLeft: "-1.5rem", marginRight: "0.25rem" }}
-                src={track.imageUrl}
-                size="l"
-              />
+              <Avatar style={{ marginLeft: "-1.5rem", marginRight: "0.25rem" }} src={track.imageUrl} size="l" />
             )}
             <MarqueeTextCSS maxWidth={180}>{track.title}</MarqueeTextCSS>
           </Flex>

@@ -1,4 +1,3 @@
-import dynamic from "next/dynamic";
 import { API_ENDPOINTS } from "@/lib/constants";
 import { about, baseURL, home, person, routes } from "@/resources";
 import {
@@ -14,6 +13,7 @@ import {
   Schema,
   Text,
 } from "@once-ui-system/core";
+import dynamic from "next/dynamic";
 
 const Projects = dynamic(() => import("@/components/work/Projects").then((mod) => mod.Projects));
 const Posts = dynamic(() => import("@/components/blog/Posts").then((mod) => mod.Posts));
@@ -88,20 +88,11 @@ export default function Home() {
             horizontal="center"
             paddingBottom="32"
           >
-            <Text
-              wrap="balance"
-              onBackground="neutral-weak"
-              variant="heading-default-xl"
-            >
+            <Text wrap="balance" onBackground="neutral-weak" variant="heading-default-xl">
               {home.subline}
             </Text>
           </RevealFx>
-          <RevealFx
-            paddingTop="12"
-            delay={0.2}
-            horizontal="center"
-            paddingLeft="12"
-          >
+          <RevealFx paddingTop="12" delay={0.2} horizontal="center" paddingLeft="12">
             <Button
               id="about"
               data-border="rounded"
