@@ -173,7 +173,7 @@ export const SPOTIFY_UI = {
   LOADING_PROCESSING: "🔄 Processing...",
   LOADING_EXCHANGING: "Exchanging authorization code for tokens...",
   ERROR_TITLE: "❌ Error",
-  TRY_AGAIN: "Try Again",
+  TRY_AGAIN: "Try Again 🔄",
   GO_TO_HOME: "Go to Home",
   SUCCESS_TITLE: "🎉 Spotify Connected!",
   TOKENS_SAVED_MESSAGE: "Your tokens have been saved to the database and are now publicly accessible.",
