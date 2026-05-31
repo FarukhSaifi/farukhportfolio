@@ -186,7 +186,7 @@ export class SpotifyUtils {
    * @returns {string} Redirect URI
    */
   static getRedirectUri(): string {
-    return process.env.NODE_ENV === "production"
+    return EnvironmentUtils.isProduction()
       ? SPOTIFY_CONFIG.REDIRECT_URI.PRODUCTION
       : SPOTIFY_CONFIG.REDIRECT_URI.DEVELOPMENT;
   }
@@ -328,7 +328,7 @@ export class EnvironmentUtils {
    * @returns {boolean} True if in development
    */
   static isDevelopment(): boolean {
-    return process.env.NODE_ENV === "development";
+    return !EnvironmentUtils.isProduction();
   }
 
   /**

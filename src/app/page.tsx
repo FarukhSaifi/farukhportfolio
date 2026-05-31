@@ -1,21 +1,8 @@
 import { API_ENDPOINTS } from "@/lib/constants";
 import { about, baseURL, home, person, routes } from "@/resources";
-import {
-  Avatar,
-  Badge,
-  Button,
-  Column,
-  Heading,
-  Line,
-  Meta,
-  RevealFx,
-  Row,
-  Schema,
-  Text,
-} from "@once-ui-system/core";
+import { Avatar, Badge, Button, Column, Heading, Line, Meta, RevealFx, Row, Schema, Text } from "@once-ui-system/core";
 import dynamic from "next/dynamic";
 
-const Projects = dynamic(() => import("@/components/work/Projects").then((mod) => mod.Projects));
 const Posts = dynamic(() => import("@/components/blog/Posts").then((mod) => mod.Posts));
 const Mailchimp = dynamic(() => import("@/components").then((mod) => mod.Mailchimp));
 
@@ -69,13 +56,7 @@ export default function Home() {
               </Badge>
             </RevealFx>
           )}
-          <RevealFx
-            revealedByDefault={true}
-            translateY="4"
-            fillWidth
-            horizontal="center"
-            paddingBottom="16"
-          >
+          <RevealFx revealedByDefault={true} translateY="4" fillWidth horizontal="center" paddingBottom="16">
             <Heading wrap="balance" variant="display-strong-l">
               {home.headline}
             </Heading>
@@ -104,12 +85,7 @@ export default function Home() {
             >
               <Row gap="8" vertical="center" paddingRight="4">
                 {about.avatar.display && (
-                  <Avatar
-                    marginRight="8"
-                    style={{ marginLeft: "-0.75rem" }}
-                    src={person.avatar}
-                    size="m"
-                  />
+                  <Avatar marginRight="8" style={{ marginLeft: "-0.75rem" }} src={person.avatar} size="m" />
                 )}
                 {about.title}
               </Row>
@@ -117,9 +93,6 @@ export default function Home() {
           </RevealFx>
         </Column>
       </Column>
-      <RevealFx translateY="16" delay={0.4}>
-        <Projects range={[1, 1]} />
-      </RevealFx>
       {routes["/blog"] && (
         <Column fillWidth gap="24" marginBottom="l">
           <Row fillWidth paddingRight="64">
@@ -140,7 +113,6 @@ export default function Home() {
           </Row>
         </Column>
       )}
-      <Projects range={[2]} />
       <Mailchimp />
     </Column>
   );
