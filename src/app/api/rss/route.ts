@@ -1,14 +1,14 @@
+import { getBlogPosts } from "@/lib/blog-posts";
 import { baseURL, blog, person } from "@/resources";
-import { getPosts } from "@/utils/utils";
 import { NextResponse } from "next/server";
 
-export async function GET() {
-  const posts = getPosts(["src", "app", "blog", "posts"]);
+function resolveImageUrl(image?: string): string {
+  if (!image) return "";
+  return image.startsWith("http") ? image : `${baseURL}${image}`;
+}
 
-  // Sort posts by date (newest first)
-  const sortedPosts = posts.sort((a, b) => {
-    return new Date(b.metadata.publishedAt).getTime() - new Date(a.metadata.publishedAt).getTime();
-  });
+export async function GET() {
+  const sortedPosts = await getBlogPosts();
 
   // Generate RSS XML
   const rssXml = `<?xml version="1.0" encoding="UTF-8"?>
@@ -36,7 +36,7 @@ export async function GET() {
       <guid>${baseURL}/blog/${post.slug}</guid>
       <pubDate>${new Date(post.metadata.publishedAt).toUTCString()}</pubDate>
       <description><![CDATA[${post.metadata.summary}]]></description>
-      ${post.metadata.image ? `<enclosure url="${baseURL}${post.metadata.image}" type="image/jpeg" />` : ""}
+      ${post.metadata.image ? `<enclosure url="${resolveImageUrl(post.metadata.image)}" type="image/jpeg" />` : ""}
       ${post.metadata.tag ? `<category>${post.metadata.tag}</category>` : ""}
       <author>${person.email || "noreply@example.com"} (${person.name})</author>
     </item>`,

@@ -1,10 +1,10 @@
 import { CustomMDX, ScrollToHash } from "@/components";
 import { Posts } from "@/components/blog/Posts";
 import { ShareSection } from "@/components/blog/ShareSection";
+import { getBlogPostBySlug, getBlogPosts } from "@/lib/blog-posts";
 import { API_ENDPOINTS, ROUTES } from "@/lib/constants";
 import { about, baseURL, blog, person } from "@/resources";
 import { formatDate } from "@/utils/formatDate";
-import { getPosts } from "@/utils/utils";
 import {
   Avatar,
   Column,
@@ -22,7 +22,7 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 export async function generateStaticParams(): Promise<{ slug: string }[]> {
-  const posts = getPosts(["src", "app", "blog", "posts"]);
+  const posts = await getBlogPosts();
   return posts.map((post) => ({
     slug: post.slug,
   }));
@@ -34,12 +34,9 @@ export async function generateMetadata({
   params: Promise<{ slug: string | string[] }>;
 }): Promise<Metadata> {
   const routeParams = await params;
-  const slugPath = Array.isArray(routeParams.slug)
-    ? routeParams.slug.join("/")
-    : routeParams.slug || "";
+  const slugPath = Array.isArray(routeParams.slug) ? routeParams.slug.join("/") : routeParams.slug || "";
 
-  const posts = getPosts(["src", "app", "blog", "posts"]);
-  let post = posts.find((post) => post.slug === slugPath);
+  const post = await getBlogPostBySlug(slugPath);
 
   if (!post) return {};
 
@@ -54,11 +51,9 @@ export async function generateMetadata({
 
 export default async function Blog({ params }: { params: Promise<{ slug: string | string[] }> }) {
   const routeParams = await params;
-  const slugPath = Array.isArray(routeParams.slug)
-    ? routeParams.slug.join("/")
-    : routeParams.slug || "";
+  const slugPath = Array.isArray(routeParams.slug) ? routeParams.slug.join("/") : routeParams.slug || "";
 
-  let post = getPosts(["src", "app", "blog", "posts"]).find((post) => post.slug === slugPath);
+  const post = await getBlogPostBySlug(slugPath);
 
   if (!post) {
     notFound();
@@ -83,8 +78,7 @@ export default async function Blog({ params }: { params: Promise<{ slug: string 
             datePublished={post.metadata.publishedAt}
             dateModified={post.metadata.publishedAt}
             image={
-              post.metadata.image ||
-              `${API_ENDPOINTS.OG_GENERATE}?title=${encodeURIComponent(post.metadata.title)}`
+              post.metadata.image || `${API_ENDPOINTS.OG_GENERATE}?title=${encodeURIComponent(post.metadata.title)}`
             }
             author={{
               name: person.name,
@@ -101,12 +95,7 @@ export default async function Blog({ params }: { params: Promise<{ slug: string 
             </Text>
             <Heading variant="display-strong-m">{post.metadata.title}</Heading>
             {post.metadata.subtitle && (
-              <Text
-                variant="body-default-l"
-                onBackground="neutral-weak"
-                align="center"
-                style={{ fontStyle: "italic" }}
-              >
+              <Text variant="body-default-l" onBackground="neutral-weak" align="center" style={{ fontStyle: "italic" }}>
                 {post.metadata.subtitle}
               </Text>
             )}
@@ -148,15 +137,7 @@ export default async function Blog({ params }: { params: Promise<{ slug: string 
           <ScrollToHash />
         </Column>
       </Row>
-      <Column
-        maxWidth={12}
-        paddingLeft="40"
-        fitHeight
-        position="sticky"
-        top="80"
-        gap="16"
-        m={{ hide: true }}
-      >
+      <Column maxWidth={12} paddingLeft="40" fitHeight position="sticky" top="80" gap="16" m={{ hide: true }}>
         <HeadingNav fitHeight />
       </Column>
     </Row>

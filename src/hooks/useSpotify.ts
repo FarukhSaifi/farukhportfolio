@@ -49,7 +49,7 @@ export function useSpotifyNowPlaying(): UseNowPlayingReturn {
       // Get valid access token (with automatic refresh if needed)
       const accessToken = await getValidAccessToken();
       if (!accessToken) {
-        throw new Error("No valid Spotify token available");
+        console.log("No valid Spotify token available");
       }
 
       const headers: Record<string, string> = {
