@@ -1,4 +1,4 @@
-import { EnvironmentUtils } from "./server-utils";
+const PRODUCTION_SYNCAPP_API = "https://sync-app-server.vercel.app/api";
 
 /**
  * SyncApp API configuration.
@@ -10,5 +10,5 @@ export function getSyncAppApiBase(): string {
     return envUrl.endsWith("/api") ? envUrl : `${envUrl.replace(/\/$/, "")}/api`;
   }
 
-  return EnvironmentUtils.isProduction() ? "https://sync-app-server.vercel.app/api" : "http://localhost:9000/api";
+  return PRODUCTION_SYNCAPP_API;
 }

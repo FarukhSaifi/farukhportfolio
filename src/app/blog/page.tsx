@@ -1,8 +1,12 @@
 import { Mailchimp } from "@/components";
-import { Posts } from "@/components/blog/Posts";
+import { BlogPostsLazy } from "@/components/blog/BlogPostsLazy";
+import Post from "@/components/blog/Post";
+import { getBlogPostsPaginated } from "@/lib/blog-posts";
 import { API_ENDPOINTS } from "@/lib/constants";
 import { baseURL, blog, person } from "@/resources";
-import { Column, Heading, Meta, Schema } from "@once-ui-system/core";
+import { Column, Grid, Heading, Meta, Schema } from "@once-ui-system/core";
+
+const INITIAL_PAGE_SIZE = 10;
 
 export async function generateMetadata() {
   return Meta.generate({
@@ -14,7 +18,13 @@ export async function generateMetadata() {
   });
 }
 
-export default function Blog() {
+export default async function Blog() {
+  const { posts: initialPosts, total } = await getBlogPostsPaginated(0, INITIAL_PAGE_SIZE);
+
+  const featured = initialPosts[0];
+  const spotlight = initialPosts.slice(1, 3);
+  const earlier = initialPosts.slice(3);
+
   return (
     <Column maxWidth="m" paddingTop="24">
       <Schema
@@ -34,13 +44,33 @@ export default function Blog() {
         {blog.title}
       </Heading>
       <Column fillWidth flex={1} gap="40">
-        <Posts range={[1, 1]} thumbnail />
-        <Posts range={[2, 3]} columns="2" thumbnail direction="column" />
+        {featured && <Post post={featured} thumbnail />}
+
+        {spotlight.length > 0 && (
+          <Grid columns="2" s={{ columns: 1 }} fillWidth gap="16">
+            {spotlight.map((post) => (
+              <Post key={post.slug} post={post} thumbnail direction="column" />
+            ))}
+          </Grid>
+        )}
+
         <Mailchimp marginBottom="l" />
-        <Heading as="h2" variant="heading-strong-xl" marginLeft="l">
-          Earlier posts
-        </Heading>
-        <Posts range={[4]} columns="2" />
+
+        {(earlier.length > 0 || total > INITIAL_PAGE_SIZE) && (
+          <Column fillWidth gap="24">
+            <Heading as="h2" variant="heading-strong-xl" marginLeft="l">
+              Earlier posts
+            </Heading>
+            <BlogPostsLazy
+              initialPosts={earlier}
+              total={total}
+              startOffset={initialPosts.length}
+              pageSize={INITIAL_PAGE_SIZE}
+              columns="2"
+              thumbnail
+            />
+          </Column>
+        )}
       </Column>
     </Column>
   );
