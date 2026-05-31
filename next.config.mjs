@@ -25,6 +25,16 @@ const nextConfig = {
         hostname: "i.scdn.co",
         pathname: "**",
       },
+      {
+        protocol: "https",
+        hostname: "firebasestorage.googleapis.com",
+        pathname: "**",
+      },
+      {
+        protocol: "https",
+        hostname: "storage.googleapis.com",
+        pathname: "**",
+      },
     ],
   },
   sassOptions: {

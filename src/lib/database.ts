@@ -180,6 +180,12 @@ class DatabaseService {
               data: updatedToken,
             };
           }
+        } else if (SpotifyUtils.isTokenExpired(tokenExpiry)) {
+          console.error("❌ Token expired and refresh failed");
+          return {
+            success: false,
+            error: ERROR_MESSAGES.SPOTIFY.TOKEN_EXPIRED,
+          };
         } else {
           console.error("❌ Failed to refresh token, using existing token");
         }
