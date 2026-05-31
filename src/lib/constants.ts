@@ -71,7 +71,7 @@ export const APP_CONFIG = {
   NAME: "Farukh Saifi Portfolio",
   VERSION: "1.5.0",
   BASE_URL: process.env.NEXT_PUBLIC_BASE_URL || "localhost:3000",
-  ENVIRONMENT: process.env.NODE_ENV || "development",
+  ENVIRONMENT: process.env.NODE_ENV === "production" ? "production" : "development",
   IS_PRODUCTION: process.env.NODE_ENV === "production",
 } as const;
 
