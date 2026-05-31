@@ -10,6 +10,16 @@ export type BlogPost = {
   source: "local" | "syncapp";
 };
 
+/** Lightweight post shape for list / lazy-load API responses (no MDX body). */
+export type BlogPostListItem = Omit<BlogPost, "content"> & { content?: string };
+
+export type BlogPostsPage = {
+  posts: BlogPostListItem[];
+  total: number;
+  hasMore: boolean;
+  offset: number;
+};
+
 interface SyncAppPost {
   title: string;
   slug: string;
@@ -105,6 +115,24 @@ async function fetchAllSyncAppPosts(): Promise<BlogPost[]> {
   }
 
   return posts.map(mapSyncAppPost);
+}
+
+function toListItem(post: BlogPost): BlogPostListItem {
+  const { content: _content, ...rest } = post;
+  return rest;
+}
+
+export async function getBlogPostsPaginated(offset: number, limit: number): Promise<BlogPostsPage> {
+  const all = await getBlogPosts();
+  const safeOffset = Math.max(0, offset);
+  const safeLimit = Math.max(1, limit);
+
+  return {
+    posts: all.slice(safeOffset, safeOffset + safeLimit).map(toListItem),
+    total: all.length,
+    hasMore: safeOffset + safeLimit < all.length,
+    offset: safeOffset,
+  };
 }
 
 export const getBlogPosts = cache(async (): Promise<BlogPost[]> => {

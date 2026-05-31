@@ -1,4 +1,5 @@
-import { CustomMDX, ScrollToHash } from "@/components";
+import { ScrollToHash } from "@/components";
+import { BlogPostContent } from "@/components/blog/BlogPostContent";
 import { Posts } from "@/components/blog/Posts";
 import { ShareSection } from "@/components/blog/ShareSection";
 import { getBlogPostBySlug, getBlogPosts } from "@/lib/blog-posts";
@@ -122,7 +123,7 @@ export default async function Blog({ params }: { params: Promise<{ slug: string 
             />
           )}
           <Column as="article" maxWidth="s">
-            <CustomMDX source={post.content} />
+            <BlogPostContent post={post} />
           </Column>
 
           <ShareSection title={post.metadata.title} url={`${baseURL}${blog.path}/${post.slug}`} />
