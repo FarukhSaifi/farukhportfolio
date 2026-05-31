@@ -12,7 +12,7 @@ type Team = {
   linkedIn: string;
 };
 
-type Metadata = {
+export type PostMetadata = {
   title: string;
   subtitle?: string;
   publishedAt: string;
@@ -23,6 +23,8 @@ type Metadata = {
   team: Team[];
   link?: string;
 };
+
+type Metadata = PostMetadata;
 
 import { notFound } from "next/navigation";
 
@@ -105,10 +107,7 @@ export class ApiUtils {
    * @param {number} statusCode - HTTP status code
    * @returns {object} Standardized error response
    */
-  static createErrorResponse(
-    error: string,
-    statusCode: number = HTTP_STATUS.INTERNAL_SERVER_ERROR,
-  ) {
+  static createErrorResponse(error: string, statusCode: number = HTTP_STATUS.INTERNAL_SERVER_ERROR) {
     return {
       success: false,
       error,

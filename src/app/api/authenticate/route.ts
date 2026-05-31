@@ -4,13 +4,15 @@ import { serialize } from "cookie";
 import { NextRequest, NextResponse } from "next/server";
 
 /**
- * Mock admin credentials - in production, use proper authentication
- * TODO: Replace with proper authentication system (JWT, OAuth, etc.)
+ * Admin credentials from environment (see .env.example).
+ * RouteGuard sends password only; email defaults to ADMIN_EMAIL.
  */
-const ADMIN_CREDENTIALS = {
-  email: "admin@farukh.me",
-  password: "admin123", // In production, use hashed passwords
-};
+function getAdminCredentials() {
+  return {
+    email: process.env.ADMIN_EMAIL?.trim().toLowerCase(),
+    password: process.env.ADMIN_PASSWORD?.trim(),
+  };
+}
 
 /**
  * API Route: Authenticate User
@@ -25,35 +27,27 @@ export async function POST(request: NextRequest) {
   try {
     // Extract credentials from request body
     const body = await request.json();
-    const { email, password } = body;
+    const { email, password } = body as { email?: string; password?: string };
 
-    // Validate required fields
-    if (!email || !password) {
-      return NextResponse.json(
-        ApiUtils.createErrorResponse("Email and password are required", HTTP_STATUS.BAD_REQUEST),
-        { status: HTTP_STATUS.BAD_REQUEST },
-      );
+    if (!password || typeof password !== "string") {
+      return NextResponse.json(ApiUtils.createErrorResponse("Password is required", HTTP_STATUS.BAD_REQUEST), {
+        status: HTTP_STATUS.BAD_REQUEST,
+      });
     }
 
-    // Validate input types
-    if (typeof email !== "string" || typeof password !== "string") {
-      return NextResponse.json(
-        ApiUtils.createErrorResponse("Invalid credentials format", HTTP_STATUS.BAD_REQUEST),
-        {
-          status: HTTP_STATUS.BAD_REQUEST,
-        },
-      );
-    }
-
-    // Sanitize inputs
-    const sanitizedEmail = email.trim().toLowerCase();
+    const ADMIN_CREDENTIALS = getAdminCredentials();
     const sanitizedPassword = password.trim();
+    const sanitizedEmail = email?.trim().toLowerCase() || ADMIN_CREDENTIALS.email;
+
+    // Validate email when provided explicitly
+    if (email && typeof email !== "string") {
+      return NextResponse.json(ApiUtils.createErrorResponse("Invalid credentials format", HTTP_STATUS.BAD_REQUEST), {
+        status: HTTP_STATUS.BAD_REQUEST,
+      });
+    }
 
     // Simple authentication check - in production, use proper authentication
-    if (
-      sanitizedEmail === ADMIN_CREDENTIALS.email &&
-      sanitizedPassword === ADMIN_CREDENTIALS.password
-    ) {
+    if (sanitizedEmail === ADMIN_CREDENTIALS.email && sanitizedPassword === ADMIN_CREDENTIALS.password) {
       // Create user session object
       const user = {
         id: "admin-1",
@@ -88,12 +82,9 @@ export async function POST(request: NextRequest) {
 
       return response;
     } else {
-      return NextResponse.json(
-        ApiUtils.createErrorResponse("Invalid credentials", HTTP_STATUS.UNAUTHORIZED),
-        {
-          status: HTTP_STATUS.UNAUTHORIZED,
-        },
-      );
+      return NextResponse.json(ApiUtils.createErrorResponse("Invalid credentials", HTTP_STATUS.UNAUTHORIZED), {
+        status: HTTP_STATUS.UNAUTHORIZED,
+      });
     }
   } catch (error: any) {
     // Log error for debugging
@@ -101,11 +92,8 @@ export async function POST(request: NextRequest) {
 
     // Handle and return standardized error response
     const errorResponse = ApiUtils.handleApiError(error);
-    return NextResponse.json(
-      ApiUtils.createErrorResponse(errorResponse.message, HTTP_STATUS.INTERNAL_SERVER_ERROR),
-      {
-        status: HTTP_STATUS.INTERNAL_SERVER_ERROR,
-      },
-    );
+    return NextResponse.json(ApiUtils.createErrorResponse(errorResponse.message, HTTP_STATUS.INTERNAL_SERVER_ERROR), {
+      status: HTTP_STATUS.INTERNAL_SERVER_ERROR,
+    });
   }
 }
