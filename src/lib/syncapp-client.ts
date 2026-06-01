@@ -31,7 +31,7 @@ export async function getSyncAppAccessToken(): Promise<string | null> {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
-      cache: "no-store",
+      next: { revalidate: SYNCAPP_CONFIG.FETCH_REVALIDATE_SECONDS },
     });
 
     if (!res.ok) {
