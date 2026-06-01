@@ -85,8 +85,8 @@ export function BlogPostsLazy({
   return (
     <Column fillWidth gap="16">
       <Grid columns={columns} s={{ columns: 1 }} fillWidth gap="16">
-        {posts.map((post) => (
-          <Post key={post.slug} post={post} thumbnail={thumbnail} direction={direction} />
+        {posts.map((post, index) => (
+          <Post key={post.slug} post={post} thumbnail={thumbnail} direction={direction} index={startOffset + index} />
         ))}
       </Grid>
 
