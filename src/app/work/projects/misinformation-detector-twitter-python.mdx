@@ -1,9 +1,9 @@
 ---
 title: "Misinformation Detector on Twitter - Python NLP Project"
-publishedAt: "2018-12-26"
+publishedAt: "2026-12-26"
 summary: "A Python-based algorithm to detect fake and falsy tweets by authenticating them against Times of India news API. Uses NLP techniques including keyword matching, sentiment analysis, and XOR operations to identify contradictory information."
 images:
-  - "/images/projects/project-01/cover-01.jpg"
+  - "https://firebasestorage.googleapis.com/v0/b/neon-mote-465908-i1.firebasestorage.app/o/uploads%2F1780341291000-897328774.png?alt=media"
 team:
   - name: "Farukh Saifi"
     role: "Software Engineer"
@@ -30,21 +30,25 @@ Misinformation Detector on Twitter is a Python-based algorithm designed to ident
 The algorithm follows a systematic approach to detect misinformation:
 
 ### Step 1: Contextual Filtering
+
 - Filters tweets that are out of context by matching keywords with reference news
 - Uses configurable `SimilarityDegreeValue` to determine relevance
 - Ensures only relevant tweets are analyzed
 
 ### Step 2: Sentiment Analysis
+
 - Applies NLP functions to detect negative operations in text
 - Classifies tweets as either **Negative** or **Assertive**
 - Uses pattern recognition to identify sentiment patterns
 
 ### Step 3: XOR Operation
+
 - Performs XOR operation between tweet sentiment and news sentiment
 - Binary classification: 0 for negative, 1 for positive
 - Detects contradictions: If tweet (0) XOR news (1) = 1, the tweet contradicts the news
 
 ### Step 4: Misinformation Identification
+
 - Flags tweets where XOR result is 1 (contradiction detected)
 - Identifies false information that contradicts verified news sources
 - Provides actionable results for fact-checking
@@ -68,14 +72,17 @@ The algorithm follows a systematic approach to detect misinformation:
 ## Challenges and Solutions
 
 ### Challenge 1: Contextual Relevance
+
 **Problem**: Filtering relevant tweets from noise  
 **Solution**: Implemented keyword matching with configurable similarity thresholds, allowing fine-tuned control over what constitutes relevant content.
 
 ### Challenge 2: Sentiment Classification
+
 **Problem**: Accurately determining tweet sentiment  
 **Solution**: Used NLTK and Pattern libraries for advanced sentiment analysis, detecting negative operations and classifying text accurately.
 
 ### Challenge 3: Contradiction Detection
+
 **Problem**: Identifying when tweets contradict verified news  
 **Solution**: Implemented XOR logic to mathematically detect contradictions between tweet sentiment and news sentiment.
 
