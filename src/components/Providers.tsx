@@ -20,6 +20,7 @@ import {
   TransitionStyle,
 } from "@once-ui-system/core";
 import { Analytics } from "@vercel/analytics/react";
+import { ToastContainer } from "@/components/ToastContainer";
 import { dataStyle, style } from "../resources";
 import { iconLibrary } from "../resources/icons";
 
@@ -56,8 +57,8 @@ export function Providers({ children }: { children: React.ReactNode }) {
             </ToastProvider>
           </DataThemeProvider>
         </DatabaseSpotifyProvider>
+        <ToastContainer />
         {APP_CONFIG.IS_PRODUCTION && <Analytics />}
-        {/* <ConditionalToastContainer /> */}
       </ThemeProvider>
     </LayoutProvider>
   );

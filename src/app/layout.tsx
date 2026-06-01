@@ -6,15 +6,7 @@ import classNames from "classnames";
 
 import { Footer, Header, Providers, RouteGuard } from "@/components";
 import { baseURL, dataStyle, effects, fonts, home, person, style } from "@/resources";
-import {
-  Background,
-  Column,
-  Flex,
-  Meta,
-  opacity,
-  RevealFx,
-  SpacingToken,
-} from "@once-ui-system/core";
+import { Background, Column, Flex, Meta, opacity, RevealFx, SpacingToken } from "@once-ui-system/core";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export async function generateMetadata() {
@@ -33,17 +25,10 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <Flex
-      suppressHydrationWarning
-      as="html"
+    <html
       lang="en"
-      fillWidth
-      className={classNames(
-        fonts.heading.variable,
-        fonts.body.variable,
-        fonts.label.variable,
-        fonts.code.variable,
-      )}
+      suppressHydrationWarning
+      className={classNames(fonts.heading.variable, fonts.body.variable, fonts.label.variable, fonts.code.variable)}
     >
       <head>
         <meta name="mobile-web-app-capable" content="yes" />
@@ -91,70 +76,63 @@ export default async function RootLayout({
           }}
         />
       </head>
-      <Providers>
-        <Column
-          as="body"
-          background="page"
-          fillWidth
-          style={{ minHeight: "100vh" }}
-          margin="0"
-          padding="0"
-          horizontal="center"
-          suppressHydrationWarning
-        >
-          <RevealFx fill position="absolute" revealedByDefault={true}>
-            <Background
-              mask={{
-                x: effects.mask.x,
-                y: effects.mask.y,
-                radius: effects.mask.radius,
-                cursor: effects.mask.cursor,
-              }}
-              gradient={{
-                display: effects.gradient.display,
-                opacity: effects.gradient.opacity as opacity,
-                x: effects.gradient.x,
-                y: effects.gradient.y,
-                width: effects.gradient.width,
-                height: effects.gradient.height,
-                tilt: effects.gradient.tilt,
-                colorStart: effects.gradient.colorStart,
-                colorEnd: effects.gradient.colorEnd,
-              }}
-              dots={{
-                display: effects.dots.display,
-                opacity: effects.dots.opacity as opacity,
-                size: effects.dots.size as SpacingToken,
-                color: effects.dots.color,
-              }}
-              grid={{
-                display: effects.grid.display,
-                opacity: effects.grid.opacity as opacity,
-                color: effects.grid.color,
-                width: effects.grid.width,
-                height: effects.grid.height,
-              }}
-              lines={{
-                display: effects.lines.display,
-                opacity: effects.lines.opacity as opacity,
-                size: effects.lines.size as SpacingToken,
-                thickness: effects.lines.thickness,
-                angle: effects.lines.angle,
-                color: effects.lines.color,
-              }}
-            />
-          </RevealFx>
-          <Flex fillWidth minHeight="16" s={{ hide: true }} />
-          <Header />
-          <Flex zIndex={0} fillWidth padding="l" horizontal="center" flex={1}>
-            <Flex horizontal="center" fillWidth minHeight="0">
-              <RouteGuard>{children}</RouteGuard>
+      <body suppressHydrationWarning style={{ margin: 0, minHeight: "100vh" }}>
+        <Providers>
+          <Column background="page" fillWidth style={{ minHeight: "100vh" }} margin="0" padding="0" horizontal="center">
+            <RevealFx fill position="absolute" revealedByDefault={true}>
+              <Background
+                mask={{
+                  x: effects.mask.x,
+                  y: effects.mask.y,
+                  radius: effects.mask.radius,
+                  cursor: effects.mask.cursor,
+                }}
+                gradient={{
+                  display: effects.gradient.display,
+                  opacity: effects.gradient.opacity as opacity,
+                  x: effects.gradient.x,
+                  y: effects.gradient.y,
+                  width: effects.gradient.width,
+                  height: effects.gradient.height,
+                  tilt: effects.gradient.tilt,
+                  colorStart: effects.gradient.colorStart,
+                  colorEnd: effects.gradient.colorEnd,
+                }}
+                dots={{
+                  display: effects.dots.display,
+                  opacity: effects.dots.opacity as opacity,
+                  size: effects.dots.size as SpacingToken,
+                  color: effects.dots.color,
+                }}
+                grid={{
+                  display: effects.grid.display,
+                  opacity: effects.grid.opacity as opacity,
+                  color: effects.grid.color,
+                  width: effects.grid.width,
+                  height: effects.grid.height,
+                }}
+                lines={{
+                  display: effects.lines.display,
+                  opacity: effects.lines.opacity as opacity,
+                  size: effects.lines.size as SpacingToken,
+                  thickness: effects.lines.thickness,
+                  angle: effects.lines.angle,
+                  color: effects.lines.color,
+                }}
+              />
+            </RevealFx>
+            <Flex fillWidth minHeight="16" s={{ hide: true }} />
+            <Header />
+            <Flex zIndex={0} fillWidth padding="l" horizontal="center" flex={1}>
+              <Flex horizontal="center" fillWidth minHeight="0">
+                <RouteGuard>{children}</RouteGuard>
+              </Flex>
             </Flex>
-          </Flex>
-          <Footer />
-          <SpeedInsights />
-        </Column>
-      </Providers>
-    </Flex>
+            <Footer />
+            <SpeedInsights />
+          </Column>
+        </Providers>
+      </body>
+    </html>
   );
 }

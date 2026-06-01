@@ -2,11 +2,9 @@ import { Mailchimp } from "@/components";
 import { BlogPostsLazy } from "@/components/blog/BlogPostsLazy";
 import Post from "@/components/blog/Post";
 import { getBlogPostsPaginated } from "@/lib/blog-posts";
-import { API_ENDPOINTS } from "@/lib/constants";
+import { API_ENDPOINTS, BLOG_CONFIG } from "@/lib/constants";
 import { baseURL, blog, person } from "@/resources";
 import { Column, Grid, Heading, Meta, Schema } from "@once-ui-system/core";
-
-const INITIAL_PAGE_SIZE = 10;
 
 export async function generateMetadata() {
   return Meta.generate({
@@ -19,7 +17,7 @@ export async function generateMetadata() {
 }
 
 export default async function Blog() {
-  const { posts: initialPosts, total } = await getBlogPostsPaginated(0, INITIAL_PAGE_SIZE);
+  const { posts: initialPosts, total } = await getBlogPostsPaginated(0, BLOG_CONFIG.INITIAL_PAGE_SIZE);
 
   const featured = initialPosts[0];
   const spotlight = initialPosts.slice(1, 3);
@@ -56,7 +54,7 @@ export default async function Blog() {
 
         <Mailchimp marginBottom="l" />
 
-        {(earlier.length > 0 || total > INITIAL_PAGE_SIZE) && (
+        {(earlier.length > 0 || total > BLOG_CONFIG.INITIAL_PAGE_SIZE) && (
           <Column fillWidth gap="24">
             <Heading as="h2" variant="heading-strong-xl" marginLeft="l">
               Earlier posts
@@ -65,7 +63,7 @@ export default async function Blog() {
               initialPosts={earlier}
               total={total}
               startOffset={initialPosts.length}
-              pageSize={INITIAL_PAGE_SIZE}
+              pageSize={BLOG_CONFIG.LAZY_PAGE_SIZE}
               columns="2"
               thumbnail
             />

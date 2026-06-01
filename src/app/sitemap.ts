@@ -1,6 +1,7 @@
 import { getBlogPosts } from "@/lib/blog-posts";
+import { MDX_CONTENT_PATHS } from "@/lib/constants";
+import { getPosts } from "@/lib/mdx";
 import { baseURL, routes as routesConfig } from "@/resources";
-import { getPosts } from "@/utils/utils";
 
 export default async function sitemap() {
   const blogs = (await getBlogPosts()).map((post) => ({
@@ -8,7 +9,7 @@ export default async function sitemap() {
     lastModified: post.metadata.publishedAt,
   }));
 
-  const works = getPosts(["src", "app", "work", "projects"]).map((post) => ({
+  const works = getPosts(MDX_CONTENT_PATHS.WORK).map((post) => ({
     url: `${baseURL}/work/${post.slug}`,
     lastModified: post.metadata.publishedAt,
   }));

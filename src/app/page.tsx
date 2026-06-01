@@ -1,4 +1,4 @@
-import { API_ENDPOINTS } from "@/lib/constants";
+import { API_ENDPOINTS, ROUTES } from "@/lib/constants";
 import { about, baseURL, home, person, routes } from "@/resources";
 import { Avatar, Badge, Button, Column, Heading, Line, Meta, RevealFx, Row, Schema, Text } from "@once-ui-system/core";
 import dynamic from "next/dynamic";
@@ -93,7 +93,7 @@ export default function Home() {
           </RevealFx>
         </Column>
       </Column>
-      {routes["/blog"] && (
+      {routes[ROUTES.BLOG] && (
         <Column fillWidth gap="24" marginBottom="l">
           <Row fillWidth paddingRight="64">
             <Line maxWidth={48} />

@@ -1,7 +1,7 @@
 "use client";
 
 import { useToast } from "@/hooks/useToast";
-import { API_ENDPOINTS, ERROR_MESSAGES, SUCCESS_MESSAGES } from "@/lib/constants";
+import { API_ENDPOINTS, ERROR_MESSAGES } from "@/lib/constants";
 import { ClientSpotifyUtils } from "@/lib/utils";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
@@ -51,7 +51,6 @@ export const DatabaseSpotifyProvider: React.FC<{
   useEffect(() => {
     const loadTokensFromDatabase = async () => {
       try {
-        console.log("🔍 DatabaseSpotifyContext: Loading tokens from database...");
         setLoading(true);
         setError(null);
 
@@ -63,15 +62,13 @@ export const DatabaseSpotifyProvider: React.FC<{
             const { access_token, refresh_token, expires_in } = data.data;
             const expiry = expires_in ? Date.now() + expires_in * 1000 : null;
 
-            console.log("✅ DatabaseSpotifyContext: Found tokens in database");
             setTokens({
               refreshToken: refresh_token,
               accessToken: access_token,
               accessTokenExpiry: expiry,
             });
-            info(SUCCESS_MESSAGES.SPOTIFY.CONNECTED_TOAST_TITLE, "Your Spotify tokens are loaded from the database");
+            // info(SUCCESS_MESSAGES.SPOTIFY.CONNECTED_TOAST_TITLE, "Your Spotify tokens are loaded from the database");
           } else {
-            console.log("ℹ️ DatabaseSpotifyContext: No tokens found in database");
             setTokens({
               refreshToken: null,
               accessToken: null,
@@ -79,7 +76,6 @@ export const DatabaseSpotifyProvider: React.FC<{
             });
           }
         } else {
-          console.log("⚠️ DatabaseSpotifyContext: Failed to load tokens from database");
           setTokens({
             refreshToken: null,
             accessToken: null,
@@ -104,12 +100,10 @@ export const DatabaseSpotifyProvider: React.FC<{
   }, [info, showError]);
 
   const updateRefreshToken = async (token: string) => {
-    console.log("🔄 DatabaseSpotifyContext: Updating refresh token");
     setTokens((prev) => ({ ...prev, refreshToken: token }));
   };
 
   const updateAccessToken = async (token: string, expiresIn: number = 3600) => {
-    console.log("🔄 DatabaseSpotifyContext: Updating access token");
     const expiry = Date.now() + expiresIn * 1000;
     setTokens((prev) => ({
       ...prev,
@@ -119,7 +113,6 @@ export const DatabaseSpotifyProvider: React.FC<{
   };
 
   const clearTokens = async () => {
-    console.log("🗑️ DatabaseSpotifyContext: Clearing all tokens");
     setTokens({
       refreshToken: null,
       accessToken: null,
@@ -139,17 +132,13 @@ export const DatabaseSpotifyProvider: React.FC<{
   const getTokenForAPI = (): string | null => {
     // First try to get a valid access token
     if (hasValidAccessToken()) {
-      console.log("🔑 Using access token for API call");
       return tokens.accessToken;
     }
 
-    // Fallback to refresh token
     if (hasRefreshToken()) {
-      console.log("🔄 No valid access token, using refresh token for API call");
       return tokens.refreshToken;
     }
 
-    console.log("❌ No tokens available for API call");
     return null;
   };
 
@@ -160,8 +149,6 @@ export const DatabaseSpotifyProvider: React.FC<{
     }
 
     try {
-      console.log("🔄 Refreshing access token...");
-
       // Call the API to refresh the token
       const response = await fetch(API_ENDPOINTS.SPOTIFY.REFRESH_TOKEN, {
         method: "POST",
@@ -173,7 +160,7 @@ export const DatabaseSpotifyProvider: React.FC<{
         const data = await response.json();
         if (data.success && data.data) {
           updateAccessToken(data.data.access_token, data.data.expires_in);
-          info("Token Refreshed", "Spotify access token has been refreshed");
+          // info("Token Refreshed", "Spotify access token has been refreshed");
           return true;
         }
       }
@@ -191,7 +178,6 @@ export const DatabaseSpotifyProvider: React.FC<{
 
     // Check if token is about to expire (5 minutes buffer)
     if (tokens.accessTokenExpiry && ClientSpotifyUtils.isTokenAboutToExpire(tokens.accessTokenExpiry, 5)) {
-      console.log("🔄 Token is about to expire, refreshing...");
       const refreshed = await refreshAccessToken();
       if (refreshed) {
         return tokens.accessToken; // Updated token

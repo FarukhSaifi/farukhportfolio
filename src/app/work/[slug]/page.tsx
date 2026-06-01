@@ -3,13 +3,14 @@ import { Projects } from "@/components/work/Projects";
 import { API_ENDPOINTS, ROUTES } from "@/lib/constants";
 import { about, baseURL, person, work } from "@/resources";
 import { formatDate } from "@/utils/formatDate";
-import { getPosts } from "@/utils/utils";
+import { MDX_CONTENT_PATHS } from "@/lib/constants";
+import { getPosts } from "@/lib/mdx";
 import { AvatarGroup, Column, Heading, Line, Media, Meta, Row, Schema, SmartLink, Text } from "@once-ui-system/core";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 export async function generateStaticParams(): Promise<{ slug: string }[]> {
-  const posts = getPosts(["src", "app", "work", "projects"]);
+  const posts = getPosts(MDX_CONTENT_PATHS.WORK);
   return posts.map((post) => ({
     slug: post.slug,
   }));
@@ -23,7 +24,7 @@ export async function generateMetadata({
   const routeParams = await params;
   const slugPath = Array.isArray(routeParams.slug) ? routeParams.slug.join("/") : routeParams.slug || "";
 
-  const posts = getPosts(["src", "app", "work", "projects"]);
+  const posts = getPosts(MDX_CONTENT_PATHS.WORK);
   let post = posts.find((post) => post.slug === slugPath);
 
   if (!post) return {};
@@ -41,7 +42,7 @@ export default async function Project({ params }: { params: Promise<{ slug: stri
   const routeParams = await params;
   const slugPath = Array.isArray(routeParams.slug) ? routeParams.slug.join("/") : routeParams.slug || "";
 
-  let post = getPosts(["src", "app", "work", "projects"]).find((post) => post.slug === slugPath);
+  let post = getPosts(MDX_CONTENT_PATHS.WORK).find((post) => post.slug === slugPath);
 
   if (!post) {
     notFound();

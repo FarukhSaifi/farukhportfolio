@@ -1,5 +1,5 @@
 // Spotify Types
-export interface SpotifyTokens {
+export interface SpotifyOAuthTokenResponse {
   access_token: string;
   refresh_token: string;
   expires_in: number;
@@ -66,14 +66,6 @@ export interface ApiResponse<T = any> {
   message?: string;
 }
 
-export interface SpotifyApiResponse extends ApiResponse<NowPlayingPayload> {
-  etag?: string;
-  newAccessToken?: {
-    token: string;
-    expiresIn: number;
-  };
-}
-
 // Context Types
 export interface SpotifyTokens {
   refreshToken: string | null;
@@ -100,29 +92,6 @@ export interface UseNowPlayingReturn {
   error: string | null;
 }
 
-export interface UsePublicNowPlayingReturn {
-  payload: PublicNowPlayingPayload | null;
-  loading: boolean;
-  error: string | null;
-}
-
-// Component Props Types
-export interface StatsCardProps {
-  title: string;
-  value: string | number;
-  icon: string;
-  description?: string;
-  color?: "brand" | "accent" | "neutral";
-}
-
-export interface QuickActionProps {
-  title: string;
-  description: string;
-  icon: string;
-  href: string;
-  color?: "brand" | "accent" | "neutral";
-}
-
 // Error Types
 export interface AppError {
   code: string;
@@ -131,27 +100,3 @@ export interface AppError {
   timestamp: Date;
 }
 
-// Configuration Types
-export interface DatabaseConfig {
-  uri: string;
-  name: string;
-  options?: {
-    maxPoolSize?: number;
-    serverSelectionTimeoutMS?: number;
-    socketTimeoutMS?: number;
-  };
-}
-
-export interface SpotifyConfig {
-  clientId: string;
-  clientSecret: string;
-  redirectUri: string;
-  scopes: string[];
-}
-
-// Utility Types
-export type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
-
-export type LoadingState = "idle" | "loading" | "success" | "error";
-
-export type SpotifyConnectionState = "disconnected" | "connecting" | "connected" | "error";

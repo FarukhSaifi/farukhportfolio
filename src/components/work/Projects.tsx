@@ -1,6 +1,7 @@
 import { ProjectCard } from "@/components";
 import { ROUTES } from "@/lib/constants";
-import { getPosts } from "@/utils/utils";
+import { MDX_CONTENT_PATHS } from "@/lib/constants";
+import { getPosts } from "@/lib/mdx";
 import { Column } from "@once-ui-system/core";
 
 interface ProjectsProps {
@@ -9,7 +10,7 @@ interface ProjectsProps {
 }
 
 export function Projects({ range, exclude }: ProjectsProps) {
-  let allProjects = getPosts(["src", "app", "work", "projects"]);
+  let allProjects = getPosts(MDX_CONTENT_PATHS.WORK);
 
   // Exclude by slug (exact match)
   if (exclude && exclude.length > 0) {
