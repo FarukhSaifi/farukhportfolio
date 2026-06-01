@@ -1,4 +1,5 @@
-import { getPosts, type PostMetadata } from "@/utils/utils";
+import { BLOG_CONFIG, MDX_CONTENT_PATHS } from "@/lib/constants";
+import { getPosts, type PostMetadata } from "@/lib/mdx";
 import { cache } from "react";
 
 import { syncAppFetch } from "./syncapp-client";
@@ -37,7 +38,7 @@ interface SyncAppListResponse {
   pagination?: { totalPages: number };
 }
 
-const PUBLISHED_STATUS = "published";
+const { PUBLISHED_STATUS, SUMMARY_MAX_LENGTH, SYNCAPP_PAGE_LIMIT } = BLOG_CONFIG;
 
 function extractSummary(content: string): string {
   const plain = content
@@ -46,8 +47,8 @@ function extractSummary(content: string): string {
     .replace(/\s+/g, " ")
     .trim();
 
-  if (plain.length <= 160) return plain;
-  return `${plain.slice(0, 157)}...`;
+  if (plain.length <= SUMMARY_MAX_LENGTH) return plain;
+  return `${plain.slice(0, SUMMARY_MAX_LENGTH - 3)}...`;
 }
 
 function mapSyncAppPost(post: SyncAppPost): BlogPost {
@@ -96,7 +97,7 @@ async function fetchAllSyncAppPosts(): Promise<BlogPost[]> {
 
   try {
     while (page <= totalPages) {
-      const res = await syncAppFetch(`/posts?page=${page}&limit=50`);
+      const res = await syncAppFetch(`/posts?page=${page}&limit=${SYNCAPP_PAGE_LIMIT}`);
 
       if (!res.ok) {
         console.warn(`SyncApp posts list failed: ${res.status}`);
@@ -139,7 +140,7 @@ export const getBlogPosts = cache(async (): Promise<BlogPost[]> => {
   const [syncAppPosts, localPosts] = await Promise.all([
     fetchAllSyncAppPosts(),
     Promise.resolve(
-      getPosts(["src", "app", "blog", "posts"]).map((post) => ({
+      getPosts(MDX_CONTENT_PATHS.BLOG).map((post) => ({
         ...post,
         source: "local" as const,
       })),
@@ -158,7 +159,7 @@ export const getBlogPostBySlug = cache(async (slug: string): Promise<BlogPost | 
   const syncAppPost = await fetchSyncAppPostBySlug(slug);
   if (syncAppPost) return syncAppPost;
 
-  const localPost = getPosts(["src", "app", "blog", "posts"]).find((post) => post.slug === slug);
+  const localPost = getPosts(MDX_CONTENT_PATHS.BLOG).find((post) => post.slug === slug);
   if (!localPost) return null;
 
   return { ...localPost, source: "local" };

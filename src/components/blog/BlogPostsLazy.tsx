@@ -1,6 +1,7 @@
 "use client";
 
 import { BlogPostListItem } from "@/lib/blog-posts";
+import { API_ENDPOINTS, BLOG_CONFIG } from "@/lib/constants";
 import { Button, Column, Grid, Spinner } from "@once-ui-system/core";
 import { useCallback, useEffect, useRef, useState } from "react";
 
@@ -20,7 +21,7 @@ export function BlogPostsLazy({
   initialPosts,
   total,
   startOffset,
-  pageSize = 10,
+  pageSize = BLOG_CONFIG.LAZY_PAGE_SIZE,
   columns = "2",
   thumbnail = false,
   direction,
@@ -39,7 +40,7 @@ export function BlogPostsLazy({
     setError(null);
 
     try {
-      const res = await fetch(`/api/blog/posts?offset=${offset}&limit=${pageSize}`);
+      const res = await fetch(`${API_ENDPOINTS.BLOG.POSTS}?offset=${offset}&limit=${pageSize}`);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
       const json = (await res.json()) as {
@@ -72,7 +73,7 @@ export function BlogPostsLazy({
       (entries) => {
         if (entries[0]?.isIntersecting) loadMore();
       },
-      { rootMargin: "200px" },
+      { rootMargin: BLOG_CONFIG.INTERSECTION_ROOT_MARGIN },
     );
 
     observer.observe(sentinel);

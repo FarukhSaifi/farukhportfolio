@@ -1,12 +1,13 @@
 "use client";
 
+import { BlogPostListItem } from "@/lib/blog-posts";
 import { ROUTES } from "@/lib/constants";
 import { person } from "@/resources";
 import { formatDate } from "@/utils/formatDate";
 import { Avatar, Card, Column, Media, Row, Text } from "@once-ui-system/core";
 
 interface PostProps {
-  post: any;
+  post: BlogPostListItem;
   thumbnail: boolean;
   direction?: "row" | "column";
 }

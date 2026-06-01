@@ -27,7 +27,13 @@ export const API_ENDPOINTS = {
     CHECK_AUTH: "/api/check-auth",
   },
   OG_GENERATE: "/api/og/generate",
+  BLOG: {
+    POSTS: "/api/blog/posts",
+  },
 } as const;
+
+export { BLOG_CONFIG, MDX_CONTENT_PATHS } from "./constants/blog";
+export { SYNCAPP_CONFIG } from "./constants/syncapp";
 
 // Spotify Configuration
 export const SPOTIFY_CONFIG = {
@@ -132,13 +138,6 @@ export const HTTP_STATUS = {
   NOT_FOUND: 404,
   METHOD_NOT_ALLOWED: 405,
   INTERNAL_SERVER_ERROR: 500,
-} as const;
-
-// Cache Keys
-export const CACHE_KEYS = {
-  SPOTIFY_TOKEN: "spotify_token",
-  SPOTIFY_NOW_PLAYING: "spotify_now_playing",
-  USER_AUTH: "user_auth",
 } as const;
 
 // Storage Keys (for localStorage if needed)

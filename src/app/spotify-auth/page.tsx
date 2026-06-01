@@ -13,33 +13,18 @@ export default function SpotifyAuthPage() {
   const [hasStoredToken, setHasStoredToken] = useState(false);
 
   useEffect(() => {
-    console.log("SpotifyAuthPage: useEffect running");
-    console.log("Search params:", searchParams);
-
-    // Check if there's a stored token
     const storedToken = localStorage.getItem(STORAGE_KEYS.SPOTIFY_REFRESH_TOKEN);
     setHasStoredToken(!!storedToken);
-    console.log("Stored token exists:", storedToken ? "✅ Yes" : "❌ No");
-    if (storedToken) {
-      console.log("🔑 Stored token value:", storedToken);
-    }
 
     if (searchParams) {
-      const errorParam = searchParams.get("error");
-      const messageParam = searchParams.get("message");
-
-      console.log("Error from params:", errorParam);
-      console.log("Message from params:", messageParam);
-
-      setError(errorParam);
-      setMessage(messageParam);
+      setError(searchParams.get("error"));
+      setMessage(searchParams.get("message"));
     }
 
     setIsLoading(false);
   }, [searchParams]);
 
   const handleAuth = () => {
-    console.log("SpotifyAuthPage: handleAuth called");
     setIsLoading(true);
     window.location.href = API_ENDPOINTS.SPOTIFY.AUTH;
   };
@@ -47,15 +32,7 @@ export default function SpotifyAuthPage() {
   const clearStoredToken = () => {
     localStorage.removeItem(STORAGE_KEYS.SPOTIFY_REFRESH_TOKEN);
     setHasStoredToken(false);
-    console.log("🗑️ Stored token cleared from localStorage");
   };
-
-  console.log("SpotifyAuthPage: render", {
-    error,
-    message,
-    isLoading,
-    hasStoredToken,
-  });
 
   if (isLoading) {
     return (

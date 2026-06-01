@@ -88,12 +88,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Parse successful token response
     const tokenData = await tokenResponse.json();
 
-    // Log successful token exchange (without sensitive data)
-    console.log("✅ Successfully exchanged code for tokens");
-    console.log("🔑 Access token received:", tokenData.access_token ? "Yes" : "No");
-    console.log("🔄 Refresh token received:", tokenData.refresh_token ? "Yes" : "No");
-    console.log("⏰ Expires in:", tokenData.expires_in, "seconds");
-
     // Validate token response structure
     if (!tokenData.access_token || !tokenData.refresh_token) {
       return res

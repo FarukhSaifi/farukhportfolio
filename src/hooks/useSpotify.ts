@@ -49,7 +49,7 @@ export function useSpotifyNowPlaying(): UseNowPlayingReturn {
       // Get valid access token (with automatic refresh if needed)
       const accessToken = await getValidAccessToken();
       if (!accessToken) {
-        console.log("No valid Spotify token available");
+        return;
       }
 
       const headers: Record<string, string> = {
@@ -197,7 +197,7 @@ export function usePublicSpotifyNowPlaying(): UseNowPlayingReturn {
       const response = await fetch(API_ENDPOINTS.SPOTIFY.PUBLIC_NOW_PLAYING);
 
       if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        console.error(`HTTP ${response.status}: ${response.statusText}`);
       }
 
       const data = await response.json();
