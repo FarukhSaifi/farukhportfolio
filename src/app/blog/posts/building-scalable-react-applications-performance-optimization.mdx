@@ -1,7 +1,7 @@
 ---
 title: "Building Scalable React Applications: Performance Optimization Techniques"
 publishedAt: "2022-09-10"
-image: "/images/gallery/img-04.jpg"
+image: ""
 summary: "Practical techniques for optimizing React applications, achieving 25% increase in user engagement and 15% reduction in page load times through strategic performance improvements."
 tag: "Engineering"
 ---
@@ -49,12 +49,15 @@ Preventing unnecessary re-renders is crucial:
 
 ```typescript
 // Memoize expensive components
-const ExpensiveComponent = React.memo(({ data }) => {
-  // Component logic
-}, (prevProps, nextProps) => {
-  // Custom comparison
-  return prevProps.data.id === nextProps.data.id;
-});
+const ExpensiveComponent = React.memo(
+  ({ data }) => {
+    // Component logic
+  },
+  (prevProps, nextProps) => {
+    // Custom comparison
+    return prevProps.data.id === nextProps.data.id;
+  },
+);
 
 // Memoize expensive calculations
 const expensiveValue = useMemo(() => {
@@ -123,11 +126,13 @@ npx webpack-bundle-analyzer .next/static/chunks/*.js
 ## Performance Metrics We Track
 
 ### Core Web Vitals
+
 - **LCP (Largest Contentful Paint)**: Target < 2.5s
 - **FID (First Input Delay)**: Target < 100ms
 - **CLS (Cumulative Layout Shift)**: Target < 0.1
 
 ### Custom Metrics
+
 - **Time to Interactive (TTI)**: When page becomes fully interactive
 - **First Contentful Paint (FCP)**: When first content appears
 - **Total Blocking Time (TBT)**: Time page is blocked from interaction
@@ -135,12 +140,14 @@ npx webpack-bundle-analyzer .next/static/chunks/*.js
 ## Real-World Results
 
 ### Before Optimization
+
 - Initial bundle: 850KB
 - Time to Interactive: 4.2s
 - User engagement: 65%
 - Page load time: 3.5s
 
 ### After Optimization
+
 - Initial bundle: 420KB (50% reduction)
 - Time to Interactive: 2.8s (33% improvement)
 - User engagement: 81% (25% increase)
@@ -154,12 +161,12 @@ Implementing service workers for offline support:
 
 ```typescript
 // sw.js
-self.addEventListener('fetch', (event) => {
-  if (event.request.url.includes('/api/')) {
+self.addEventListener("fetch", (event) => {
+  if (event.request.url.includes("/api/")) {
     event.respondWith(
       caches.match(event.request).then((response) => {
         return response || fetch(event.request);
-      })
+      }),
     );
   }
 });
@@ -194,7 +201,7 @@ self.onmessage = (e) => {
 };
 
 // In component
-const worker = new Worker('/worker.js');
+const worker = new Worker("/worker.js");
 worker.postMessage(data);
 worker.onmessage = (e) => {
   setResult(e.data);
@@ -204,12 +211,14 @@ worker.onmessage = (e) => {
 ## Monitoring and Continuous Improvement
 
 ### 1. Real User Monitoring (RUM)
+
 - Track performance in production
 - Identify slow pages
 - Monitor Core Web Vitals
 - Alert on performance regressions
 
 ### 2. Performance Budgets
+
 Set and enforce performance budgets:
 
 ```json
@@ -225,6 +234,7 @@ Set and enforce performance budgets:
 ```
 
 ### 3. Regular Audits
+
 - Weekly performance audits
 - Lighthouse CI in CI/CD
 - Bundle size monitoring
@@ -233,19 +243,23 @@ Set and enforce performance budgets:
 ## Best Practices
 
 ### 1. Start with Measurement
+
 Always measure before optimizing:
+
 - Use Chrome DevTools Performance tab
 - Run Lighthouse audits
 - Monitor Core Web Vitals
 - Track custom metrics
 
 ### 2. Optimize Incrementally
+
 - Start with low-hanging fruit
 - Measure impact of each change
 - Avoid premature optimization
 - Focus on user-perceived performance
 
 ### 3. Test on Real Devices
+
 - Test on low-end devices
 - Use throttled network conditions
 - Test on different browsers
@@ -263,6 +277,7 @@ Performance optimization is an ongoing process, not a one-time task. The techniq
 The 25% increase in user engagement and 15% reduction in page load times didn't happen overnight. It was the result of consistent, strategic optimization efforts. Remember, every millisecond counts when it comes to user experience.
 
 If you're starting your performance optimization journey, I'd recommend:
+
 - Setting up performance monitoring
 - Running regular Lighthouse audits
 - Implementing code splitting

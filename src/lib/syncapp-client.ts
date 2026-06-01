@@ -1,6 +1,5 @@
+import { SYNCAPP_CONFIG } from "./constants/syncapp";
 import { getSyncAppApiBase } from "./syncapp";
-
-const TOKEN_CACHE_MS = 6 * 24 * 60 * 60 * 1000; // 6 days (JWT default is 7d)
 
 let cachedLoginToken: { token: string; expiresAt: number } | null = null;
 
@@ -44,7 +43,7 @@ export async function getSyncAppAccessToken(): Promise<string | null> {
     const token = json.data?.token;
     if (!json.success || !token) return null;
 
-    cachedLoginToken = { token, expiresAt: Date.now() + TOKEN_CACHE_MS };
+    cachedLoginToken = { token, expiresAt: Date.now() + SYNCAPP_CONFIG.TOKEN_CACHE_MS };
     return token;
   } catch (error) {
     console.warn("SyncApp login error:", error);
@@ -68,7 +67,7 @@ export async function syncAppFetch(path: string, init: RequestInit = {}): Promis
   let response = await fetch(url, {
     ...init,
     headers,
-    next: init.next ?? { revalidate: 300 },
+    next: init.next ?? { revalidate: SYNCAPP_CONFIG.FETCH_REVALIDATE_SECONDS },
   });
 
   if (response.status === 401 && token) {
@@ -79,7 +78,7 @@ export async function syncAppFetch(path: string, init: RequestInit = {}): Promis
       response = await fetch(url, {
         ...init,
         headers,
-        next: init.next ?? { revalidate: 300 },
+        next: init.next ?? { revalidate: SYNCAPP_CONFIG.FETCH_REVALIDATE_SECONDS },
       });
     }
   }
