@@ -3,7 +3,7 @@ title: "SyncApp - Multi-Platform Blog Syndication Platform"
 publishedAt: "2026-01-22"
 summary: "A full-stack blog posts syndication platform that allows writers to publish content to multiple platforms simultaneously. Built with React, Node.js, Express, and MongoDB, featuring rich text editing, Markdown support, and integrations with Medium, DEV.to, and WordPress."
 images:
-  - "/images/projects/project-01/cover-02.jpg"
+  - "https://firebasestorage.googleapis.com/v0/b/neon-mote-465908-i1.firebasestorage.app/o/uploads%2F1780339900935-59991383.png?alt=media"
 team:
   - name: "Farukh Saifi"
     role: "Software Engineer"
@@ -33,6 +33,7 @@ SyncApp is a comprehensive blog syndication platform that solves the problem of 
 ## Technologies Used
 
 ### Frontend
+
 - **React 18**: Modern React with hooks and functional components
 - **Vite**: Lightning-fast build tool and dev server
 - **React Router v6**: Client-side routing
@@ -41,6 +42,7 @@ SyncApp is a comprehensive blog syndication platform that solves the problem of 
 - **React Markdown**: Markdown rendering and preview
 
 ### Backend
+
 - **Node.js**: Server-side JavaScript runtime
 - **Express.js**: Web application framework
 - **MongoDB**: NoSQL database with Mongoose ODM
@@ -74,6 +76,7 @@ The application follows a clean architecture pattern:
 ## Key Functionalities
 
 ### Content Creation
+
 - Rich text editor with formatting options
 - Markdown editor with live preview
 - Image upload and management
@@ -81,6 +84,7 @@ The application follows a clean architecture pattern:
 - SEO metadata configuration
 
 ### Publishing Workflow
+
 1. Create content in editor
 2. Preview formatted output
 3. Select target platforms
@@ -89,6 +93,7 @@ The application follows a clean architecture pattern:
 6. Track publishing status
 
 ### Platform Integrations
+
 - **Medium**: OAuth integration for publishing
 - **DEV.to**: API key-based publishing
 - **WordPress**: REST API integration
@@ -97,18 +102,22 @@ The application follows a clean architecture pattern:
 ## Challenges and Solutions
 
 ### Challenge 1: Multi-Platform API Integration
+
 **Problem**: Each platform has different API requirements and authentication methods  
 **Solution**: Created abstraction layer for platform integrations, allowing easy addition of new platforms. Implemented platform-specific adapters for Medium, DEV.to, and WordPress.
 
 ### Challenge 2: Content Format Conversion
+
 **Problem**: Different platforms require different content formats (HTML, Markdown, etc.)  
 **Solution**: Built content transformation pipeline that converts between formats while preserving formatting and structure.
 
 ### Challenge 3: Credential Security
+
 **Problem**: Securely storing API keys and OAuth tokens for multiple platforms  
 **Solution**: Implemented encryption for stored credentials using industry-standard encryption algorithms. Credentials are encrypted at rest and only decrypted when needed.
 
 ### Challenge 4: Error Handling
+
 **Problem**: Handling failures when publishing to multiple platforms  
 **Solution**: Implemented transaction-like behavior with rollback capabilities. If one platform fails, others can still succeed, with detailed error reporting.
 

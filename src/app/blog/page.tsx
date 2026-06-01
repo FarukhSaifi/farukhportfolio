@@ -42,17 +42,15 @@ export default async function Blog() {
         {blog.title}
       </Heading>
       <Column fillWidth flex={1} gap="40">
-        {featured && <Post post={featured} thumbnail />}
+        {featured && <Post post={featured} thumbnail index={0} priority />}
 
         {spotlight.length > 0 && (
           <Grid columns="2" s={{ columns: 1 }} fillWidth gap="16">
-            {spotlight.map((post) => (
-              <Post key={post.slug} post={post} thumbnail direction="column" />
+            {spotlight.map((post, index) => (
+              <Post key={post.slug} post={post} thumbnail direction="column" index={index + 1} priority={index === 0} />
             ))}
           </Grid>
         )}
-
-        <Mailchimp marginBottom="l" />
 
         {(earlier.length > 0 || total > BLOG_CONFIG.INITIAL_PAGE_SIZE) && (
           <Column fillWidth gap="24">
@@ -69,6 +67,8 @@ export default async function Blog() {
             />
           </Column>
         )}
+
+        <Mailchimp marginBottom="l" />
       </Column>
     </Column>
   );

@@ -1,8 +1,7 @@
 import { ProjectCard } from "@/components";
-import { ROUTES } from "@/lib/constants";
-import { MDX_CONTENT_PATHS } from "@/lib/constants";
+import { MDX_CONTENT_PATHS, ROUTES } from "@/lib/constants";
 import { getPosts } from "@/lib/mdx";
-import { Column } from "@once-ui-system/core";
+import { Grid } from "@once-ui-system/core";
 
 interface ProjectsProps {
   range?: [number, number?];
@@ -26,9 +25,10 @@ export function Projects({ range, exclude }: ProjectsProps) {
     : sortedProjects;
 
   return (
-    <Column fillWidth gap="xl" marginBottom="40" paddingX="l">
+    <Grid columns="2" s={{ columns: 1 }} fillWidth gap="24" marginBottom="40" paddingX="l">
       {displayedProjects.map((post, index) => (
         <ProjectCard
+          index={index}
           priority={index < 2}
           key={post.slug}
           href={`${ROUTES.WORK}/${post.slug}`}
@@ -36,10 +36,9 @@ export function Projects({ range, exclude }: ProjectsProps) {
           title={post.metadata.title}
           description={post.metadata.summary}
           content={post.content}
-          avatars={post.metadata.team?.map((member) => ({ src: member.avatar })) || []}
           link={post.metadata.link || ""}
         />
       ))}
-    </Column>
+    </Grid>
   );
 }
