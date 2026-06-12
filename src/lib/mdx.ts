@@ -3,6 +3,10 @@ import matter from "gray-matter";
 import { notFound } from "next/navigation";
 import path from "path";
 
+import { MDX_CONTENT_PATHS } from "@/lib/constants";
+
+type MdxContentPath = (typeof MDX_CONTENT_PATHS)[keyof typeof MDX_CONTENT_PATHS];
+
 type Team = {
   name: string;
   role: string;
@@ -69,7 +73,19 @@ function getMDXData(dir: string) {
   });
 }
 
-export function getPosts(customPath: readonly string[] | string[] = ["", "", "", ""]) {
-  const postsDir = path.join(process.cwd(), ...customPath);
-  return getMDXData(postsDir);
+const BLOG_POSTS_DIR = path.join(process.cwd(), "src", "app", "blog", "posts");
+const WORK_PROJECTS_DIR = path.join(process.cwd(), "src", "app", "work", "projects");
+
+const CONTENT_DIRS: Record<keyof typeof MDX_CONTENT_PATHS, string> = {
+  BLOG: BLOG_POSTS_DIR,
+  WORK: WORK_PROJECTS_DIR,
+};
+
+function contentPathKey(contentPath: MdxContentPath): keyof typeof MDX_CONTENT_PATHS {
+  if (contentPath === MDX_CONTENT_PATHS.BLOG) return "BLOG";
+  return "WORK";
+}
+
+export function getPosts(contentPath: MdxContentPath) {
+  return getMDXData(CONTENT_DIRS[contentPathKey(contentPath)]);
 }
