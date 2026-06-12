@@ -195,20 +195,23 @@ export function usePublicSpotifyNowPlaying(): UseNowPlayingReturn {
       setError(null);
 
       const response = await fetch(API_ENDPOINTS.SPOTIFY.PUBLIC_NOW_PLAYING);
-
-      if (!response.ok) {
-        console.error(`HTTP ${response.status}: ${response.statusText}`);
-      }
-
       const data = await response.json();
-      if (data.success && data.data) {
+
+      if (response.ok && data.success && data.data) {
         setPayload(data.data);
-      } else {
-        setError(data.error || ERROR_MESSAGES.SPOTIFY.API_ERROR);
+        return;
       }
-    } catch (err: any) {
+
+      // Idle state when Spotify is unavailable — not a user-facing error.
+      if (!response.ok || data.error?.includes("No active Spotify token")) {
+        setPayload({ isPlaying: false, track: null });
+        return;
+      }
+
+      setError(data.error || ERROR_MESSAGES.SPOTIFY.API_ERROR);
+    } catch (err: unknown) {
       console.error("Error fetching public Spotify data:", err);
-      setError(err.message || ERROR_MESSAGES.SPOTIFY.API_ERROR);
+      setPayload({ isPlaying: false, track: null });
     } finally {
       setLoading(false);
     }

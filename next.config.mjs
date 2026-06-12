@@ -34,11 +34,6 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "www.google.com",
-        pathname: "**",
-      },
-      {
-        protocol: "https",
         hostname: "i.scdn.co",
         pathname: "**",
       },

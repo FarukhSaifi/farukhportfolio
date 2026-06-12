@@ -5,7 +5,7 @@ import "@once-ui-system/core/css/tokens.css";
 import classNames from "classnames";
 
 import { Footer, Header, Providers, RouteGuard } from "@/components";
-import { baseURL, dataStyle, effects, fonts, home, person, style } from "@/resources";
+import { baseURL, dataStyle, effects, fonts, home, style } from "@/resources";
 import { Background, Column, Flex, Meta, opacity, RevealFx, SpacingToken } from "@once-ui-system/core";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
@@ -38,7 +38,6 @@ export default async function RootLayout({
         <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
         <link rel="preconnect" href="https://i.scdn.co" />
         <link rel="dns-prefetch" href="https://i.scdn.co" />
-        <link rel="preload" href={person.avatar} as="image" />
         <script
           id="theme-init"
           dangerouslySetInnerHTML={{
