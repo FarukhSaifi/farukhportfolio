@@ -50,5 +50,35 @@
   --scheme-neutral-600-10: rgba(137,152,159,0.1);
   --scheme-neutral-600-30: rgba(137,152,159,0.3);
   --scheme-neutral-600-50: rgba(137,152,159,0.5);
-  /*
 }*/
+
+html {
+  overflow-x: clip;
+  -webkit-text-size-adjust: 100%;
+  width: 100%;
+  min-height: 100%;
+  background-color: var(--page-background);
+}
+
+body {
+  overflow-x: clip;
+  width: 100%;
+  max-width: 100%;
+  min-height: 100dvh;
+  margin: 0;
+  background-color: var(--page-background);
+}
+
+.page-shell {
+  width: 100%;
+  min-height: 100dvh;
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+@media (max-width: 768px) {
+  .app-main {
+    padding-left: var(--static-space-8, 8px) !important;
+    padding-right: var(--static-space-8, 8px) !important;
+  }
+}

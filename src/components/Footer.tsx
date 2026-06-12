@@ -25,8 +25,7 @@ export const Footer = () => {
           <Text paddingX="4">{person.name}</Text>
           <Text onBackground="neutral-weak">
             {/* Usage of this template requires attribution. Please don't remove the link to Once UI unless you have a Pro license. */}
-            / Build your portfolio with{" "}
-            <SmartLink href="https://farukh.me">Farukh Saifi 🧑🏻‍💻</SmartLink>
+            / Build your portfolio with <SmartLink href="https://farukh.me">Farukh Saifi 🧑🏻‍💻</SmartLink>
           </Text>
         </Text>
         <Row gap="16">
@@ -46,7 +45,7 @@ export const Footer = () => {
           )}
         </Row>
       </Row>
-      <Row height="80" hide s={{ hide: false }} />
+      <Row height={100} hide s={{ hide: false }} style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }} />
     </Row>
   );
 };

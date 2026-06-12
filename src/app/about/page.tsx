@@ -54,7 +54,7 @@ export default function About() {
     },
   ];
   return (
-    <Column maxWidth="m">
+    <Column maxWidth="m" fillWidth>
       <SpotifyStatusNotification />
       <Schema
         as="webPage"

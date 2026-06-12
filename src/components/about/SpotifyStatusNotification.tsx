@@ -3,13 +3,13 @@
 import { SPOTIFY_QUERY_KEYS, SPOTIFY_STATUS, SPOTIFY_UI } from "@/lib/constants";
 import { Flex, Heading, Text } from "@once-ui-system/core";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 /**
  * Client component for displaying Spotify connection status
  * Handles URL search params for Spotify authentication callback
  */
-export default function SpotifyStatusNotification() {
+function SpotifyStatusNotificationContent() {
   const searchParams = useSearchParams();
   const [spotifyStatus, setSpotifyStatus] = useState<string | null>(null);
   const [refreshToken, setRefreshToken] = useState<string | null>(null);
@@ -67,5 +67,13 @@ export default function SpotifyStatusNotification() {
         </Text>
       )}
     </Flex>
+  );
+}
+
+export default function SpotifyStatusNotification() {
+  return (
+    <Suspense fallback={null}>
+      <SpotifyStatusNotificationContent />
+    </Suspense>
   );
 }
