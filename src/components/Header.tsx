@@ -48,7 +48,7 @@ export const Header = () => {
   return (
     <>
       <Fade s={{ hide: true }} fillWidth position="fixed" height="80" zIndex={9} />
-      <Fade hide s={{ hide: false }} fillWidth position="fixed" bottom="0" to="top" height="80" zIndex={9} />
+      <Fade hide s={{ hide: false }} fillWidth position="fixed" bottom="0" to="top" height={100} zIndex={9} />
       <Row
         fitHeight
         className={styles.position}
@@ -63,11 +63,12 @@ export const Header = () => {
           position: "fixed",
         }}
       >
-        <Row paddingLeft="12" fillWidth vertical="center" textVariant="body-default-s">
+        <Row paddingLeft="12" fillWidth vertical="center" textVariant="body-default-s" s={{ hide: true }}>
           {display.location && <Row s={{ hide: true }}>{person.location}</Row>}
         </Row>
         <Row fillWidth horizontal="center">
           <Row
+            className={styles.navPill}
             background="page"
             border="neutral-alpha-weak"
             radius="m-4"
@@ -76,16 +77,35 @@ export const Header = () => {
             horizontal="center"
             zIndex={1}
           >
-            <Row gap="4" vertical="center" textVariant="body-default-s" suppressHydrationWarning>
+            <Row
+              className={styles.navItems}
+              gap="4"
+              vertical="center"
+              textVariant="body-default-s"
+              suppressHydrationWarning
+            >
               {routes[ROUTES.HOME] && (
-                <ToggleButton
-                  prefixIcon="home"
-                  href={ROUTES.HOME}
-                  selected={pathname === ROUTES.HOME}
-                  aria-label="Home"
-                />
+                <>
+                  <Row s={{ hide: true }}>
+                    <ToggleButton
+                      prefixIcon="home"
+                      href={ROUTES.HOME}
+                      selected={pathname === ROUTES.HOME}
+                      aria-label="Home"
+                    />
+                  </Row>
+                  <Row hide s={{ hide: false }}>
+                    <ToggleButton
+                      prefixIcon="home"
+                      href={ROUTES.HOME}
+                      selected={pathname === ROUTES.HOME}
+                      aria-label="Home"
+                      size="l"
+                    />
+                  </Row>
+                </>
               )}
-              <Line background="neutral-alpha-medium" vert maxHeight="24" />
+              <Line className={styles.navDivider} background="neutral-alpha-medium" vert maxHeight="24" />
               {routes[ROUTES.ABOUT] && (
                 <>
                   <Row s={{ hide: true }}>
@@ -103,6 +123,7 @@ export const Header = () => {
                       href={ROUTES.ABOUT}
                       selected={pathname === ROUTES.ABOUT}
                       aria-label="About"
+                      size="l"
                     />
                   </Row>
                 </>
@@ -124,6 +145,7 @@ export const Header = () => {
                       href={ROUTES.WORK}
                       selected={pathname.startsWith(ROUTES.WORK)}
                       aria-label="Work"
+                      size="l"
                     />
                   </Row>
                 </>
@@ -145,6 +167,7 @@ export const Header = () => {
                       href={ROUTES.BLOG}
                       selected={pathname.startsWith(ROUTES.BLOG)}
                       aria-label="Blog"
+                      size="l"
                     />
                   </Row>
                 </>
@@ -166,6 +189,7 @@ export const Header = () => {
                       href={ROUTES.GALLERY}
                       selected={pathname.startsWith(ROUTES.GALLERY)}
                       aria-label="Gallery"
+                      size="l"
                     />
                   </Row>
                 </>
@@ -179,7 +203,7 @@ export const Header = () => {
             </Row>
           </Row>
         </Row>
-        <Flex fillWidth horizontal="end" vertical="center">
+        <Flex fillWidth horizontal="end" vertical="center" s={{ hide: true }}>
           <Flex paddingRight="12" horizontal="end" vertical="center" textVariant="body-default-s" gap="20">
             <ThemeToggle />
             {/* <Flex hide="s">{display.time && <TimeDisplay timeZone={person.location} />}</Flex> */}

@@ -18,7 +18,7 @@ export async function generateMetadata() {
 
 export default function Home() {
   return (
-    <Column maxWidth="m" gap="xl" paddingY="12" horizontal="center">
+    <Column maxWidth="m" gap="xl" paddingY="12" fillWidth horizontal="center">
       <Schema
         as="webPage"
         baseURL={baseURL}
@@ -95,20 +95,20 @@ export default function Home() {
       </Column>
       {routes[ROUTES.BLOG] && (
         <Column fillWidth gap="24" marginBottom="l">
-          <Row fillWidth paddingRight="64">
+          <Row fillWidth s={{ hide: true }}>
             <Line maxWidth={48} />
           </Row>
           <Row fillWidth gap="24" marginTop="40" s={{ direction: "column" }}>
-            <Row flex={1} paddingLeft="l" paddingTop="24">
+            <Row flex={1} fillWidth>
               <Heading as="h2" variant="display-strong-xs" wrap="balance">
                 Latest from the blog
               </Heading>
             </Row>
-            <Row flex={3} paddingX="20">
+            <Row flex={3} fillWidth>
               <Posts range={[1, 2]} columns="2" />
             </Row>
           </Row>
-          <Row fillWidth paddingLeft="64" horizontal="end">
+          <Row fillWidth horizontal="end" s={{ hide: true }}>
             <Line maxWidth={48} />
           </Row>
         </Column>

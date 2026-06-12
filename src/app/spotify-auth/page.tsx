@@ -3,9 +3,9 @@
 import { API_ENDPOINTS, ERROR_MESSAGES, SPOTIFY_AUTH_ERROR, SPOTIFY_UI, STORAGE_KEYS } from "@/lib/constants";
 import { Button, Card, Flex, Heading, Text } from "@once-ui-system/core";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
-export default function SpotifyAuthPage() {
+function SpotifyAuthPageContent() {
   const searchParams = useSearchParams();
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
@@ -157,5 +157,34 @@ export default function SpotifyAuthPage() {
         </Flex>
       </Card>
     </Flex>
+  );
+}
+
+export default function SpotifyAuthPage() {
+  return (
+    <Suspense
+      fallback={
+        <Flex
+          direction="column"
+          horizontal="center"
+          vertical="center"
+          fillWidth
+          style={{ minHeight: "100vh" }}
+          gap="xl"
+          padding="xl"
+        >
+          <Card padding="xl" background="neutral-strong" border="neutral-medium" radius="m">
+            <Flex direction="column" gap="l" horizontal="center">
+              <Heading variant="display-strong-l">{SPOTIFY_UI.AUTH_LOADING}</Heading>
+              <Text variant="body-default-l" onBackground="neutral-weak">
+                {SPOTIFY_UI.AUTH_PLEASE_WAIT}
+              </Text>
+            </Flex>
+          </Card>
+        </Flex>
+      }
+    >
+      <SpotifyAuthPageContent />
+    </Suspense>
   );
 }

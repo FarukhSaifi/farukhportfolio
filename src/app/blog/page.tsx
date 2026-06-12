@@ -24,7 +24,7 @@ export default async function Blog() {
   const earlier = posts.slice(3);
 
   return (
-    <Column maxWidth="m" paddingTop="24">
+    <Column maxWidth="m" paddingTop="24" fillWidth>
       <Schema
         as="blogPosting"
         baseURL={baseURL}
@@ -38,7 +38,7 @@ export default async function Blog() {
           image: `${baseURL}${person.avatar}`,
         }}
       />
-      <Heading marginBottom="l" variant="heading-strong-xl" marginLeft="24">
+      <Heading marginBottom="l" variant="heading-strong-xl">
         {blog.title}
       </Heading>
       <Column fillWidth flex={1} gap="40">
@@ -54,7 +54,7 @@ export default async function Blog() {
 
         {earlier.length > 0 && (
           <Column fillWidth gap="24">
-            <Heading as="h2" variant="heading-strong-xl" marginLeft="l">
+            <Heading as="h2" variant="heading-strong-xl">
               Earlier posts
             </Heading>
             <Grid columns="2" s={{ columns: 1 }} fillWidth gap="16">
