@@ -54,7 +54,14 @@ export const DatabaseSpotifyProvider: React.FC<{
         setLoading(true);
         setError(null);
 
-        const response = await fetch(API_ENDPOINTS.SPOTIFY.GET_TOKEN);
+        const controller = new AbortController();
+        const timeoutId = window.setTimeout(() => controller.abort(), 8000);
+
+        const response = await fetch(API_ENDPOINTS.SPOTIFY.GET_TOKEN, {
+          signal: controller.signal,
+        });
+
+        window.clearTimeout(timeoutId);
 
         if (response.ok) {
           const data = await response.json();

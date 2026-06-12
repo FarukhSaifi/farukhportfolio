@@ -1,3 +1,5 @@
+import type { Viewport } from "next";
+
 import "@/resources/custom.css";
 import "@once-ui-system/core/css/styles.css";
 import "@once-ui-system/core/css/tokens.css";
@@ -18,6 +20,12 @@ export async function generateMetadata() {
     image: home.image,
   });
 }
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+};
 
 export default async function RootLayout({
   children,
@@ -75,9 +83,17 @@ export default async function RootLayout({
           }}
         />
       </head>
-      <body suppressHydrationWarning style={{ margin: 0, minHeight: "100vh" }}>
+      <body suppressHydrationWarning style={{ margin: 0, minHeight: "100dvh" }}>
         <Providers>
-          <Column background="page" fillWidth style={{ minHeight: "100vh" }} margin="0" padding="0" horizontal="center">
+          <Column
+            background="page"
+            fillWidth
+            className="page-shell"
+            style={{ minHeight: "100dvh" }}
+            margin="0"
+            padding="0"
+            horizontal="center"
+          >
             <RevealFx fill position="absolute" revealedByDefault={true}>
               <Background
                 mask={{
@@ -122,8 +138,8 @@ export default async function RootLayout({
             </RevealFx>
             <Flex fillWidth minHeight="16" s={{ hide: true }} />
             <Header />
-            <Flex zIndex={0} fillWidth padding="l" horizontal="center" flex={1}>
-              <Flex horizontal="center" fillWidth minHeight="0">
+            <Flex zIndex={0} fillWidth padding="l" className="app-main" horizontal="center" flex={1} minWidth={0}>
+              <Flex horizontal="center" fillWidth minHeight="0" minWidth={0}>
                 <RouteGuard>{children}</RouteGuard>
               </Flex>
             </Flex>
