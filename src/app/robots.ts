@@ -5,6 +5,8 @@ export default function robots() {
     rules: [
       {
         userAgent: "*",
+        allow: "/",
+        disallow: ["/api/", "/spotify-auth", "/spotify-success"],
       },
     ],
     sitemap: `${baseURL}/sitemap.xml`,

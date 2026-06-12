@@ -21,6 +21,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const result = await getCurrentlyPlaying();
 
     if (!result.ok) {
+      // No token or nothing playing — return idle payload so the UI stays quiet (not an error).
+      if (result.status === HTTP_STATUS.NOT_FOUND || result.status === HTTP_STATUS.NO_CONTENT) {
+        const idle: PublicNowPlayingPayload = {
+          isPlaying: false,
+          track: null,
+          timestamp: new Date().toISOString(),
+        };
+        return res.status(HTTP_STATUS.OK).json(ApiUtils.createSuccessResponse(idle));
+      }
+
       return res.status(result.status).json(ApiUtils.createErrorResponse(result.error, result.status));
     }
 

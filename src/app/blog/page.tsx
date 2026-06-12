@@ -1,8 +1,7 @@
 import { Mailchimp } from "@/components";
-import { BlogPostsLazy } from "@/components/blog/BlogPostsLazy";
 import Post from "@/components/blog/Post";
-import { getBlogPostsPaginated } from "@/lib/blog-posts";
-import { API_ENDPOINTS, BLOG_CONFIG } from "@/lib/constants";
+import { getBlogPosts } from "@/lib/blog-posts";
+import { API_ENDPOINTS } from "@/lib/constants";
 import { baseURL, blog, person } from "@/resources";
 import { Column, Grid, Heading, Meta, Schema } from "@once-ui-system/core";
 
@@ -17,11 +16,12 @@ export async function generateMetadata() {
 }
 
 export default async function Blog() {
-  const { posts: initialPosts, total } = await getBlogPostsPaginated(0, BLOG_CONFIG.INITIAL_PAGE_SIZE);
+  const allPosts = await getBlogPosts();
+  const posts = allPosts.map(({ content: _content, ...rest }) => rest);
 
-  const featured = initialPosts[0];
-  const spotlight = initialPosts.slice(1, 3);
-  const earlier = initialPosts.slice(3);
+  const featured = posts[0];
+  const spotlight = posts.slice(1, 3);
+  const earlier = posts.slice(3);
 
   return (
     <Column maxWidth="m" paddingTop="24">
@@ -52,19 +52,16 @@ export default async function Blog() {
           </Grid>
         )}
 
-        {(earlier.length > 0 || total > BLOG_CONFIG.INITIAL_PAGE_SIZE) && (
+        {earlier.length > 0 && (
           <Column fillWidth gap="24">
             <Heading as="h2" variant="heading-strong-xl" marginLeft="l">
               Earlier posts
             </Heading>
-            <BlogPostsLazy
-              initialPosts={earlier}
-              total={total}
-              startOffset={initialPosts.length}
-              pageSize={BLOG_CONFIG.LAZY_PAGE_SIZE}
-              columns="2"
-              thumbnail
-            />
+            <Grid columns="2" s={{ columns: 1 }} fillWidth gap="16">
+              {earlier.map((post, index) => (
+                <Post key={post.slug} post={post} thumbnail index={index + 3} />
+              ))}
+            </Grid>
           </Column>
         )}
 
