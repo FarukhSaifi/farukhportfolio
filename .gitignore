@@ -141,3 +141,6 @@ Thumbs.db
 *.bak
 *.backup
 *.old
+yarn.lock
+pnpm-lock.yaml
+*.lock
