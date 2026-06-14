@@ -4,18 +4,41 @@ on:
   pull_request:
     types: [opened, ready_for_review]
 
+permissions:
+  pull-requests: write
+
 jobs:
   assign-reviewer:
     runs-on: ubuntu-latest
+    # Dependabot PRs get a read-only GITHUB_TOKEN; reviewers are set in dependabot.yml
+    if: github.actor != 'dependabot[bot]'
     steps:
       - name: Add reviewer
         uses: actions/github-script@v6
         with:
           script: |
             const pr = context.payload.pull_request;
+            const reviewer = 'FarukhSaifi';
+
+            if (pr.user.login === reviewer) {
+              core.info(`Skipping: ${reviewer} is the PR author`);
+              return;
+            }
+
+            const { data: existing } = await github.rest.pulls.listRequestedReviewers({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: pr.number,
+            });
+
+            if (existing.users.some((user) => user.login === reviewer)) {
+              core.info(`Skipping: ${reviewer} is already requested`);
+              return;
+            }
+
             await github.rest.pulls.requestReviewers({
               owner: context.repo.owner,
               repo: context.repo.repo,
               pull_number: pr.number,
-              reviewers: ['FarukhSaifi']
+              reviewers: [reviewer],
             });
