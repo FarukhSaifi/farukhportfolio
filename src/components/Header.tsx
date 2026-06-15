@@ -47,8 +47,8 @@ export const Header = () => {
 
   return (
     <>
+      {/* Desktop only — subtle top fade behind sticky header */}
       <Fade s={{ hide: true }} fillWidth position="fixed" height="80" zIndex={9} />
-      <Fade hide s={{ hide: false }} fillWidth position="fixed" bottom="0" to="top" height={100} zIndex={9} />
       <Row
         fitHeight
         className={styles.position}

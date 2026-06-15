@@ -1,4 +1,4 @@
-import { HTTP_STATUS } from "@/lib/constants";
+import { ERROR_MESSAGES, HTTP_STATUS } from "@/lib/constants";
 import { databaseService } from "@/lib/database";
 import { ApiUtils } from "@/lib/server-utils";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -22,10 +22,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    // Get Spotify token from database
     const result = await databaseService.getSpotifyToken();
 
-    // Handle successful token retrieval
     if (result.success && result.data) {
       return res.status(HTTP_STATUS.OK).json(
         ApiUtils.createSuccessResponse(
@@ -44,20 +42,25 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       );
     }
 
-    // Handle no token found
-    return res
-      .status(HTTP_STATUS.NOT_FOUND)
-      .json(
-        ApiUtils.createErrorResponse(
-          result.error || "No active Spotify token found",
-          HTTP_STATUS.NOT_FOUND,
-        ),
-      );
-  } catch (error: any) {
-    // Log error for debugging
+    if (result.error === ERROR_MESSAGES.DATABASE.FETCH_FAILED) {
+      return res
+        .status(HTTP_STATUS.SERVICE_UNAVAILABLE)
+        .json(ApiUtils.createErrorResponse(result.error, HTTP_STATUS.SERVICE_UNAVAILABLE));
+    }
+
+    // Not connected is a valid state — return 200 so clients can distinguish from route errors
+    return res.status(HTTP_STATUS.OK).json(
+      ApiUtils.createSuccessResponse(
+        {
+          isConnected: false,
+          token: null,
+        },
+        result.error || "Spotify is not connected",
+      ),
+    );
+  } catch (error: unknown) {
     console.error("Error getting Spotify token:", error);
 
-    // Handle and return standardized error response
     const errorResponse = ApiUtils.handleApiError(error);
     return res
       .status(HTTP_STATUS.INTERNAL_SERVER_ERROR)

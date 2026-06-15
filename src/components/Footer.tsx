@@ -45,7 +45,14 @@ export const Footer = () => {
           )}
         </Row>
       </Row>
-      <Row height={100} hide s={{ hide: false }} style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }} />
+      <Row
+        hide
+        s={{ hide: false }}
+        style={{
+          height: "5.5rem",
+          paddingBottom: "env(safe-area-inset-bottom, 0px)",
+        }}
+      />
     </Row>
   );
 };

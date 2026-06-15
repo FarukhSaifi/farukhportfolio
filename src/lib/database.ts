@@ -1,7 +1,9 @@
-import { Collection, Db, MongoClient } from "mongodb";
+import { Collection, Db } from "mongodb";
+
 import { DATABASE_CONFIG, ERROR_MESSAGES } from "./constants";
 import { ApiResponse, SpotifyCredential } from "./interfaces";
-import { EnvironmentUtils, SpotifyUtils } from "./server-utils";
+import { getMongoClient } from "./mongodb-client";
+import { SpotifyUtils } from "./server-utils";
 
 /**
  * Database Service
@@ -13,8 +15,6 @@ import { EnvironmentUtils, SpotifyUtils } from "./server-utils";
  */
 class DatabaseService {
   private static instance: DatabaseService;
-  private client: MongoClient | null = null;
-  private db: Db | null = null;
 
   private constructor() {}
 
@@ -31,54 +31,19 @@ class DatabaseService {
   }
 
   /**
-   * Connect to MongoDB database
-   *
-   * @returns {Promise<void>} Connection promise
-   * @throws {Error} If connection fails
-   */
-  async connect(): Promise<void> {
-    if (this.client) return;
-
-    try {
-      const uri = EnvironmentUtils.getMongodbUri();
-      this.client = new MongoClient(uri, DATABASE_CONFIG.CONNECTION_OPTIONS);
-      await this.client.connect();
-      this.db = this.client.db(DATABASE_CONFIG.DATABASE_NAME);
-      console.log("✅ Connected to MongoDB");
-    } catch (error) {
-      console.error("❌ MongoDB connection failed:", error);
-      throw new Error(ERROR_MESSAGES.DATABASE.CONNECTION_FAILED);
-    }
-  }
-
-  /**
-   * Disconnect from MongoDB database
-   *
-   * @returns {Promise<void>} Disconnection promise
-   */
-  async disconnect(): Promise<void> {
-    if (this.client) {
-      await this.client.close();
-      this.client = null;
-      this.db = null;
-      console.log("✅ Disconnected from MongoDB");
-    }
-  }
-
-  /**
    * Ensure database connection is established
    *
    * @returns {Promise<Db>} Database instance
    * @throws {Error} If connection cannot be established
    */
   private async ensureConnection(): Promise<Db> {
-    if (!this.db) {
-      await this.connect();
-    }
-    if (!this.db) {
+    try {
+      const client = await getMongoClient();
+      return client.db(DATABASE_CONFIG.DATABASE_NAME);
+    } catch (error) {
+      console.error("❌ MongoDB connection failed:", error);
       throw new Error(ERROR_MESSAGES.DATABASE.CONNECTION_FAILED);
     }
-    return this.db;
   }
 
   /**
@@ -151,7 +116,6 @@ class DatabaseService {
       }
 
       // Check if token is about to expire and refresh if needed
-      const now = Date.now();
       const tokenExpiry = token.last_updated.getTime() + token.expires_in * 1000;
 
       if (SpotifyUtils.isTokenAboutToExpire(tokenExpiry, 5)) {

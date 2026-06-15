@@ -258,7 +258,7 @@ export function useSpotifyAuth() {
       const response = await fetch(API_ENDPOINTS.SPOTIFY.GET_TOKEN);
       const data = await response.json();
 
-      setIsAuthenticated(data.success && data.data);
+      setIsAuthenticated(Boolean(data.success && data.data?.isConnected));
     } catch (err: any) {
       console.error("Error checking Spotify auth status:", err);
       setError(err.message);

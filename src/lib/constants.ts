@@ -65,10 +65,18 @@ export const DATABASE_CONFIG = {
   USER_IDS: {
     PUBLIC: 5,
   },
+  // Tuned for Vercel serverless + low-concurrency Spotify token reads (OLTP).
   CONNECTION_OPTIONS: {
-    maxPoolSize: 10,
-    serverSelectionTimeoutMS: 5000,
-    socketTimeoutMS: 45000,
+    maxPoolSize: 5, // One pool per warm function instance; Spotify API is low concurrency
+    minPoolSize: 0, // Avoid idle connections between invocations
+    maxIdleTimeMS: 20_000, // Release unused sockets quickly in serverless
+    connectTimeoutMS: 15_000, // SRV DNS + TLS can exceed 5s on cold starts
+    serverSelectionTimeoutMS: 15_000, // Replica set discovery / failover window
+    socketTimeoutMS: 30_000, // Short token reads; fail fast on hung sockets
+  },
+  CONNECT_RETRY: {
+    MAX_ATTEMPTS: 3,
+    BASE_DELAY_MS: 500,
   },
 } as const;
 
@@ -137,6 +145,7 @@ export const HTTP_STATUS = {
   FORBIDDEN: 403,
   NOT_FOUND: 404,
   METHOD_NOT_ALLOWED: 405,
+  SERVICE_UNAVAILABLE: 503,
   INTERNAL_SERVER_ERROR: 500,
 } as const;
 
