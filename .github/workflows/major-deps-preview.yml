@@ -1,0 +1,63 @@
+# Preview available major npm upgrades without changing package.json.
+# Run manually before merging a Dependabot "npm-major" PR, or when planning a framework bump.
+#
+# Actions → Major dependency preview → Run workflow
+
+name: Major dependency preview
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  preview:
+    name: Preview major updates
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "lts/*"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Baseline — lint and build (current versions)
+        run: |
+          npm run lint
+          npm run build
+        env:
+          NEXT_PUBLIC_BASE_URL: https://farukh.me
+
+      - name: List outdated packages
+        run: npm outdated || true
+
+      - name: Preview major version bumps (dry run)
+        run: npx --yes npm-check-updates@latest --target major --format group --rejectVersion "^0."
+
+      - name: Major upgrade checklist
+        run: |
+          cat <<'EOF'
+
+          === Major upgrade checklist (before merging npm-major PR) ===
+
+          1. Read the Dependabot PR body and changelogs for each package.
+          2. Keep these aligned when bumping frameworks:
+             - next + @next/mdx + @mdx-js/loader (same major/minor line)
+             - react + react-dom + @types/react + @types/react-dom
+             - @once-ui-system/core (smoke-test layout, Header, and /_not-found)
+             - mongodb (still listed in serverExternalPackages)
+             - sharp (required for next/image on Vercel)
+          3. Run locally after checkout:
+               npm install && npm run lint && npm run build
+          4. Click through /, /about, /work, /blog, a blog post, and mobile bottom nav.
+          5. Merge only when CI (TypeScript, Dependency audit, Production build) is green.
+
+          EOF
