@@ -19,7 +19,7 @@ const nextConfig = {
 
   experimental: {
     /** Tree-shake heavy barrel exports at build time. */
-    optimizePackageImports: ["react-icons"],
+    optimizePackageImports: ["react-icons", "@once-ui-system/core"],
   },
 
   turbopack: {
