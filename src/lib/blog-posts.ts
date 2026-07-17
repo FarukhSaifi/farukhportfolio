@@ -71,7 +71,8 @@ function mapSyncAppPost(post: SyncAppPost): BlogPost {
 }
 
 function isPublishedPost(post: SyncAppPost): boolean {
-  return !post.status || post.status === PUBLISHED_STATUS;
+  if (!post.status) return true;
+  return post.status.toLowerCase() === PUBLISHED_STATUS;
 }
 
 async function fetchSyncAppPostBySlug(slug: string): Promise<BlogPost | null> {
@@ -96,20 +97,22 @@ async function fetchAllSyncAppPosts(): Promise<BlogPost[]> {
   let totalPages = 1;
 
   try {
-    while (page <= totalPages) {
-      const res = await syncAppFetch(`/posts?page=${page}&limit=${SYNCAPP_PAGE_LIMIT}`);
+    do {
+      const res = await syncAppFetch(`/posts?page=${page}&limit=${SYNCAPP_PAGE_LIMIT}&status=${PUBLISHED_STATUS}`);
 
       if (!res.ok) {
-        console.warn(`SyncApp posts list failed: ${res.status}`);
+        console.warn(`SyncApp posts list failed (page ${page}): ${res.status}`);
         break;
       }
 
       const json = (await res.json()) as SyncAppListResponse;
       const pagePosts = (json.data || []).filter(isPublishedPost);
       posts.push(...pagePosts);
-      totalPages = json.pagination?.totalPages || 1;
+
+      const reportedTotalPages = json.pagination?.totalPages;
+      totalPages = reportedTotalPages && reportedTotalPages > 0 ? reportedTotalPages : page;
       page += 1;
-    }
+    } while (page <= totalPages);
   } catch (error) {
     console.warn("Failed to fetch SyncApp posts:", error);
     return [];

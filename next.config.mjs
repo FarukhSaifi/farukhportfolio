@@ -19,7 +19,8 @@ const nextConfig = {
 
   experimental: {
     /** Tree-shake heavy barrel exports at build time. */
-    optimizePackageImports: ["react-icons", "@once-ui-system/core"],
+    // Do not add @once-ui-system/core here — it breaks prerender (undefined components).
+    optimizePackageImports: ["react-icons"],
   },
 
   turbopack: {
