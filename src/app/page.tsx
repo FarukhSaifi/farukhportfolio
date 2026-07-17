@@ -2,8 +2,8 @@ import { API_ENDPOINTS, ROUTES } from "@/lib/constants";
 import { about, baseURL, home, person, routes } from "@/resources";
 import { Avatar, Badge, Button, Column, Heading, Line, Meta, RevealFx, Row, Schema, Text } from "@once-ui-system/core";
 import dynamic from "next/dynamic";
+import { Posts } from "@/components/blog/Posts";
 
-const Posts = dynamic(() => import("@/components/blog/Posts").then((mod) => mod.Posts));
 const Mailchimp = dynamic(() => import("@/components").then((mod) => mod.Mailchimp));
 
 export async function generateMetadata() {
