@@ -1,13 +1,13 @@
 "use client";
 
 import { mailchimp, newsletter } from "@/resources";
+import type { OnceUiOpacity } from "@/types";
 import {
   Background,
   Button,
   Column,
   Heading,
   Input,
-  opacity,
   Row,
   SpacingToken,
   Text,
@@ -82,7 +82,7 @@ export const Mailchimp: React.FC<React.ComponentProps<typeof Column>> = ({ ...fl
         }}
         gradient={{
           display: mailchimp.effects.gradient.display,
-          opacity: mailchimp.effects.gradient.opacity as opacity,
+          opacity: mailchimp.effects.gradient.opacity as OnceUiOpacity,
           x: mailchimp.effects.gradient.x,
           y: mailchimp.effects.gradient.y,
           width: mailchimp.effects.gradient.width,
@@ -93,20 +93,20 @@ export const Mailchimp: React.FC<React.ComponentProps<typeof Column>> = ({ ...fl
         }}
         dots={{
           display: mailchimp.effects.dots.display,
-          opacity: mailchimp.effects.dots.opacity as opacity,
+          opacity: mailchimp.effects.dots.opacity as OnceUiOpacity,
           size: mailchimp.effects.dots.size as SpacingToken,
           color: mailchimp.effects.dots.color,
         }}
         grid={{
           display: mailchimp.effects.grid.display,
-          opacity: mailchimp.effects.grid.opacity as opacity,
+          opacity: mailchimp.effects.grid.opacity as OnceUiOpacity,
           color: mailchimp.effects.grid.color,
           width: mailchimp.effects.grid.width,
           height: mailchimp.effects.grid.height,
         }}
         lines={{
           display: mailchimp.effects.lines.display,
-          opacity: mailchimp.effects.lines.opacity as opacity,
+          opacity: mailchimp.effects.lines.opacity as OnceUiOpacity,
           size: mailchimp.effects.lines.size as SpacingToken,
           thickness: mailchimp.effects.lines.thickness,
           angle: mailchimp.effects.lines.angle,

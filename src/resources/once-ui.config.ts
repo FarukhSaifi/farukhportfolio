@@ -43,7 +43,7 @@ const protectedRoutes: ProtectedRoutesConfig = {
 
 // Import and set font for each variant
 import { Geist, Geist_Mono } from "next/font/google";
-3;
+
 const heading = Geist({
   variable: "--font-heading",
   subsets: ["latin"],

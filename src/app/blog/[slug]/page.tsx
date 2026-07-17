@@ -22,6 +22,8 @@ import {
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+export const revalidate = 300;
+
 export async function generateStaticParams(): Promise<{ slug: string }[]> {
   const posts = await getBlogPosts();
   return posts.map((post) => ({

@@ -13,6 +13,9 @@ import {
 } from "@once-ui-system/core";
 import { NextFontWithVariable } from "next/dist/compiled/@next/font";
 
+/** Once UI opacity scale for Background effects (avoids importing renamed package types). */
+export type OnceUiOpacity = 0 | 10 | 20 | 30 | 40 | 50 | 60 | 70 | 80 | 90 | 100;
+
 /**
  * Display configuration for UI elements.
  */
