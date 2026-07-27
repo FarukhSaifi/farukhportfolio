@@ -33,10 +33,6 @@
     "sharp": "^0.35.3",
     "transliteration": "^2.6.1"
   },
-  "overrides": {
-    "postcss": "^8.5.23",
-    "sharp": "^0.35.3"
-  },
   "devDependencies": {
     "@biomejs/biome": "^2.4.16",
     "@types/node": "^25.9.2",
