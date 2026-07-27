@@ -19,7 +19,7 @@ export default function Post({ post, thumbnail, direction, index = 0, priority =
   const revealDelay = Math.min(index * 0.08, 0.48);
 
   return (
-    <RevealFx fillWidth translateY={12} delay={revealDelay} speed="fast">
+    <RevealFx fillWidth translateY={12} delay={revealDelay} speed="fast" revealedByDefault>
       <Card
         fillWidth
         href={`${ROUTES.BLOG}/${post.slug}`}

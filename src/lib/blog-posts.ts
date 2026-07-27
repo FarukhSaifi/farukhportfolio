@@ -29,7 +29,9 @@ interface SyncAppPost {
   tags?: string[];
   cover_image?: string;
   meta_description?: string;
-  createdAt: string;
+  createdAt?: string;
+  created_at?: string;
+  is_published_anywhere?: boolean;
 }
 
 interface SyncAppListResponse {
@@ -53,6 +55,11 @@ function extractSummary(content: string): string {
 
 function mapSyncAppPost(post: SyncAppPost): BlogPost {
   const content = post.content_markdown || "";
+  const publishedRaw = post.createdAt || post.created_at || new Date().toISOString();
+  const publishedAt = new Date(publishedRaw);
+  const publishedDate = Number.isNaN(publishedAt.getTime())
+    ? new Date().toISOString().split("T")[0]
+    : publishedAt.toISOString().split("T")[0];
 
   return {
     slug: post.slug,
@@ -60,7 +67,7 @@ function mapSyncAppPost(post: SyncAppPost): BlogPost {
     source: "syncapp",
     metadata: {
       title: post.title,
-      publishedAt: new Date(post.createdAt).toISOString().split("T")[0],
+      publishedAt: publishedDate,
       summary: post.meta_description?.trim() || extractSummary(content),
       image: post.cover_image || "",
       images: post.cover_image ? [post.cover_image] : [],
@@ -71,6 +78,7 @@ function mapSyncAppPost(post: SyncAppPost): BlogPost {
 }
 
 function isPublishedPost(post: SyncAppPost): boolean {
+  if (post.is_published_anywhere) return true;
   if (!post.status) return true;
   return post.status.toLowerCase() === PUBLISHED_STATUS;
 }
