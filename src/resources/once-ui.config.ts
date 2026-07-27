@@ -145,7 +145,6 @@ const effects: EffectsConfig = {
 };
 
 const mailchimp: MailchimpConfig = {
-  action: "https://url/subscribe/post?parameters",
   effects: {
     mask: {
       cursor: true,

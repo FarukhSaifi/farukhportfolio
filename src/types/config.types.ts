@@ -123,10 +123,9 @@ export type EffectsConfig = {
 };
 
 /**
- * Mailchimp configuration for newsletter forms.
+ * Newsletter form visual configuration (background effects).
  */
 export type MailchimpConfig = {
-  action: string;
   effects: EffectsConfig;
 };
 

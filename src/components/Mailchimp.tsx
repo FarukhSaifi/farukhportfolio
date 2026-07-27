@@ -1,58 +1,81 @@
 "use client";
 
+import { useToast } from "@/hooks/useToast";
+import { getEmailValidationError } from "@/lib/validation";
 import { mailchimp, newsletter } from "@/resources";
 import type { OnceUiOpacity } from "@/types";
-import {
-  Background,
-  Button,
-  Column,
-  Heading,
-  Input,
-  Row,
-  SpacingToken,
-  Text,
-} from "@once-ui-system/core";
-import { useState } from "react";
-
-function debounce<T extends (...args: any[]) => void>(func: T, delay: number): T {
-  let timeout: ReturnType<typeof setTimeout>;
-  return ((...args: Parameters<T>) => {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => func(...args), delay);
-  }) as T;
-}
+import { Background, Button, Column, Heading, Input, Row, SpacingToken, Text } from "@once-ui-system/core";
+import { FormEvent, useMemo, useState } from "react";
 
 export const Mailchimp: React.FC<React.ComponentProps<typeof Column>> = ({ ...flex }) => {
-  const [email, setEmail] = useState<string>("");
-  const [error, setError] = useState<string>("");
-  const [touched, setTouched] = useState<boolean>(false);
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
+  const [touched, setTouched] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { success, error: showError } = useToast();
 
-  const validateEmail = (email: string): boolean => {
-    if (email === "") {
-      return true;
-    }
+  const validationError = useMemo(() => getEmailValidationError(email), [email]);
+  const canSubmit = !validationError && !isSubmitting;
 
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailPattern.test(email);
+  const validate = (value: string) => {
+    const message = getEmailValidationError(value);
+    setError(message ?? "");
+    return message === null;
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setEmail(value);
 
-    if (!validateEmail(value)) {
-      setError("Please enter a valid email address.");
-    } else {
-      setError("");
+    if (touched) {
+      validate(value);
     }
   };
 
-  const debouncedHandleChange = debounce(handleChange, 2000);
-
   const handleBlur = () => {
     setTouched(true);
-    if (!validateEmail(email)) {
-      setError("Please enter a valid email address.");
+    validate(email);
+  };
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setTouched(true);
+
+    const trimmedEmail = email.trim();
+    if (!validate(trimmedEmail)) {
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const form = event.currentTarget;
+      const website = (form.elements.namedItem("website") as HTMLInputElement | null)?.value ?? "";
+
+      const response = await fetch("/api/newsletter/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: trimmedEmail, website }),
+      });
+
+      const json = (await response.json()) as {
+        success?: boolean;
+        message?: string;
+      };
+
+      if (!response.ok || !json.success) {
+        showError("Subscription failed", json.message || "Please try again later.");
+        return;
+      }
+
+      success("Subscribed!", json.message || "Thanks for subscribing!");
+      setEmail("");
+      setError("");
+      setTouched(false);
+    } catch {
+      showError("Subscription failed", "Please try again later.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -127,20 +150,14 @@ export const Mailchimp: React.FC<React.ComponentProps<typeof Column>> = ({ ...fl
           display: "flex",
           justifyContent: "center",
         }}
-        action={mailchimp.action}
-        method="post"
-        id="mc-embedded-subscribe-form"
-        name="mc-embedded-subscribe-form"
+        onSubmit={handleSubmit}
+        noValidate
+        id="newsletter-subscribe-form"
+        name="newsletter-subscribe-form"
       >
-        <Row
-          id="mc_embed_signup_scroll"
-          fillWidth
-          maxWidth={24}
-          s={{ direction: "column" }}
-          gap="8"
-        >
+        <Row fillWidth maxWidth={24} s={{ direction: "column" }} gap="8">
           <label
-            htmlFor="mce-EMAIL"
+            htmlFor="newsletter-email"
             style={{
               position: "absolute",
               width: "1px",
@@ -156,52 +173,33 @@ export const Mailchimp: React.FC<React.ComponentProps<typeof Column>> = ({ ...fl
             Email address
           </label>
           <Input
-            formNoValidate
-            id="mce-EMAIL"
-            name="EMAIL"
+            id="newsletter-email"
+            name="email"
             type="email"
             placeholder="Email"
-            required
-            onChange={(e) => {
-              if (error) {
-                handleChange(e);
-              } else {
-                debouncedHandleChange(e);
-              }
-            }}
+            autoComplete="email"
+            inputMode="email"
+            spellCheck={false}
+            value={email}
+            disabled={isSubmitting}
+            onChange={handleChange}
             onBlur={handleBlur}
-            errorMessage={error}
+            errorMessage={touched ? error : ""}
+            aria-invalid={touched && Boolean(validationError)}
           />
-          <div style={{ display: "none" }}>
-            <input
-              type="checkbox"
-              readOnly
-              name="group[3492][1]"
-              id="mce-group[3492]-3492-0"
-              value=""
-              checked
-            />
-          </div>
-          <div id="mce-responses" className="clearfalse">
-            <div className="response" id="mce-error-response" style={{ display: "none" }}></div>
-            <div className="response" id="mce-success-response" style={{ display: "none" }}></div>
-          </div>
-          <div aria-hidden="true" style={{ position: "absolute", left: "-5000px" }}>
-            <input
-              type="text"
-              readOnly
-              name="b_c1a5a210340eb6c7bff33b2ba_0462d244aa"
-              tabIndex={-1}
-              value=""
-            />
-          </div>
-          <div className="clear">
-            <Row height="48" vertical="center">
-              <Button id="mc-embedded-subscribe" value="Subscribe" size="m" fillWidth>
-                Subscribe
-              </Button>
-            </Row>
-          </div>
+          <input
+            type="text"
+            name="website"
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+            style={{ position: "absolute", left: "-5000px" }}
+          />
+          <Row height="48" vertical="center">
+            <Button type="submit" size="m" fillWidth disabled={!canSubmit}>
+              {isSubmitting ? "Subscribing..." : "Subscribe"}
+            </Button>
+          </Row>
         </Row>
       </form>
     </Column>
