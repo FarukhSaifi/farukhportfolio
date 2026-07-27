@@ -27,15 +27,15 @@ function ToastItem({ toast, onRemove }: ToastProps) {
   const getToastIcon = (type: ToastType): string => {
     switch (type) {
       case "success":
-        return "checkCircle";
+        return "check";
       case "error":
-        return "errorCircle";
+        return "danger";
       case "warning":
-        return "warningTriangle";
+        return "warning";
       case "info":
-        return "infoCircle";
+        return "info";
       default:
-        return "infoCircle";
+        return "info";
     }
   };
 
