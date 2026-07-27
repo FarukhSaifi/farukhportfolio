@@ -1,5 +1,6 @@
 import { ERROR_MESSAGES, HTTP_STATUS, SPOTIFY_CONFIG } from "./constants";
 import { AppError } from "./interfaces";
+import { isValidEmail as isValidEmailAddress } from "./validation";
 
 /**
  * Database Utilities (Server-side only)
@@ -259,8 +260,7 @@ export class ValidationUtils {
    * @returns {boolean} True if email is valid
    */
   static isValidEmail(email: string): boolean {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+    return isValidEmailAddress(email);
   }
 
   /**
