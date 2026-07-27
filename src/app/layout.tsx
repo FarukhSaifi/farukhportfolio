@@ -7,7 +7,7 @@ import "@once-ui-system/core/css/tokens.css";
 import classNames from "classnames";
 
 import { Footer, Header, Providers, RouteGuard } from "@/components";
-import { baseURL, dataStyle, effects, fonts, home, style } from "@/resources";
+import { baseURL, dataStyle, effects, fonts, home, person, style } from "@/resources";
 import type { OnceUiOpacity } from "@/types";
 import { Background, Column, Flex, Meta, RevealFx, SpacingToken } from "@once-ui-system/core";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -35,7 +35,7 @@ export default async function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang={person.locale ?? "en"}
       suppressHydrationWarning
       className={classNames(fonts.heading.variable, fonts.body.variable, fonts.label.variable, fonts.code.variable)}
     >
