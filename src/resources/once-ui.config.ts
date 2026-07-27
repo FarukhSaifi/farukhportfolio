@@ -12,7 +12,7 @@ import {
   SocialSharingConfig,
   StyleConfig,
 } from "@/types";
-import { home } from "./index";
+import { home, person, social } from "./content";
 
 // IMPORTANT: Replace with your own domain address - it's used for SEO in meta tags and schema
 const baseURL: string = "https://farukh.me";
@@ -188,20 +188,20 @@ const mailchimp: MailchimpConfig = {
   },
 };
 
-// default schema data
+// default schema data — pulls from content.tsx so there's one source of truth
 const schema: SchemaConfig = {
   logo: "/images/favicon.ico",
-  type: "Organization",
-  name: "Farukh Saifi",
+  type: "Person",
+  name: person.name,
   description: home.description,
-  email: "farook1x95@gmail.com",
+  email: person.email,
 };
 
-// social links
+// social links — derived from the social array in content.tsx to avoid duplication
 const sameAs: SameAsConfig = {
-  threads: "https://www.threads.com/@iamfarukh1",
-  linkedin: "https://www.linkedin.com/in/farukh-saifi",
-  discord: "https://discord.com/invite/farukh-saifi",
+  threads: social.find((s) => s.name === "Threads")?.link ?? "",
+  linkedin: social.find((s) => s.name === "LinkedIn")?.link ?? "",
+  discord: social.find((s) => s.name === "Discord")?.link ?? "",
 };
 
 // social sharing configuration for blog posts

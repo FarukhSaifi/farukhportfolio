@@ -27,6 +27,12 @@ export type Person = {
   location: IANATimeZone;
   /** Languages spoken */
   languages?: string[];
+  /**
+   * BCP 47 language tag for the HTML lang attribute (e.g., 'en', 'ja', 'zh-TW').
+   * Defaults to 'en' if not set.
+   * See: https://www.iana.org/assignments/language-subtag-registry
+   */
+  locale?: string;
 };
 
 /**

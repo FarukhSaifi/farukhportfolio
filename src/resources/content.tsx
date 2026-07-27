@@ -11,6 +11,7 @@ const person: Person = {
   email: "farook1x95@gmail.com",
   location: "Asia/Kolkata", // New Delhi, India timezone
   languages: [], // optional: Leave the array empty if you don't want to display languages
+  locale: "en", // BCP 47 language tag for the HTML lang attribute, e.g., 'en', 'ja', 'zh-TW'
 };
 
 const newsletter: Newsletter = {
@@ -18,8 +19,8 @@ const newsletter: Newsletter = {
   title: <>Subscribe to {person.firstName}&apos;s Newsletter</>,
   description: (
     <>
-      I occasionally write about design, technology, and share thoughts on the intersection of
-      creativity and engineering.
+      I occasionally write about design, technology, and share thoughts on the intersection of creativity and
+      engineering.
     </>
   ),
 };
@@ -65,8 +66,7 @@ const home: Home = {
     display: false,
     title: (
       <Row gap="12" vertical="center">
-        <strong className="ml-4">Featured</strong>{" "}
-        <Line background="brand-alpha-strong" vert height="20" />
+        <strong className="ml-4">Featured</strong> <Line background="brand-alpha-strong" vert height="20" />
         <Text marginRight="4" onBackground="brand-medium">
           Featured work
         </Text>
@@ -76,7 +76,7 @@ const home: Home = {
   },
   subline: (
     <>
-      I&apos;m Farukh, a Software Engineer at{" "}
+      I&apos;m {person.firstName}, a {person.role.toLowerCase()} at{" "}
       <Text as="span" size="xl" weight="strong">
         Earth 🌏
       </Text>
@@ -106,9 +106,9 @@ const about: About = {
     title: "Introduction",
     description: (
       <>
-        Farukh is a Software Engineer with a passion for transforming complex challenges into
-        simple, elegant design solutions. His work spans digital interfaces, interactive
-        experiences, and the convergence of design and technology.
+        {person.firstName} is a {person.location.split("/")[1]?.replace("_", " ")}-based {person.role.toLowerCase()}{" "}
+        with a passion for transforming complex challenges into simple, elegant design solutions. Their work spans
+        digital interfaces, interactive experiences, and the convergence of design and technology.
       </>
     ),
   },
@@ -121,17 +121,15 @@ const about: About = {
         timeframe: "Oct 2021 - Present",
         role: "Senior Consultant",
         achievements: [
-          <>
-            Implemented cost-effective solutions, resulting in a 20% reduction in project expenses.
-          </>,
+          <>Implemented cost-effective solutions, resulting in a 20% reduction in project expenses.</>,
           <>Streamlined project workflows, enhancing overall efficiency by 25%.</>,
           <>
-            Collaborated with designers to translate UI/UX wireframes into high-quality code,
-            ensuring a seamless user experience.
+            Collaborated with designers to translate UI/UX wireframes into high-quality code, ensuring a seamless user
+            experience.
           </>,
           <>
-            Optimized web applications for maximum speed and scalability, implementing best
-            practices for performance improvement.
+            Optimized web applications for maximum speed and scalability, implementing best practices for performance
+            improvement.
           </>,
         ],
         images: [],
@@ -142,16 +140,16 @@ const about: About = {
         role: "Frontend Developer",
         achievements: [
           <>
-            Skilled in using Frontend frameworks like React and Vue to build products and integrate
-            features according to client needs.
+            Skilled in using Frontend frameworks like React and Vue to build products and integrate features according
+            to client needs.
           </>,
           <>
-            Proven proficiency as a backend developer utilizing Node.js with Express.js, Socket.io,
-            and WebRTC to create API endpoints.
+            Proven proficiency as a backend developer utilizing Node.js with Express.js, Socket.io, and WebRTC to create
+            API endpoints.
           </>,
           <>
-            Able to manage multiple software projects simultaneously, actively participating in the
-            entire software development process from inception to delivery.
+            Able to manage multiple software projects simultaneously, actively participating in the entire software
+            development process from inception to delivery.
           </>,
         ],
         images: [],
@@ -176,8 +174,8 @@ const about: About = {
         title: "Languages",
         description: (
           <>
-            JavaScript (ES6+), TypeScript, HTML5, CSS3, JSX. Proficient in modern JavaScript
-            features, type-safe development with TypeScript, and semantic HTML5 markup.
+            JavaScript (ES6+), TypeScript, HTML5, CSS3, JSX. Proficient in modern JavaScript features, type-safe
+            development with TypeScript, and semantic HTML5 markup.
           </>
         ),
         tags: [],
@@ -187,8 +185,8 @@ const about: About = {
         title: "React.js",
         description: (
           <>
-            React is the library for web and native user interfaces. Build user interfaces out of
-            individual pieces called components written in JavaScript.
+            React is the library for web and native user interfaces. Build user interfaces out of individual pieces
+            called components written in JavaScript.
           </>
         ),
         tags: [],
@@ -198,8 +196,8 @@ const about: About = {
         title: "Next.js",
         description: (
           <>
-            Built on a foundation of fast, production-grade tooling. Powered by React, Next.js
-            enables server-side rendering, static site generation, and optimized performance.
+            Built on a foundation of fast, production-grade tooling. Powered by React, Next.js enables server-side
+            rendering, static site generation, and optimized performance.
           </>
         ),
         tags: [],
@@ -209,8 +207,8 @@ const about: About = {
         title: "Redux",
         description: (
           <>
-            Predictable state container for JavaScript apps. Redux helps manage application state
-            with a single source of truth and enables powerful debugging capabilities.
+            Predictable state container for JavaScript apps. Redux helps manage application state with a single source
+            of truth and enables powerful debugging capabilities.
           </>
         ),
         tags: [],
@@ -220,8 +218,8 @@ const about: About = {
         title: "Vue.js & Vuex",
         description: (
           <>
-            Progressive JavaScript framework for building user interfaces. Vue.js offers an
-            approachable, versatile, and performant framework with Vuex for state management.
+            Progressive JavaScript framework for building user interfaces. Vue.js offers an approachable, versatile, and
+            performant framework with Vuex for state management.
           </>
         ),
         tags: [],
@@ -231,9 +229,8 @@ const about: About = {
         title: "Frontend Libraries & Frameworks",
         description: (
           <>
-            Material-UI (MUI), Ant Design, Bootstrap, Tailwind CSS. Experienced in using popular UI
-            component libraries and utility-first CSS frameworks to build responsive and accessible
-            interfaces.
+            Material-UI (MUI), Ant Design, Bootstrap, Tailwind CSS. Experienced in using popular UI component libraries
+            and utility-first CSS frameworks to build responsive and accessible interfaces.
           </>
         ),
         tags: [],
@@ -243,8 +240,8 @@ const about: About = {
         title: "Styling & CSS",
         description: (
           <>
-            SASS/SCSS, styled-components, Responsive Design. Skilled in CSS preprocessors, CSS-in-JS
-            solutions, and creating mobile-first, responsive layouts that work across all devices.
+            SASS/SCSS, styled-components, Responsive Design. Skilled in CSS preprocessors, CSS-in-JS solutions, and
+            creating mobile-first, responsive layouts that work across all devices.
           </>
         ),
         tags: [],
@@ -254,8 +251,8 @@ const about: About = {
         title: "Node.js",
         description: (
           <>
-            Node.js® is a free, open-source, cross-platform JavaScript runtime environment that lets
-            developers create servers, web apps, command line tools and scripts.
+            Node.js® is a free, open-source, cross-platform JavaScript runtime environment that lets developers create
+            servers, web apps, command line tools and scripts.
           </>
         ),
         tags: [],
@@ -265,8 +262,8 @@ const about: About = {
         title: "Express.js",
         description: (
           <>
-            Fast, unopinionated, minimalist web framework for Node.js. Express.js simplifies
-            building robust RESTful APIs and web applications with a rich ecosystem of middleware.
+            Fast, unopinionated, minimalist web framework for Node.js. Express.js simplifies building robust RESTful
+            APIs and web applications with a rich ecosystem of middleware.
           </>
         ),
         tags: [],
@@ -276,9 +273,8 @@ const about: About = {
         title: "APIs & Backend",
         description: (
           <>
-            RESTful APIs, GraphQL, WebRTC, API design principles. Experienced in designing and
-            implementing various API architectures, real-time communication protocols, and following
-            best practices for scalable backend systems.
+            RESTful APIs, GraphQL, WebRTC, API design principles. Experienced in designing and implementing various API
+            architectures, real-time communication protocols, and following best practices for scalable backend systems.
           </>
         ),
         tags: [],
@@ -288,8 +284,8 @@ const about: About = {
         title: "Authentication & Security",
         description: (
           <>
-            Auth flow (OAuth, JWT). Skilled in implementing secure authentication mechanisms, OAuth
-            2.0 flows, and JSON Web Tokens for stateless authentication in modern web applications.
+            Auth flow (OAuth, JWT). Skilled in implementing secure authentication mechanisms, OAuth 2.0 flows, and JSON
+            Web Tokens for stateless authentication in modern web applications.
           </>
         ),
         tags: [],
@@ -299,8 +295,8 @@ const about: About = {
         title: "Build Tools & Bundlers",
         description: (
           <>
-            Webpack, Babel, Vite. Experienced in modern build tooling for bundling, transpiling, and
-            optimizing JavaScript applications for production with fast development experiences.
+            Webpack, Babel, Vite. Experienced in modern build tooling for bundling, transpiling, and optimizing
+            JavaScript applications for production with fast development experiences.
           </>
         ),
         tags: [],
@@ -310,8 +306,8 @@ const about: About = {
         title: "Package Managers & DevOps",
         description: (
           <>
-            npm, yarn, Docker, Git. Proficient in package management, containerization with Docker,
-            and version control with Git for collaborative development workflows.
+            npm, yarn, Docker, Git. Proficient in package management, containerization with Docker, and version control
+            with Git for collaborative development workflows.
           </>
         ),
         tags: [],

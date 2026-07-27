@@ -17,7 +17,7 @@ export async function GET() {
     <title>${blog.title}</title>
     <link>${baseURL}/blog</link>
     <description>${blog.description}</description>
-    <language>en</language>
+    <language>${person.locale ?? "en"}</language>
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
     <atom:link href="${baseURL}/api/rss" rel="self" type="application/rss+xml" />
     <managingEditor>${person.email || "noreply@example.com"} (${person.name})</managingEditor>
