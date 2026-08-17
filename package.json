@@ -12,7 +12,7 @@
     "@csstools/postcss-global-data": "^4.0.0",
     "@mdx-js/loader": "^3.1.1",
     "@next/mdx": "^16.2.7",
-    "@once-ui-system/core": "1.8.1",
+    "@once-ui-system/core": "1.8.2",
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
     "classnames": "^2.5.1",
