@@ -1,6 +1,5 @@
 import { HTTP_STATUS } from "@/lib/constants";
 import { ApiUtils, EnvironmentUtils } from "@/lib/server-utils";
-import { serialize } from "cookie";
 import { NextRequest, NextResponse } from "next/server";
 
 /**
@@ -70,15 +69,13 @@ export async function POST(request: NextRequest) {
       );
 
       // Set secure session cookie
-      const cookieValue = serialize("auth-session", JSON.stringify(user), {
+      response.cookies.set("auth-session", JSON.stringify(user), {
         httpOnly: true,
         secure: EnvironmentUtils.isProduction(),
         sameSite: "lax",
         maxAge: 86400, // 24 hours
         path: "/",
       });
-
-      response.headers.set("Set-Cookie", cookieValue);
 
       return response;
     } else {

@@ -1,6 +1,5 @@
 import { HTTP_STATUS } from "@/lib/constants";
 import { ApiUtils } from "@/lib/server-utils";
-import { parse } from "cookie";
 import { NextRequest, NextResponse } from "next/server";
 
 /**
@@ -14,10 +13,7 @@ import { NextRequest, NextResponse } from "next/server";
  */
 export async function GET(request: NextRequest) {
   try {
-    // Parse cookies from request headers
-    const cookieHeader = request.headers.get("cookie") || "";
-    const cookies = parse(cookieHeader);
-    const authSession = cookies["auth-session"];
+    const authSession = request.cookies.get("auth-session")?.value;
 
     // Check if session cookie exists
     if (!authSession) {

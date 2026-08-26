@@ -11,9 +11,7 @@ interface RouteGuardProps {
   children: React.ReactNode;
 }
 
-function isRouteEnabled(pathname: string | null): boolean {
-  if (!pathname) return false;
-
+function isRouteEnabled(pathname: string): boolean {
   if (pathname in routes) {
     return routes[pathname as keyof typeof routes];
   }
@@ -45,10 +43,14 @@ async function fetchAuthStatus(signal: AbortSignal): Promise<boolean> {
 }
 
 const RouteGuard: React.FC<RouteGuardProps> = ({ children }) => {
-  const pathname = usePathname();
+  const rawPathname = usePathname();
+  // usePathname() may be null/"" during SSR (seen for `/` on Vercel prerender).
+  // Treating that as disabled prerendered <NotFound /> into `/` and caused React #418.
+  const pathname = rawPathname && rawPathname.length > 0 ? rawPathname : ROUTES.HOME;
+
   const routeEnabled = useMemo(() => isRouteEnabled(pathname), [pathname]);
   const isPasswordRequired = useMemo(
-    () => Boolean(pathname && protectedRoutes[pathname as keyof typeof protectedRoutes]),
+    () => Boolean(protectedRoutes[pathname as keyof typeof protectedRoutes]),
     [pathname],
   );
 
