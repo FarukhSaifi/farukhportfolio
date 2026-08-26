@@ -36,6 +36,17 @@ export default async function RootLayout({
   return (
     <html
       lang={person.locale ?? "en"}
+      data-theme={style.theme}
+      data-neutral={style.neutral}
+      data-brand={style.brand}
+      data-accent={style.accent}
+      data-border={style.border}
+      data-solid={style.solid}
+      data-solid-style={style.solidStyle}
+      data-surface={style.surface}
+      data-transition={style.transition}
+      data-scaling={style.scaling}
+      data-viz-style={dataStyle.variant}
       suppressHydrationWarning
       className={classNames(fonts.heading.variable, fonts.body.variable, fonts.label.variable, fonts.code.variable)}
     >
