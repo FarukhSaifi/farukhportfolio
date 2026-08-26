@@ -14,8 +14,22 @@ export const ThemeToggle: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    if (!mounted) return;
     setCurrentTheme(document.documentElement.getAttribute("data-theme") || "light");
-  }, [theme]);
+  }, [theme, mounted]);
+
+  // Avoid SSR/CSR icon mismatch: theme is resolved from DOM/localStorage only after mount.
+  if (!mounted) {
+    return (
+      <ToggleButton
+        prefixIcon="dark"
+        aria-label="Switch color theme"
+        aria-hidden
+        tabIndex={-1}
+        style={{ visibility: "hidden" }}
+      />
+    );
+  }
 
   const icon = currentTheme === "dark" ? "light" : "dark";
   const nextTheme = currentTheme === "light" ? "dark" : "light";
