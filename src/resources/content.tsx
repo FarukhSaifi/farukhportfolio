@@ -174,143 +174,119 @@ const about: About = {
         title: "Languages",
         description: (
           <>
-            JavaScript (ES6+), TypeScript, HTML5, CSS3, JSX. Proficient in modern JavaScript features, type-safe
-            development with TypeScript, and semantic HTML5 markup.
+            JavaScript (ES6+), TypeScript, HTML5, CSS3, JSON, JSX. Proficient in modern JavaScript features, type-safe
+            development with TypeScript, semantic HTML5 markup, and structured data interchange with JSON.
           </>
         ),
-        tags: [],
+        tags: [
+          { name: "JavaScript" },
+          { name: "TypeScript" },
+          { name: "HTML" },
+          { name: "CSS" },
+          { name: "JSON" },
+          { name: "JSX" },
+        ],
         images: [],
       },
       {
-        title: "React.js",
+        title: "Frontend",
         description: (
           <>
-            React is the library for web and native user interfaces. Build user interfaces out of individual pieces
-            called components written in JavaScript.
+            Building modern, performant, and accessible user interfaces with industry-leading frameworks and libraries.
+            Experienced in component-driven architecture, state management, utility-first styling, and comprehensive
+            testing to deliver polished, production-ready applications.
           </>
         ),
-        tags: [],
+        tags: [
+          { name: "React.js" },
+          { name: "Next.js" },
+          { name: "Redux" },
+          { name: "Redux Toolkit" },
+          { name: "Vue.js" },
+          { name: "Tailwind CSS" },
+          { name: "Material-UI (MUI)" },
+          { name: "Vite" },
+          { name: "Styled Components" },
+          { name: "Jest" },
+        ],
         images: [],
       },
       {
-        title: "Next.js",
+        title: "Backend",
         description: (
           <>
-            Built on a foundation of fast, production-grade tooling. Powered by React, Next.js enables server-side
-            rendering, static site generation, and optimized performance.
+            Designing and building scalable server-side architectures, RESTful and GraphQL APIs, real-time communication
+            systems, and secure authentication flows. Experienced in creating robust backend services that power modern
+            web applications.
           </>
         ),
-        tags: [],
+        tags: [
+          { name: "Node.js" },
+          { name: "Express.js" },
+          { name: "GraphQL" },
+          { name: "RESTful APIs" },
+          { name: "WebRTC" },
+          { name: "Socket.io" },
+          { name: "JWT Authentication" },
+        ],
         images: [],
       },
       {
-        title: "Redux",
+        title: "DevOps & Cloud",
         description: (
           <>
-            Predictable state container for JavaScript apps. Redux helps manage application state with a single source
-            of truth and enables powerful debugging capabilities.
+            Streamlining development workflows with cloud platforms, containerization, and continuous integration and
+            delivery pipelines. Proficient in deploying and managing applications at scale with modern DevOps practices
+            and infrastructure tooling.
           </>
         ),
-        tags: [],
+        tags: [
+          { name: "Google Cloud Platform (GCP)" },
+          { name: "Git" },
+          { name: "Google Firebase" },
+          { name: "CI/CD Pipelines" },
+          { name: "Docker" },
+          { name: "Jenkins" },
+          { name: "Webpack" },
+        ],
         images: [],
       },
       {
-        title: "Vue.js & Vuex",
+        title: "AI & Developer Tools",
         description: (
           <>
-            Progressive JavaScript framework for building user interfaces. Vue.js offers an approachable, versatile, and
-            performant framework with Vuex for state management.
+            Integrating artificial intelligence capabilities into applications through LLM APIs, Retrieval-Augmented
+            Generation (RAG), and AI agent architectures. Leveraging cutting-edge developer tools and AI-powered coding
+            assistants to accelerate development and deliver intelligent features.
           </>
         ),
-        tags: [],
+        tags: [
+          { name: "AI/LLM API Integration" },
+          { name: "RAG" },
+          { name: "AI Agents" },
+          { name: "ChatGPT" },
+          { name: "Claude" },
+          { name: "Cursor" },
+          { name: "Copilot" },
+          { name: "Antigravity" },
+        ],
         images: [],
       },
       {
-        title: "Frontend Libraries & Frameworks",
+        title: "Methodologies & Core Skills",
         description: (
           <>
-            Material-UI (MUI), Ant Design, Bootstrap, Tailwind CSS. Experienced in using popular UI component libraries
-            and utility-first CSS frameworks to build responsive and accessible interfaces.
+            Applying proven software development methodologies and strong interpersonal skills to deliver high-quality
+            products collaboratively. Experienced in Agile workflows, systematic problem-solving, and performance
+            optimization to ensure efficient, well-architected solutions.
           </>
         ),
-        tags: [],
-        images: [],
-      },
-      {
-        title: "Styling & CSS",
-        description: (
-          <>
-            SASS/SCSS, styled-components, Responsive Design. Skilled in CSS preprocessors, CSS-in-JS solutions, and
-            creating mobile-first, responsive layouts that work across all devices.
-          </>
-        ),
-        tags: [],
-        images: [],
-      },
-      {
-        title: "Node.js",
-        description: (
-          <>
-            Node.js® is a free, open-source, cross-platform JavaScript runtime environment that lets developers create
-            servers, web apps, command line tools and scripts.
-          </>
-        ),
-        tags: [],
-        images: [],
-      },
-      {
-        title: "Express.js",
-        description: (
-          <>
-            Fast, unopinionated, minimalist web framework for Node.js. Express.js simplifies building robust RESTful
-            APIs and web applications with a rich ecosystem of middleware.
-          </>
-        ),
-        tags: [],
-        images: [],
-      },
-      {
-        title: "APIs & Backend",
-        description: (
-          <>
-            RESTful APIs, GraphQL, WebRTC, API design principles. Experienced in designing and implementing various API
-            architectures, real-time communication protocols, and following best practices for scalable backend systems.
-          </>
-        ),
-        tags: [],
-        images: [],
-      },
-      {
-        title: "Authentication & Security",
-        description: (
-          <>
-            Auth flow (OAuth, JWT). Skilled in implementing secure authentication mechanisms, OAuth 2.0 flows, and JSON
-            Web Tokens for stateless authentication in modern web applications.
-          </>
-        ),
-        tags: [],
-        images: [],
-      },
-      {
-        title: "Build Tools & Bundlers",
-        description: (
-          <>
-            Webpack, Babel, Vite. Experienced in modern build tooling for bundling, transpiling, and optimizing
-            JavaScript applications for production with fast development experiences.
-          </>
-        ),
-        tags: [],
-        images: [],
-      },
-      {
-        title: "Package Managers & DevOps",
-        description: (
-          <>
-            npm, yarn, Docker, Git. Proficient in package management, containerization with Docker, and version control
-            with Git for collaborative development workflows.
-          </>
-        ),
-        tags: [],
+        tags: [
+          { name: "Agile (Scrum)" },
+          { name: "Problem-Solving" },
+          { name: "Interpersonal Skills" },
+          { name: "Performance Optimization" },
+        ],
         images: [],
       },
     ],
