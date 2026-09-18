@@ -1,0 +1,83 @@
+name: Create update branch and pull request
+
+on:
+  workflow_dispatch:
+    inputs:
+      update_name:
+        description: "Short name for the update (for example: portfolio-improvements)"
+        required: true
+        type: string
+      description:
+        description: "What this update changes"
+        required: false
+        type: string
+      draft:
+        description: "Create the pull request as a draft"
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  create-update-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the default branch
+        uses: actions/checkout@v4
+        with:
+          ref: master
+          fetch-depth: 0
+
+      - name: Create a new update branch
+        id: branch
+        env:
+          UPDATE_NAME: ${{ inputs.update_name }}
+        run: |
+          set -euo pipefail
+
+          # Convert the supplied name into a safe, predictable branch name.
+          slug=$(printf '%s' "$UPDATE_NAME" \
+            | tr '[:upper:]' '[:lower:]' \
+            | sed -E 's/[^a-z0-9]+/-/g; s/^-+//; s/-+$//')
+
+          if [ -z "$slug" ]; then
+            echo "The update name must contain at least one letter or number."
+            exit 1
+          fi
+
+          branch="update/${slug}-$(date -u +%Y%m%d%H%M%S)"
+          git switch -c "$branch"
+          git push --set-upstream origin "$branch"
+          echo "branch=$branch" >> "$GITHUB_OUTPUT"
+
+      - name: Open the pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BRANCH: ${{ steps.branch.outputs.branch }}
+          UPDATE_NAME: ${{ inputs.update_name }}
+          DESCRIPTION: ${{ inputs.description }}
+          DRAFT: ${{ inputs.draft }}
+        run: |
+          set -euo pipefail
+
+          title="chore: ${UPDATE_NAME}"
+          body="${DESCRIPTION:-This pull request contains the ${UPDATE_NAME} update.}
+
+          Workflow: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
+
+          All follow-up changes for this update must be committed to this same branch until the pull request is merged."
+
+          draft_flag=()
+          if [ "$DRAFT" = "true" ]; then
+            draft_flag=(--draft)
+          fi
+
+          gh pr create \
+            --base master \
+            --head "$BRANCH" \
+            --title "$title" \
+            --body "$body" \
+            "${draft_flag[@]}"
