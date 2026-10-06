@@ -4,8 +4,6 @@ import { DatabaseSpotifyProvider } from "@/contexts/DatabaseSpotifyContext";
 import { APP_CONFIG } from "@/lib/constants";
 import {
   BorderStyle,
-  ChartMode,
-  ChartVariant,
   DataThemeProvider,
   IconProvider,
   LayoutProvider,
@@ -19,6 +17,7 @@ import {
   ToastProvider,
   TransitionStyle,
 } from "@once-ui-system/core";
+import { ChartMode, ChartVariant } from "@once-ui-system/core/data";
 import { Analytics } from "@vercel/analytics/react";
 import { ToastContainer } from "@/components/ToastContainer";
 import { dataStyle, style } from "../resources";

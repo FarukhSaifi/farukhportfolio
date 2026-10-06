@@ -89,3 +89,9 @@ export const iconLibrary: Record<string, IconType> = {
 
 export type IconLibrary = typeof iconLibrary;
 export type IconName = keyof IconLibrary;
+
+declare module "@once-ui-system/core" {
+  interface IconLibraryOverrides {
+    [key: string]: true;
+  }
+}

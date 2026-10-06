@@ -1,0 +1,55 @@
+name: Dependabot Auto-Fix
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  autofix:
+    name: Auto-fix Dependabot PR
+    if: github.actor == 'dependabot[bot]' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref || github.ref }}
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run ESLint auto-fix
+        run: |
+          if [ -f eslint.config.mjs ] || [ -f .eslintrc.json ]; then
+            npx eslint --fix . || true
+          fi
+
+      - name: Run npm audit fix
+        run: |
+          npm audit fix || true
+
+      - name: Commit and push automated fixes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if [ -n "$(git status --porcelain)" ]; then
+            git add -A
+            git commit -m "chore(deps): automated lint and dependency fixes [skip ci]"
+            git push origin HEAD:${{ github.event.pull_request.head.ref || github.ref }}
+          else
+            echo "No automated changes needed."
+          fi
