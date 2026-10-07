@@ -14,65 +14,39 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  lint:
-    name: TypeScript
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: "lts/*"
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run TypeScript
-        run: npm run lint
-
-  audit:
-    name: Dependency audit
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: "lts/*"
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Audit dependencies
-        run: npm audit --audit-level=high
-
-  build:
-    name: Production build
+  ci:
+    name: Build & Quality Checks
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v4
         with:
           node-version: "lts/*"
+          cache: "npm"
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
-      - name: Build
+      - name: TypeScript & Lint
+        run: npm run lint
+
+      - name: Dependency audit
+        run: npm audit --audit-level=high
+
+      - name: Restore Next.js cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ github.workspace }}/.next/cache
+          key: nextjs-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
+          restore-keys: |
+            nextjs-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}-
+
+      - name: Production build
         run: npm run build
         env:
-          # Matches production site URL (OG tags, Spotify redirect constants).
           NEXT_PUBLIC_BASE_URL: https://farukh.me
