@@ -9,7 +9,7 @@ import {
   Theme,
   TransitionStyle,
 } from "@once-ui-system/core";
-import { ChartMode, ChartVariant } from "@once-ui-system/core/modules";
+import { ChartMode, ChartVariant } from "@once-ui-system/core/data";
 import { NextFontWithVariable } from "next/dist/compiled/@next/font";
 
 /** Once UI opacity scale for Background effects (avoids importing renamed package types). */

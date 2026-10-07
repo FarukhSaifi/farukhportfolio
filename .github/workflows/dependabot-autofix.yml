@@ -1,28 +1,28 @@
-name: Dependabot Auto-Fix
+name: Dependabot Auto-Fix (build patch)
 
 on:
-  pull_request_target:
+  pull_request:
     types: [opened, synchronize, reopened]
     branches: [master]
   workflow_dispatch:
 
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read
 
 jobs:
-  autofix:
-    name: Auto-fix Dependabot PR
+  build-patch:
+    name: Run auto-fix and create patch
     if: github.actor == 'dependabot[bot]' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
     steps:
-      - name: Checkout PR branch
+      - name: Checkout PR head
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.ref || github.ref }}
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
+          persist-credentials: false
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -34,22 +34,23 @@ jobs:
 
       - name: Run ESLint auto-fix
         run: |
-          if [ -f eslint.config.mjs ] || [ -f .eslintrc.json ]; then
+          if [ -f eslint.config.mjs ] || [ -f eslint.config.js ] || [ -f .eslintrc.json ]; then
             npx eslint --fix . || true
           fi
 
       - name: Run npm audit fix
-        run: |
-          npm audit fix || true
+        run: npm audit fix || true
 
-      - name: Commit and push automated fixes
+      - name: Create patch file
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          if [ -n "$(git status --porcelain)" ]; then
-            git add -A
-            git commit -m "chore(deps): automated lint and dependency fixes [skip ci]"
-            git push origin HEAD:${{ github.event.pull_request.head.ref || github.ref }}
-          else
-            echo "No automated changes needed."
-          fi
+          mkdir -p /tmp/autofix
+          git diff > /tmp/autofix/autofix.patch
+          echo "${{ github.event.pull_request.head.sha || github.sha }}" > /tmp/autofix/head_sha.txt
+          echo "${{ github.event.pull_request.head.ref || github.ref_name }}" > /tmp/autofix/head_ref.txt
+
+      - name: Upload patch artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: autofix-patch-${{ github.event.pull_request.number || github.run_id }}
+          path: /tmp/autofix/
+          retention-days: 1

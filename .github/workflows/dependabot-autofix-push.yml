@@ -1,0 +1,91 @@
+name: Dependabot Auto-Fix (apply patch)
+
+on:
+  workflow_run:
+    workflows: ["Dependabot Auto-Fix (build patch)"]
+    types: [completed]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  apply-patch:
+    name: Apply patch and push to PR branch
+    if: >
+      github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Download patch artifact
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: context.payload.workflow_run.id,
+            });
+            const match = artifacts.data.artifacts.find(a =>
+              a.name.startsWith('autofix-patch-')
+            );
+            if (!match) {
+              console.log('No autofix patch artifact found');
+              return;
+            }
+            const download = await github.rest.actions.downloadArtifact({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              artifact_id: match.id,
+              archive_format: 'zip',
+            });
+            const fs = require('fs');
+            fs.writeFileSync('/tmp/autofix.zip', Buffer.from(download.data));
+
+      - name: Extract artifact
+        run: |
+          if [ -f /tmp/autofix.zip ]; then
+            unzip -o /tmp/autofix.zip -d /tmp/autofix
+            echo "extracted=true" >> $GITHUB_ENV
+          else
+            echo "extracted=false" >> $GITHUB_ENV
+          fi
+
+      - name: Read patch metadata
+        if: env.extracted == 'true'
+        id: meta
+        run: |
+          echo "head_sha=$(cat /tmp/autofix/head_sha.txt)" >> $GITHUB_OUTPUT
+          echo "head_ref=$(cat /tmp/autofix/head_ref.txt)" >> $GITHUB_OUTPUT
+
+      - name: Checkout PR branch
+        if: env.extracted == 'true'
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.meta.outputs.head_ref }}
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Apply patch
+        if: env.extracted == 'true'
+        run: |
+          if [ -s /tmp/autofix/autofix.patch ]; then
+            git apply /tmp/autofix/autofix.patch || git apply --reject /tmp/autofix/autofix.patch || true
+          else
+            echo "Patch is empty — nothing to apply."
+          fi
+
+      - name: Commit and push fixes
+        if: env.extracted == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if [ -n "$(git status --porcelain)" ]; then
+            git add -A
+            git commit -m "chore(deps): automated lint and dependency fixes [skip ci]"
+            git push origin HEAD:${{ steps.meta.outputs.head_ref }}
+            echo "Fixes pushed to ${{ steps.meta.outputs.head_ref }}"
+          else
+            echo "No changes to commit."
+          fi
