@@ -7,7 +7,6 @@ import {
   AccordionGroup,
   Button,
   Card,
-  CodeBlock,
   Column,
   Feedback,
   Grid,
@@ -26,6 +25,7 @@ import {
   Text,
   TextProps,
 } from "@once-ui-system/core";
+import { CodeBlock } from "@once-ui-system/core/modules";
 
 type CustomLinkProps = React.AnchorHTMLAttributes<HTMLAnchorElement> & {
   href: string;
