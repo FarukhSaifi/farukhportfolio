@@ -59,17 +59,20 @@ jobs:
           echo "head_sha=$(cat /tmp/autofix/head_sha.txt)" >> $GITHUB_OUTPUT
           echo "head_ref=$(cat /tmp/autofix/head_ref.txt)" >> $GITHUB_OUTPUT
 
-      - name: Checkout PR branch
+      - name: Checkout base repo
         if: env.extracted == 'true'
         uses: actions/checkout@v4
         with:
-          ref: ${{ steps.meta.outputs.head_ref }}
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Apply patch
+      - name: Switch to PR branch and apply patch
         if: env.extracted == 'true'
+        env:
+          HEAD_REF: ${{ steps.meta.outputs.head_ref }}
         run: |
+          git fetch origin "$HEAD_REF"
+          git checkout "$HEAD_REF"
           if [ -s /tmp/autofix/autofix.patch ]; then
             git apply /tmp/autofix/autofix.patch || git apply --reject /tmp/autofix/autofix.patch || true
           else
@@ -78,14 +81,16 @@ jobs:
 
       - name: Commit and push fixes
         if: env.extracted == 'true'
+        env:
+          HEAD_REF: ${{ steps.meta.outputs.head_ref }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           if [ -n "$(git status --porcelain)" ]; then
             git add -A
             git commit -m "chore(deps): automated lint and dependency fixes [skip ci]"
-            git push origin HEAD:${{ steps.meta.outputs.head_ref }}
-            echo "Fixes pushed to ${{ steps.meta.outputs.head_ref }}"
+            git push origin "HEAD:$HEAD_REF"
+            echo "Fixes pushed to $HEAD_REF"
           else
             echo "No changes to commit."
           fi
