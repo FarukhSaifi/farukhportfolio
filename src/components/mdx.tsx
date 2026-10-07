@@ -25,7 +25,7 @@ import {
   Text,
   TextProps,
 } from "@once-ui-system/core";
-import { CodeBlock } from "@once-ui-system/core/code";
+import { CodeBlock } from "@once-ui-system/core/modules";
 
 type CustomLinkProps = React.AnchorHTMLAttributes<HTMLAnchorElement> & {
   href: string;

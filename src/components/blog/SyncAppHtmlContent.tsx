@@ -1,13 +1,5 @@
-import {
-  HeadingLink,
-  InlineCode,
-  List,
-  ListItem,
-  Media,
-  SmartLink,
-  Text,
-} from "@once-ui-system/core";
-import { CodeBlock } from "@once-ui-system/core/code";
+import { HeadingLink, InlineCode, List, ListItem, Media, SmartLink, Text } from "@once-ui-system/core";
+import { CodeBlock } from "@once-ui-system/core/modules";
 import parse, { DOMNode, domToReact, Element, HTMLReactParserOptions } from "html-react-parser";
 import { ReactNode } from "react";
 import { slugify as transliterate } from "transliteration";
