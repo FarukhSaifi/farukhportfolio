@@ -86,7 +86,10 @@ function slugify(str: string): string {
 }
 
 function createHeading(as: "h1" | "h2" | "h3" | "h4" | "h5" | "h6") {
-  const CustomHeading = ({ children, ...props }: Omit<React.ComponentProps<typeof HeadingLink>, "as" | "id">) => {
+  const CustomHeading = ({
+    children,
+    ...props
+  }: Omit<React.ComponentProps<typeof HeadingLink>, "as" | "id">) => {
     // Safely convert children to string for slugify
     const childrenString =
       typeof children === "string"
@@ -218,6 +221,10 @@ type CustomMDXProps = MDXRemoteProps & {
 
 export function CustomMDX(props: CustomMDXProps) {
   return (
-    <MDXRemote options={{ blockJS: false }} {...props} components={{ ...components, ...(props.components || {}) }} />
+    <MDXRemote
+      options={{ blockJS: false }}
+      {...props}
+      components={{ ...components, ...(props.components || {}) }}
+    />
   );
 }

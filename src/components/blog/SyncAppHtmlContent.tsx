@@ -48,14 +48,23 @@ function createHtmlParserOptions(): HTMLReactParserOptions {
       const childNodes = domNode.children as DOMNode[];
 
       if (domNode.name === "pre") {
-        const codeEl = childNodes.find((node): node is Element => node instanceof Element && node.name === "code");
+        const codeEl = childNodes.find(
+          (node): node is Element => node instanceof Element && node.name === "code",
+        );
         if (codeEl) {
           const className = codeEl.attribs?.class || "";
           const language = className.replace(/^language-/, "") || "text";
           const code = getPlainText(codeEl.children as DOMNode[]);
           const label = language.charAt(0).toUpperCase() + language.slice(1);
 
-          return <CodeBlock marginTop="8" marginBottom="16" codes={[{ code, language, label }]} copyButton />;
+          return (
+            <CodeBlock
+              marginTop="8"
+              marginBottom="16"
+              codes={[{ code, language, label }]}
+              copyButton
+            />
+          );
         }
       }
 
@@ -70,7 +79,12 @@ function createHtmlParserOptions(): HTMLReactParserOptions {
         case "h6": {
           const headingText = getPlainText(childNodes);
           return (
-            <HeadingLink marginTop="24" marginBottom="12" as={domNode.name} id={slugify(headingText)}>
+            <HeadingLink
+              marginTop="24"
+              marginBottom="12"
+              as={domNode.name}
+              id={slugify(headingText)}
+            >
               {children}
             </HeadingLink>
           );
