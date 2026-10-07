@@ -1,45 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
 
+const ALLOWED_DOMAINS = new Set([
+  "farukh.me",
+  "github.com",
+  "avatars.githubusercontent.com",
+  "images.unsplash.com",
+  "cdn.hashnode.com",
+  "raw.githubusercontent.com",
+]);
+
 function isAllowedUrl(targetUrl: string): boolean {
   try {
     const parsed = new URL(targetUrl);
-    if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
+    if (parsed.protocol !== "https:") {
       return false;
     }
 
     const hostname = parsed.hostname.toLowerCase();
-    // Block local / private / loopback / cloud metadata hostnames
-    if (
-      hostname === "localhost" ||
-      hostname.endsWith(".localhost") ||
-      hostname.endsWith(".local") ||
-      hostname === "127.0.0.1" ||
-      hostname === "0.0.0.0" ||
-      hostname === "::1" ||
-      hostname === "169.254.169.254" || // AWS / GCP / Azure metadata
-      hostname.startsWith("10.") ||
-      hostname.startsWith("192.168.") ||
-      hostname.startsWith("172.16.") ||
-      hostname.startsWith("172.17.") ||
-      hostname.startsWith("172.18.") ||
-      hostname.startsWith("172.19.") ||
-      hostname.startsWith("172.20.") ||
-      hostname.startsWith("172.21.") ||
-      hostname.startsWith("172.22.") ||
-      hostname.startsWith("172.23.") ||
-      hostname.startsWith("172.24.") ||
-      hostname.startsWith("172.25.") ||
-      hostname.startsWith("172.26.") ||
-      hostname.startsWith("172.27.") ||
-      hostname.startsWith("172.28.") ||
-      hostname.startsWith("172.29.") ||
-      hostname.startsWith("172.30.") ||
-      hostname.startsWith("172.31.")
-    ) {
-      return false;
-    }
-
-    return true;
+    return ALLOWED_DOMAINS.has(hostname);
   } catch {
     return false;
   }
@@ -51,13 +29,16 @@ export async function GET(request: NextRequest) {
     const imageUrl = url.searchParams.get("url");
 
     if (!imageUrl || !isAllowedUrl(imageUrl)) {
-      return NextResponse.json({ error: "Invalid or disallowed URL parameter" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Invalid or disallowed URL parameter" },
+        { status: 400 },
+      );
     }
 
     const validatedUrl = new URL(imageUrl);
 
-    // Fetch the image from validated external URL
-    const response = await fetch(validatedUrl.toString(), {
+    // Fetch the image from allowed external URL only
+    const response = await fetch(validatedUrl.href, {
       headers: {
         "User-Agent": "Mozilla/5.0 (compatible; ImageProxy/1.0)",
       },

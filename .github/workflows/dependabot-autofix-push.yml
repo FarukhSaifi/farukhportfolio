@@ -43,54 +43,37 @@ jobs:
             const fs = require('fs');
             fs.writeFileSync('/tmp/autofix.zip', Buffer.from(download.data));
 
-      - name: Extract artifact
+      - name: Extract artifact and prepare patch
+        id: patch_meta
         run: |
           if [ -f /tmp/autofix.zip ]; then
             unzip -o /tmp/autofix.zip -d /tmp/autofix
-            echo "extracted=true" >> $GITHUB_ENV
+            if [ -s /tmp/autofix/autofix.patch ]; then
+              echo "has_patch=true" >> $GITHUB_OUTPUT
+              echo "head_ref=$(cat /tmp/autofix/head_ref.txt)" >> $GITHUB_OUTPUT
+            else
+              echo "has_patch=false" >> $GITHUB_OUTPUT
+            fi
           else
-            echo "extracted=false" >> $GITHUB_ENV
+            echo "has_patch=false" >> $GITHUB_OUTPUT
           fi
 
-      - name: Read patch metadata
-        if: env.extracted == 'true'
-        id: meta
-        run: |
-          echo "head_sha=$(cat /tmp/autofix/head_sha.txt)" >> $GITHUB_OUTPUT
-          echo "head_ref=$(cat /tmp/autofix/head_ref.txt)" >> $GITHUB_OUTPUT
-
-      - name: Checkout base repo
-        if: env.extracted == 'true'
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Switch to PR branch and apply patch
-        if: env.extracted == 'true'
+      - name: Clone PR branch, apply patch, and push
+        if: steps.patch_meta.outputs.has_patch == 'true'
         env:
-          HEAD_REF: ${{ steps.meta.outputs.head_ref }}
+          HEAD_REF: ${{ steps.patch_meta.outputs.head_ref }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git fetch origin "$HEAD_REF"
-          git checkout "$HEAD_REF"
-          if [ -s /tmp/autofix/autofix.patch ]; then
-            git apply /tmp/autofix/autofix.patch || git apply --reject /tmp/autofix/autofix.patch || true
-          else
-            echo "Patch is empty — nothing to apply."
-          fi
-
-      - name: Commit and push fixes
-        if: env.extracted == 'true'
-        env:
-          HEAD_REF: ${{ steps.meta.outputs.head_ref }}
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git clone --depth 1 "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" -b "$HEAD_REF" /tmp/pr-repo
+          cd /tmp/pr-repo
+          git apply /tmp/autofix/autofix.patch || git apply --reject /tmp/autofix/autofix.patch || true
           if [ -n "$(git status --porcelain)" ]; then
             git add -A
             git commit -m "chore(deps): automated lint and dependency fixes [skip ci]"
-            git push origin "HEAD:$HEAD_REF"
-            echo "Fixes pushed to $HEAD_REF"
+            git push origin "$HEAD_REF"
+            echo "Successfully pushed automated fixes to $HEAD_REF"
           else
-            echo "No changes to commit."
+            echo "No changes after applying patch."
           fi
