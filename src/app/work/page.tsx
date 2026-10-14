@@ -15,7 +15,7 @@ export async function generateMetadata() {
 
 export default function Work() {
   return (
-    <Column maxWidth="m" paddingTop="24">
+    <Column maxWidth="xl" paddingTop="24">
       <Schema
         as="webPage"
         baseURL={baseURL}

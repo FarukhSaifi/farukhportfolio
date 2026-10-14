@@ -25,7 +25,16 @@ export function Projects({ range, exclude }: ProjectsProps) {
     : sortedProjects;
 
   return (
-    <Grid columns="2" s={{ columns: 1 }} fillWidth gap="24" marginBottom="40" paddingX="l">
+    <Grid
+      columns="4"
+      l={{ columns: 3 }}
+      m={{ columns: 2 }}
+      s={{ columns: 1 }}
+      fillWidth
+      gap="24"
+      marginBottom="40"
+      paddingX="l"
+    >
       {displayedProjects.map((post, index) => (
         <ProjectCard
           index={index}
