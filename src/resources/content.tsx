@@ -80,7 +80,7 @@ const home: Home = {
       <Text as="span" size="xl" weight="strong">
         Earth 🌏
       </Text>
-      , where I craft intuitive <br /> user experiences. After hours, I build my own projects.
+      — turning ambiguous problems into resilient, intelligent products.
     </>
   ),
 };
@@ -121,35 +121,54 @@ const about: About = {
         timeframe: "Oct 2021 - Present",
         role: "Senior Consultant",
         achievements: [
-          <>Implemented cost-effective solutions, resulting in a 20% reduction in project expenses.</>,
-          <>Streamlined project workflows, enhancing overall efficiency by 25%.</>,
           <>
-            Collaborated with designers to translate UI/UX wireframes into high-quality code, ensuring a seamless user
-            experience.
+            Embedded with enterprise clients to own outcomes end-to-end—translating financial and product requirements
+            into scalable dashboards and platforms while mentoring teams on AI-assisted workflows that lifted sprint
+            velocity by 40%.
           </>,
           <>
-            Optimized web applications for maximum speed and scalability, implementing best practices for performance
-            improvement.
+            Architected high-performance React.js and TypeScript UIs with code splitting and lazy loading, driving a 25%
+            increase in engagement and a 15% reduction in load times.
+          </>,
+          <>
+            Orchestrated migration from monoliths to distributed microfrontends and client-ready architectures,
+            improving system resilience and developer satisfaction by 20%.
+          </>,
+          <>
+            Spearheaded a design system with Tailwind CSS and Material-UI adopted by 3 cross-functional teams,
+            accelerating UI delivery by 35% across forward-deployed engagements.
+          </>,
+          <>
+            Enforced WCAG 2.1 AA accessibility with semantic HTML and ARIA across 5 enterprise platforms, achieving 100%
+            accessibility compliance.
+          </>,
+          <>
+            Scaled state management with Redux Toolkit and Context API, and introduced Agentic AI / LLM-assisted
+            patterns into delivery workflows to boost maintainability and shipping speed.
           </>,
         ],
         images: [],
       },
       {
         company: "Etelligens Technologies",
-        timeframe: "Feb 2020 - Sep 2021",
-        role: "Frontend Developer",
+        timeframe: "Feb 2020 - Oct 2021",
+        role: "Frontend Engineer",
         achievements: [
           <>
-            Skilled in using Frontend frameworks like React and Vue to build products and integrate features according
-            to client needs.
+            Engineered low-latency real-time backends with Node.js, Socket.io, and WebRTC—handling 5,000+ concurrent
+            sessions for production client deployments.
           </>,
           <>
-            Proven proficiency as a backend developer utilizing Node.js with Express.js, Socket.io, and WebRTC to create
-            API endpoints.
+            Directed migration of a legacy AngularJS monolith to React, applying asset optimization that boosted runtime
+            performance by 30%.
           </>,
           <>
-            Able to manage multiple software projects simultaneously, actively participating in the entire software
-            development process from inception to delivery.
+            Mentored 3 junior engineers through structured reviews and performance standards, cutting deployment bug
+            rates by 15%.
+          </>,
+          <>
+            Partnered with native teams to ship hybrid React Native and Flutter features, increasing mobile adoption by
+            20% in client-facing products.
           </>,
         ],
         images: [],
@@ -174,17 +193,42 @@ const about: About = {
         title: "Languages",
         description: (
           <>
-            JavaScript (ES6+), TypeScript, HTML5, CSS3, JSON, JSX. Proficient in modern JavaScript features, type-safe
-            development with TypeScript, semantic HTML5 markup, and structured data interchange with JSON.
+            Proficient in modern JavaScript (ES6+) and TypeScript for type-safe applications, plus Python for backend
+            and AI workflows. Strong foundation in HTML5, CSS3, JSX, and structured formats like JSON and YAML.
           </>
         ),
         tags: [
-          { name: "JavaScript" },
+          { name: "JavaScript (ES6+)" },
           { name: "TypeScript" },
-          { name: "HTML" },
-          { name: "CSS" },
-          { name: "JSON" },
+          { name: "Python" },
+          { name: "HTML5" },
+          { name: "CSS3" },
           { name: "JSX" },
+          { name: "JSON" },
+          { name: "YAML" },
+        ],
+        images: [],
+      },
+      {
+        title: "AI & Developer Tools",
+        description: (
+          <>
+            Building intelligent applications with RAG pipelines, Agentic AI systems, LangChain/LangGraph, and LLM API
+            integration. Experienced with Model Context Protocol (MCP) and AI-native developer tools to accelerate
+            delivery of resilient, AI-powered features.
+          </>
+        ),
+        tags: [
+          { name: "RAG" },
+          { name: "Agentic AI" },
+          { name: "LangChain/LangGraph" },
+          { name: "AI/LLM API Integration" },
+          { name: "ChatGPT" },
+          { name: "Claude Code" },
+          { name: "Cursor" },
+          { name: "Copilot" },
+          { name: "Antigravity" },
+          { name: "Model Context Protocol (MCP)" },
         ],
         images: [],
       },
@@ -192,9 +236,8 @@ const about: About = {
         title: "Frontend",
         description: (
           <>
-            Building modern, performant, and accessible user interfaces with industry-leading frameworks and libraries.
-            Experienced in component-driven architecture, state management, utility-first styling, and comprehensive
-            testing to deliver polished, production-ready applications.
+            Building modern, performant, and accessible user interfaces with React, Next.js, and Vue. Experienced in
+            component-driven architecture, Redux Toolkit state management, utility-first styling, and testing with Jest.
           </>
         ),
         tags: [
@@ -215,19 +258,39 @@ const about: About = {
         title: "Backend",
         description: (
           <>
-            Designing and building scalable server-side architectures, RESTful and GraphQL APIs, real-time communication
-            systems, and secure authentication flows. Experienced in creating robust backend services that power modern
-            web applications.
+            Designing scalable server-side architectures with Node.js, Express, FastAPI, and Flask. Experienced in
+            RESTful and GraphQL APIs, real-time systems via WebRTC and WebSockets, and secure JWT authentication.
           </>
         ),
         tags: [
           { name: "Node.js" },
           { name: "Express.js" },
+          { name: "FastAPI" },
+          { name: "Flask" },
           { name: "GraphQL" },
           { name: "RESTful APIs" },
           { name: "WebRTC" },
           { name: "Socket.io" },
+          { name: "WebSockets" },
           { name: "JWT Authentication" },
+        ],
+        images: [],
+      },
+      {
+        title: "Databases",
+        description: (
+          <>
+            Working with relational and NoSQL databases for high-scale applications, including MongoDB Atlas, CosmosDB,
+            Redis, and MySQL. Experienced in vector databases and NoSQL schema design for AI-backed workloads.
+          </>
+        ),
+        tags: [
+          { name: "CosmosDB" },
+          { name: "MongoDB (Atlas)" },
+          { name: "Redis" },
+          { name: "MySQL" },
+          { name: "Vector Databases" },
+          { name: "NoSQL Schema Design" },
         ],
         images: [],
       },
@@ -235,50 +298,29 @@ const about: About = {
         title: "DevOps & Cloud",
         description: (
           <>
-            Streamlining development workflows with cloud platforms, containerization, and continuous integration and
-            delivery pipelines. Proficient in deploying and managing applications at scale with modern DevOps practices
-            and infrastructure tooling.
+            Streamlining delivery with Git-based workflows, Docker, CI/CD pipelines, and cloud platforms. Proficient in
+            GCP, Firebase, and Jenkins for deploying and managing applications at scale.
           </>
         ),
         tags: [
-          { name: "Google Cloud Platform (GCP)" },
           { name: "Git" },
-          { name: "Google Firebase" },
-          { name: "CI/CD Pipelines" },
+          { name: "GitHub" },
           { name: "Docker" },
+          { name: "CI/CD Pipelines" },
+          { name: "GitLab" },
+          { name: "Bitbucket" },
+          { name: "Google Cloud Platform (GCP)" },
+          { name: "Google Firebase" },
           { name: "Jenkins" },
-          { name: "Webpack" },
         ],
         images: [],
       },
       {
-        title: "AI & Developer Tools",
+        title: "Methodologies",
         description: (
           <>
-            Integrating artificial intelligence capabilities into applications through LLM APIs, Retrieval-Augmented
-            Generation (RAG), and AI agent architectures. Leveraging cutting-edge developer tools and AI-powered coding
-            assistants to accelerate development and deliver intelligent features.
-          </>
-        ),
-        tags: [
-          { name: "AI/LLM API Integration" },
-          { name: "RAG" },
-          { name: "AI Agents" },
-          { name: "ChatGPT" },
-          { name: "Claude" },
-          { name: "Cursor" },
-          { name: "Copilot" },
-          { name: "Antigravity" },
-        ],
-        images: [],
-      },
-      {
-        title: "Methodologies & Core Skills",
-        description: (
-          <>
-            Applying proven software development methodologies and strong interpersonal skills to deliver high-quality
-            products collaboratively. Experienced in Agile workflows, systematic problem-solving, and performance
-            optimization to ensure efficient, well-architected solutions.
+            Applying Agile (Scrum) practices, systematic problem-solving, and performance optimization to deliver
+            high-quality products collaboratively across cross-functional teams.
           </>
         ),
         tags: [
