@@ -6,7 +6,7 @@ export default function robots() {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/api/", "/spotify-auth", "/spotify-success"],
+        disallow: ["/api/", "/admin", "/spotify-auth", "/spotify-success", "/youtube-music-success"],
       },
     ],
     sitemap: `${baseURL}/sitemap.xml`,
