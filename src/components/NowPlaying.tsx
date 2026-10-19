@@ -1,74 +1,32 @@
 "use client";
 
-import { useSpotifyNowPlaying } from "@/hooks/useSpotify";
-import { useToast } from "@/hooks/useToast";
-import { API_ENDPOINTS, ROUTES } from "@/lib/constants";
-import { Avatar, Button, Flex, Icon, RevealFx, Spinner } from "@once-ui-system/core";
-import { useEffect, useState } from "react";
+import { usePriorityMusicNowPlaying } from "@/hooks/useMusicNowPlaying";
+import { APPLE_MUSIC_UI, DATABASE_CONFIG, NOW_PLAYING_UI, SPOTIFY_UI } from "@/lib/constants";
+import type { MusicDisplaySource } from "@/lib/interfaces";
+import { Avatar, Button, Flex, RevealFx, Spinner, Text } from "@once-ui-system/core";
+import { useState } from "react";
 import MarqueeTextCSS from "./MarqueeTextCSS";
-import PublicNowPlaying from "./PublicNowPlaying";
 
+function statusLabelFor(isPlaying: boolean, source: MusicDisplaySource | null | undefined): string {
+  if (isPlaying) {
+    return SPOTIFY_UI.CURRENTLY_LISTENING_LABEL;
+  }
+  if (source === DATABASE_CONFIG.MUSIC_SERVICES.APPLE_MUSIC) {
+    return APPLE_MUSIC_UI.LAST_PLAYED_LABEL;
+  }
+  return SPOTIFY_UI.LAST_PLAYED_LABEL;
+}
+
+/**
+ * About-page currently listening / last-played widget.
+ * Uses `/api/music/public-now-playing?service=all`:
+ * Spotify live → freshest non–YouTube Music last-played within 30 min; else hidden.
+ * Never shows youtube_music-labeled rows.
+ */
 export default function NowPlaying() {
-  const { payload, loading, error } = useSpotifyNowPlaying();
-  const { error: showError, info } = useToast();
+  const { payload, loading, source } = usePriorityMusicNowPlaying();
   const [hover, setHover] = useState(false);
-  const [lastTrack, setLastTrack] = useState<string | null>(null);
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
-  // Check authentication status
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const response = await fetch(API_ENDPOINTS.AUTH.CHECK_AUTH);
-        const data = await response.json();
-        setIsAuthenticated(data.success && data.data?.isAuthenticated);
-      } catch (error) {
-        console.error("Error checking authentication:", error);
-        setIsAuthenticated(false);
-      }
-    };
-
-    checkAuth();
-  }, []);
-
-  // Show toast notifications for track changes
-  useEffect(() => {
-    if (payload?.isPlaying && payload.track) {
-      const currentTrack = `${payload.track.title} - ${payload.track.artist}`;
-
-      if (lastTrack && lastTrack !== currentTrack) {
-        info("Now Playing", `🎵 ${payload.track.title} by ${payload.track.artist}`);
-      }
-
-      setLastTrack(currentTrack);
-    } else if (payload && !payload.isPlaying && lastTrack) {
-      info("Music Stopped", "No music is currently playing");
-      setLastTrack(null);
-    }
-  }, [payload, lastTrack, info]);
-
-  // Show error toast
-  useEffect(() => {
-    if (error) {
-      showError("Spotify Error", error);
-    }
-  }, [error, showError]);
-
-  // Show loading while checking authentication
-  if (isAuthenticated === null) {
-    return (
-      <Flex gap="s" vertical="center">
-        <Spinner size="s" />
-      </Flex>
-    );
-  }
-
-  // If not authenticated, show public component
-  if (!isAuthenticated) {
-    return <PublicNowPlaying />;
-  }
-
-  // If authenticated, show admin component with full functionality
   if (loading) {
     return (
       <Flex gap="s" vertical="center">
@@ -77,34 +35,18 @@ export default function NowPlaying() {
     );
   }
 
-  if (error) {
-    return (
-      <Button
-        variant="secondary"
-        size="s"
-        onClick={() => (window.location.href = ROUTES.SPOTIFY_AUTH)}
-        className="text-sm text-blue-500 hover:underline"
-        title={error}
-      >
-        <Icon
-          name="spotify"
-          size="s"
-          style={{
-            marginRight: "0.5rem",
-            marginBottom: "0rem",
-            marginTop: "-0.25rem",
-          }}
-        />
-        Connect Spotify
-      </Button>
-    );
-  }
-
-  if (!payload || !payload.isPlaying || !payload.track) {
+  // About never surfaces YouTube Music (live or last-played).
+  if (!payload?.track || source === DATABASE_CONFIG.MUSIC_SERVICES.YOUTUBE_MUSIC) {
     return null;
   }
 
   const track = payload.track;
+  const showLiveBadge = Boolean(payload.isPlaying);
+  const statusLabel = statusLabelFor(showLiveBadge, source);
+  const unoptimizedImage = NOW_PLAYING_UI.UNOPTIMIZED_IMAGE_HOST_MARKERS.some((marker) =>
+    track.imageUrl.includes(marker),
+  );
+  const hoverPanel = NOW_PLAYING_UI.HOVER_PANEL;
 
   return (
     <div
@@ -113,52 +55,75 @@ export default function NowPlaying() {
       onMouseLeave={() => setHover(false)}
     >
       <RevealFx translateY="12" delay={0.4} horizontal="start">
-        <Button id="about" data-border="rounded" href={track.songUrl || "#"} variant="secondary" size="l" arrowIcon>
-          <Flex gap="8" vertical="center">
-            {track.imageUrl && (
-              <Avatar style={{ marginLeft: "-1.5rem", marginRight: "0.25rem" }} src={track.imageUrl} size="l" />
-            )}
-            <MarqueeTextCSS maxWidth={180}>{track.title}</MarqueeTextCSS>
-          </Flex>
-        </Button>
+        <Flex direction="column" gap="4" horizontal="center">
+          <Text variant="label-default-s" onBackground={showLiveBadge ? "brand-weak" : "neutral-weak"}>
+            {statusLabel}
+          </Text>
+          <Button
+            id={NOW_PLAYING_UI.BUTTON_ID}
+            data-border="rounded"
+            href={track.songUrl || NOW_PLAYING_UI.FALLBACK_HREF}
+            variant="secondary"
+            size="l"
+            arrowIcon
+          >
+            <Flex gap="8" vertical="center">
+              {track.imageUrl ? (
+                <Avatar
+                  style={{
+                    marginLeft: NOW_PLAYING_UI.AVATAR_MARGIN_LEFT,
+                    marginRight: NOW_PLAYING_UI.AVATAR_MARGIN_RIGHT,
+                  }}
+                  src={track.imageUrl}
+                  size="l"
+                  unoptimized={unoptimizedImage}
+                />
+              ) : null}
+              <Flex direction="column" gap="2" style={{ minWidth: 0 }}>
+                <MarqueeTextCSS maxWidth={NOW_PLAYING_UI.MARQUEE_MAX_WIDTH_BUTTON}>{track.title}</MarqueeTextCSS>
+                {showLiveBadge && track.artist ? (
+                  <Text variant="body-default-xs" onBackground="neutral-weak">
+                    <MarqueeTextCSS maxWidth={NOW_PLAYING_UI.MARQUEE_MAX_WIDTH_BUTTON}>{track.artist}</MarqueeTextCSS>
+                  </Text>
+                ) : null}
+              </Flex>
+            </Flex>
+          </Button>
+        </Flex>
       </RevealFx>
 
-      {hover && (
+      {hover ? (
         <div
           style={{
             position: "absolute",
-            top: "110%",
+            top: hoverPanel.TOP,
             left: 0,
-            zIndex: 20,
-            minWidth: "260px",
+            zIndex: hoverPanel.Z_INDEX,
+            minWidth: hoverPanel.MIN_WIDTH,
             background: "var(--surface-background)",
             border: "1px solid var(--neutral-alpha-weak)",
-            borderRadius: "12px",
-            boxShadow: "0 8px 24px rgba(0,0,0,0.2)",
-            padding: "12px",
+            borderRadius: hoverPanel.BORDER_RADIUS,
+            boxShadow: hoverPanel.BOX_SHADOW,
+            padding: hoverPanel.PADDING,
           }}
         >
           <Flex gap="12" vertical="center">
-            {track.imageUrl && <Avatar src={track.imageUrl} size="l" />}
+            {track.imageUrl ? <Avatar src={track.imageUrl} size="l" unoptimized={unoptimizedImage} /> : null}
             <Flex direction="column" gap="4" style={{ minWidth: 0 }}>
-              <div
-                style={{
-                  color: "var(--on-background-strong)",
-                  fontWeight: 600,
-                }}
-              >
-                <MarqueeTextCSS maxWidth={200}>{track.title}</MarqueeTextCSS>
+              <div style={{ color: "var(--neutral-weak)", fontSize: hoverPanel.STATUS_FONT_SIZE }}>{statusLabel}</div>
+              <div style={{ color: "var(--on-background-strong)", fontWeight: hoverPanel.TITLE_FONT_WEIGHT }}>
+                <MarqueeTextCSS maxWidth={NOW_PLAYING_UI.MARQUEE_MAX_WIDTH_HOVER}>{track.title}</MarqueeTextCSS>
               </div>
-              <div style={{ color: "var(--neutral-weak)", fontSize: 12 }}>
-                <MarqueeTextCSS maxWidth={200}>{track.artist}</MarqueeTextCSS>
+              <div style={{ color: "var(--neutral-weak)", fontSize: hoverPanel.META_FONT_SIZE }}>
+                <MarqueeTextCSS maxWidth={NOW_PLAYING_UI.MARQUEE_MAX_WIDTH_HOVER}>{track.artist}</MarqueeTextCSS>
               </div>
-              <div style={{ color: "var(--neutral-weak)", fontSize: 12 }}>
-                <MarqueeTextCSS maxWidth={200}>{track.album}</MarqueeTextCSS>
+              <div style={{ color: "var(--neutral-weak)", fontSize: hoverPanel.META_FONT_SIZE }}>
+                <MarqueeTextCSS maxWidth={NOW_PLAYING_UI.MARQUEE_MAX_WIDTH_HOVER}>{track.album}</MarqueeTextCSS>
               </div>
             </Flex>
           </Flex>
         </div>
-      )}
+      ) : null}
     </div>
   );
 }

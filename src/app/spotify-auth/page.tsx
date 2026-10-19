@@ -1,6 +1,13 @@
 "use client";
 
-import { API_ENDPOINTS, ERROR_MESSAGES, SPOTIFY_AUTH_ERROR, SPOTIFY_UI, STORAGE_KEYS } from "@/lib/constants";
+import {
+  DATABASE_CONFIG,
+  ERROR_MESSAGES,
+  SPOTIFY_AUTH_ERROR,
+  SPOTIFY_CONFIG,
+  SPOTIFY_UI,
+  musicApiUrl,
+} from "@/lib/constants";
 import { Button, Card, Flex, Heading, Text } from "@once-ui-system/core";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
@@ -10,28 +17,26 @@ function SpotifyAuthPageContent() {
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [hasStoredToken, setHasStoredToken] = useState(false);
 
   useEffect(() => {
-    const storedToken = localStorage.getItem(STORAGE_KEYS.SPOTIFY_REFRESH_TOKEN);
-    setHasStoredToken(!!storedToken);
-
-    if (searchParams) {
-      setError(searchParams.get("error"));
-      setMessage(searchParams.get("message"));
+    // Spotify rejects localhost; PKCE cookies are host-bound — stay on loopback IP locally
+    if (window.location.hostname === SPOTIFY_CONFIG.LOCALHOST_HOST) {
+      const url = new URL(window.location.href);
+      url.hostname = SPOTIFY_CONFIG.LOOPBACK_HOST;
+      window.location.replace(url.toString());
+      return;
     }
 
-    setIsLoading(false);
+    if (searchParams) {
+      setError(searchParams.get(SPOTIFY_CONFIG.QUERY.ERROR));
+      setMessage(searchParams.get(SPOTIFY_CONFIG.QUERY.MESSAGE));
+    }
   }, [searchParams]);
 
   const handleAuth = () => {
     setIsLoading(true);
-    window.location.href = API_ENDPOINTS.SPOTIFY.AUTH;
-  };
-
-  const clearStoredToken = () => {
-    localStorage.removeItem(STORAGE_KEYS.SPOTIFY_REFRESH_TOKEN);
-    setHasStoredToken(false);
+    const authUrl = new URL(musicApiUrl("AUTH", DATABASE_CONFIG.MUSIC_SERVICES.SPOTIFY), window.location.origin);
+    window.location.href = authUrl.toString();
   };
 
   if (isLoading) {
@@ -41,7 +46,7 @@ function SpotifyAuthPageContent() {
         horizontal="center"
         vertical="center"
         fillWidth
-        style={{ minHeight: "100vh" }}
+        style={{ position: "fixed", inset: 0, zIndex: 10 }}
         gap="xl"
         padding="xl"
       >
@@ -66,7 +71,6 @@ function SpotifyAuthPageContent() {
       style={{ minHeight: "100vh" }}
       gap="xl"
       padding="xl"
-      // background="neutral-weak"
     >
       <Card padding="xl" background="neutral-weak" border="neutral-alpha-medium" radius="m" maxWidth="l">
         <Flex direction="column" gap="l" horizontal="center" fillWidth>
@@ -93,7 +97,8 @@ function SpotifyAuthPageContent() {
 
                   {error === SPOTIFY_AUTH_ERROR.TOKEN_EXCHANGE_FAILED && (
                     <Text variant="body-default-m" onBackground="accent-weak" style={{ textAlign: "center" }}>
-                      Failed to exchange the authorization code for tokens: {message}
+                      {ERROR_MESSAGES.SPOTIFY.TOKEN_EXCHANGE_FAILED_PREFIX}
+                      {message}
                     </Text>
                   )}
 
@@ -105,25 +110,16 @@ function SpotifyAuthPageContent() {
             </Flex>
           ) : (
             <Flex direction="column" gap="l" horizontal="center">
-              {hasStoredToken && (
-                <Card padding="m" background="brand-alpha-weak" border="brand-alpha-medium" radius="m" fillWidth>
-                  <Flex vertical="center" gap="m" horizontal="between">
-                    <Text variant="body-default-s" onBackground="brand-weak">
-                      💡 <strong>You already have a stored refresh token!</strong>
-                    </Text>
-                    <Button onClick={clearStoredToken} variant="secondary" size="s">
-                      {SPOTIFY_UI.AUTH_CLEAR_TOKEN}
-                    </Button>
-                  </Flex>
-                </Card>
-              )}
-
               <Text variant="body-default-l" onBackground="neutral-strong" style={{ textAlign: "center" }}>
                 {SPOTIFY_UI.AUTH_INTRO}
               </Text>
 
               <Text variant="body-default-m" onBackground="neutral-weak" style={{ textAlign: "center" }}>
                 {SPOTIFY_UI.AUTH_INTRO_DETAIL}
+              </Text>
+
+              <Text variant="body-default-s" onBackground="neutral-weak" style={{ textAlign: "center" }}>
+                {SPOTIFY_UI.AUTH_ADMIN_NOTE}
               </Text>
 
               <Card padding="l" background="neutral-alpha-weak" border="neutral-alpha-medium" radius="m" fillWidth>
@@ -133,13 +129,13 @@ function SpotifyAuthPageContent() {
                   </Text>
                   <Flex direction="column" gap="xs" horizontal="start" style={{ marginLeft: "1rem" }}>
                     <Text variant="body-default-xs" onBackground="neutral-weak">
-                      • See what you&apos;re currently playing
+                      {SPOTIFY_UI.AUTH_PERMISSION_CURRENTLY_PLAYING}
                     </Text>
                     <Text variant="body-default-xs" onBackground="neutral-weak">
-                      • See your playback state
+                      {SPOTIFY_UI.AUTH_PERMISSION_PLAYBACK_STATE}
                     </Text>
                     <Text variant="body-default-xs" onBackground="neutral-weak">
-                      • See your recently played tracks
+                      {SPOTIFY_UI.AUTH_PERMISSION_RECENTLY_PLAYED}
                     </Text>
                   </Flex>
                 </Flex>

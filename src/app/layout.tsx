@@ -47,6 +47,7 @@ export default async function RootLayout({
       data-transition={style.transition}
       data-scaling={style.scaling}
       data-viz-style={dataStyle.variant}
+      data-scroll-behavior="smooth"
       suppressHydrationWarning
       className={classNames(fonts.heading.variable, fonts.body.variable, fonts.label.variable, fonts.code.variable)}
     >

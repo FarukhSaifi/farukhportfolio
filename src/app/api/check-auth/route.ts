@@ -1,6 +1,6 @@
-import { HTTP_STATUS } from "@/lib/constants";
+import { type NextRequest, NextResponse } from "next/server";
+import { AUTH_CONFIG, HTTP_STATUS } from "@/lib/constants";
 import { ApiUtils } from "@/lib/server-utils";
-import { NextRequest, NextResponse } from "next/server";
 
 /**
  * API Route: Check Authentication Status
@@ -13,7 +13,7 @@ import { NextRequest, NextResponse } from "next/server";
  */
 export async function GET(request: NextRequest) {
   try {
-    const authSession = request.cookies.get("auth-session")?.value;
+    const authSession = request.cookies.get(AUTH_CONFIG.SESSION_COOKIE)?.value;
 
     // Check if session cookie exists
     if (!authSession) {

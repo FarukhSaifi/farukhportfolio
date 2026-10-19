@@ -1,100 +1,105 @@
 "use client";
 
-import { useDatabaseSpotify } from "@/contexts/DatabaseSpotifyContext";
 import { useToast } from "@/hooks/useToast";
-import { API_ENDPOINTS, ERROR_MESSAGES, ROUTES, SPOTIFY_UI, SUCCESS_MESSAGES } from "@/lib/constants";
+import {
+  DATABASE_CONFIG,
+  ERROR_MESSAGES,
+  HTTP_METHODS,
+  ROUTES,
+  SPOTIFY_CONFIG,
+  SPOTIFY_UI,
+  SUCCESS_MESSAGES,
+  musicApiUrl,
+} from "@/lib/constants";
 import { Button, Card, Flex, Heading, Spinner, Text } from "@once-ui-system/core";
 import { useCallback, useEffect, useRef, useState } from "react";
 
+/**
+ * OAuth callback page. Exchanges the code via a server route; tokens never reach the browser.
+ */
 export default function SpotifySuccessPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { updateRefreshToken, updateAccessToken } = useDatabaseSpotify();
   const { success, error: showError } = useToast();
   const hasExecuted = useRef(false);
 
-  const exchangeCodeForTokens = useCallback(async () => {
+  const exchangeCode = useCallback(async () => {
     if (hasExecuted.current) return;
     hasExecuted.current = true;
 
     try {
       const urlParams = new URLSearchParams(window.location.search);
-      const code = urlParams.get("code");
+      const spotifyError = urlParams.get(SPOTIFY_CONFIG.QUERY.ERROR);
+      const code = urlParams.get(SPOTIFY_CONFIG.QUERY.CODE);
+      const state = urlParams.get(SPOTIFY_CONFIG.QUERY.STATE);
+
+      if (spotifyError) {
+        const message =
+          spotifyError === SPOTIFY_CONFIG.QUERY.ACCESS_DENIED
+            ? ERROR_MESSAGES.SPOTIFY.AUTH_CANCELLED
+            : `${ERROR_MESSAGES.SPOTIFY.AUTH_FAILED} (Spotify: ${spotifyError}). ${ERROR_MESSAGES.SPOTIFY.DASHBOARD_REDIRECT_HINT}`;
+        setError(message);
+        showError(SPOTIFY_UI.TOAST_AUTH_FAILED_TITLE, message);
+        return;
+      }
 
       if (!code) {
         setError(ERROR_MESSAGES.SPOTIFY.NO_AUTH_CODE);
         return;
       }
 
-      const response = await fetch(API_ENDPOINTS.SPOTIFY.EXCHANGE_CODE, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code }),
+      const response = await fetch(musicApiUrl("EXCHANGE_CODE", DATABASE_CONFIG.MUSIC_SERVICES.SPOTIFY), {
+        method: HTTP_METHODS.POST,
+        headers: { [SPOTIFY_CONFIG.HEADERS.CONTENT_TYPE]: SPOTIFY_CONFIG.HEADERS.JSON },
+        credentials: SPOTIFY_CONFIG.FETCH_CREDENTIALS,
+        body: JSON.stringify({ code, state }),
       });
 
-      if (response.ok) {
-        const tokenData = await response.json();
+      const payload = await response.json();
 
-        // Save token to MongoDB for public access
-        const saveResponse = await fetch(API_ENDPOINTS.SPOTIFY.SAVE_TOKEN, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            access_token: tokenData.access_token,
-            refresh_token: tokenData.refresh_token,
-            expires_in: tokenData.expires_in,
-            token_type: tokenData.token_type,
-          }),
-        });
-
-        if (saveResponse.ok) {
-          // Update context for current user
-          updateRefreshToken(tokenData.refresh_token);
-          updateAccessToken(tokenData.access_token, tokenData.expires_in);
-
-          // Show success toast
-          success(SUCCESS_MESSAGES.SPOTIFY.CONNECTED_TOAST_TITLE, SUCCESS_MESSAGES.SPOTIFY.TOKENS_SAVED_TOAST);
-        } else {
-          const saveError = await saveResponse.json();
-          const errorMessage = `Failed to save token: ${saveError.error}`;
-          setError(errorMessage);
-          showError("Save Failed", errorMessage);
-        }
-      } else {
-        const errorData = await response.json();
-        const errorMessage = `Failed to exchange code: ${errorData.error}`;
+      if (!response.ok || !payload.success) {
+        const errorMessage = `${ERROR_MESSAGES.SPOTIFY.EXCHANGE_CODE_FAILED_PREFIX}${payload.error || ERROR_MESSAGES.SPOTIFY.AUTH_FAILED}`;
         setError(errorMessage);
-        showError("Exchange Failed", errorMessage);
+        showError(SPOTIFY_UI.TOAST_EXCHANGE_FAILED_TITLE, errorMessage);
+        return;
       }
-    } catch (err: any) {
-      const errorMessage = `Error: ${err.message}`;
+
+      success(SUCCESS_MESSAGES.SPOTIFY.CONNECTED_TOAST_TITLE, SUCCESS_MESSAGES.SPOTIFY.TOKENS_SAVED_TOAST);
+    } catch (err: unknown) {
+      const errorMessage = `Error: ${err instanceof Error ? err.message : ERROR_MESSAGES.GENERAL.UNKNOWN_ERROR}`;
       setError(errorMessage);
-      showError("Connection Error", errorMessage);
+      showError(SPOTIFY_UI.TOAST_CONNECTION_ERROR_TITLE, errorMessage);
     } finally {
       setIsLoading(false);
     }
-  }, [updateRefreshToken, updateAccessToken, success, showError]);
+  }, [success, showError]);
 
   useEffect(() => {
-    exchangeCodeForTokens();
-  }, [exchangeCodeForTokens]);
+    // PKCE cookies are host-bound; keep callback on loopback IP in local dev
+    if (window.location.hostname === SPOTIFY_CONFIG.LOCALHOST_HOST) {
+      const url = new URL(window.location.href);
+      url.hostname = SPOTIFY_CONFIG.LOOPBACK_HOST;
+      window.location.replace(url.toString());
+      return;
+    }
+
+    exchangeCode();
+  }, [exchangeCode]);
 
   if (isLoading) {
     return (
       <Flex
         direction="column"
         fillWidth
-        style={{
-          minHeight: "100vh",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
+        horizontal="center"
+        vertical="center"
+        style={{ position: "fixed", inset: 0, zIndex: 10 }}
         gap="xl"
         padding="xl"
         background="neutral-weak"
       >
         <Card padding="xl" background="neutral-strong" border="neutral-medium" radius="m">
-          <Flex direction="column" gap="l" style={{ alignItems: "center" }}>
+          <Flex direction="column" gap="l" horizontal="center">
             <Spinner size="l" />
             <Heading variant="display-strong-l">{SPOTIFY_UI.LOADING_PROCESSING}</Heading>
             <Text variant="body-default-l" onBackground="neutral-weak">
@@ -111,11 +116,9 @@ export default function SpotifySuccessPage() {
       <Flex
         direction="column"
         fillWidth
-        style={{
-          minHeight: "100vh",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
+        horizontal="center"
+        vertical="center"
+        style={{ position: "fixed", inset: 0, zIndex: 10 }}
         gap="xl"
         padding="xl"
         background="neutral-weak"
@@ -138,25 +141,16 @@ export default function SpotifySuccessPage() {
   }
 
   return (
-    <Flex
-      style={{
-        minHeight: "50vh",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
+    <Flex style={{ minHeight: "50vh", justifyContent: "center", alignItems: "center" }}>
       <Card padding="xl" maxWidth="m">
         <Flex direction="column" gap="l" style={{ alignItems: "center" }}>
           <Heading variant="display-strong-m">{SPOTIFY_UI.SUCCESS_TITLE}</Heading>
-
           <Flex direction="column" gap="m" style={{ alignItems: "center" }}>
             <Text variant="body-default-m">{SPOTIFY_UI.MESSAGE_CONNECTED}</Text>
-
             <Text variant="body-default-s" onBackground="neutral-weak">
               {SPOTIFY_UI.TOKENS_SAVED_MESSAGE}
             </Text>
           </Flex>
-
           <Flex gap="m">
             <Button href={ROUTES.HOME} variant="primary">
               {SPOTIFY_UI.GO_TO_HOME}

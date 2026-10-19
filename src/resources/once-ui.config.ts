@@ -25,6 +25,7 @@ const routes: RoutesConfig = {
   [ROUTES.BLOG]: true,
   [ROUTES.SPOTIFY_AUTH]: true,
   [ROUTES.SPOTIFY_SUCCESS]: true,
+  [ROUTES.YOUTUBE_MUSIC_SUCCESS]: true,
   [ROUTES.GALLERY]: false,
 };
 
@@ -38,6 +39,9 @@ const display: DisplayConfig = {
 // Set password in the .env file, refer to .env.example
 const protectedRoutes: ProtectedRoutesConfig = {
   [ROUTES.ADMIN]: true,
+  [ROUTES.SPOTIFY_AUTH]: true,
+  [ROUTES.SPOTIFY_SUCCESS]: true,
+  [ROUTES.YOUTUBE_MUSIC_SUCCESS]: true,
   [`${ROUTES.WORK}/automate-design-handovers-with-a-figma-to-code-pipeline`]: true,
 };
 

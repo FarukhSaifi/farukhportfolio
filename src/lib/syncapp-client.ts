@@ -14,7 +14,7 @@ function clearLoginTokenCache(): void {
  * 1. SYNCAPP_API_TOKEN — use directly as Bearer token (Postman `{{token}}`)
  * 2. SYNCAPP_EMAIL + SYNCAPP_PASSWORD — POST /auth/login
  */
-export async function getSyncAppAccessToken(): Promise<string | null> {
+async function getSyncAppAccessToken(): Promise<string | null> {
   const staticToken = process.env.SYNCAPP_API_TOKEN?.trim();
   if (staticToken) return staticToken;
 

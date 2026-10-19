@@ -6,23 +6,17 @@ import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 
 /**
- * Client component for displaying Spotify connection status
- * Handles URL search params for Spotify authentication callback
+ * Displays Spotify connection status from URL params.
+ * Never renders tokens or secrets.
  */
 function SpotifyStatusNotificationContent() {
   const searchParams = useSearchParams();
   const [spotifyStatus, setSpotifyStatus] = useState<string | null>(null);
-  const [refreshToken, setRefreshToken] = useState<string | null>(null);
 
   useEffect(() => {
     const spotify = searchParams?.get(SPOTIFY_QUERY_KEYS.SPOTIFY);
-    const token = searchParams?.get(SPOTIFY_QUERY_KEYS.TOKEN);
-
     if (spotify) {
       setSpotifyStatus(spotify);
-      if (token) {
-        setRefreshToken(token);
-      }
     }
   }, [searchParams]);
 
@@ -47,18 +41,10 @@ function SpotifyStatusNotificationContent() {
         {isSuccess ? SPOTIFY_UI.TITLE_CONNECTED : SPOTIFY_UI.TITLE_ERROR}
       </Heading>
 
-      {isSuccess && refreshToken && (
-        <>
-          <Text variant="body-default-m" onBackground="brand-weak">
-            {SPOTIFY_UI.MESSAGE_CONNECTED}
-          </Text>
-          <Text variant="body-default-s" onBackground="brand-weak">
-            <strong>{SPOTIFY_UI.LABEL_REFRESH_TOKEN}</strong> {refreshToken}
-          </Text>
-          <Text variant="body-default-xs" onBackground="brand-weak">
-            {SPOTIFY_UI.INSTRUCTION_TOKEN} {SPOTIFY_UI.ENV_VAR_NAME}
-          </Text>
-        </>
+      {isSuccess && (
+        <Text variant="body-default-m" onBackground="brand-weak">
+          {SPOTIFY_UI.MESSAGE_CONNECTED}
+        </Text>
       )}
 
       {spotifyStatus === SPOTIFY_STATUS.ERROR && (

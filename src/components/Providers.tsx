@@ -1,12 +1,11 @@
 "use client";
 
-import { DatabaseSpotifyProvider } from "@/contexts/DatabaseSpotifyContext";
+import { ToastContainer } from "@/components/ToastContainer";
 import { APP_CONFIG } from "@/lib/constants";
 import {
   BorderStyle,
   DataThemeProvider,
   IconProvider,
-  LayoutProvider,
   NeutralColor,
   ScalingSize,
   Schemes,
@@ -18,8 +17,8 @@ import {
   TransitionStyle,
 } from "@once-ui-system/core";
 import { ChartMode, ChartVariant } from "@once-ui-system/core/data";
+import { LayoutProvider } from "@once-ui-system/core/next";
 import { Analytics } from "@vercel/analytics/react";
-import { ToastContainer } from "@/components/ToastContainer";
 import { dataStyle, style } from "../resources";
 import { iconLibrary } from "../resources/icons";
 
@@ -37,25 +36,23 @@ export function Providers({ children }: { children: React.ReactNode }) {
         transition={style.transition as TransitionStyle}
         scaling={style.scaling as ScalingSize}
       >
-        <DatabaseSpotifyProvider>
-          <DataThemeProvider
-            variant={dataStyle.variant as ChartVariant}
-            mode={dataStyle.mode as ChartMode}
-            height={dataStyle.height}
-            axis={{
-              stroke: dataStyle.axis.stroke,
-            }}
-            tick={{
-              fill: dataStyle.tick.fill,
-              fontSize: dataStyle.tick.fontSize,
-              line: dataStyle.tick.line,
-            }}
-          >
-            <ToastProvider>
-              <IconProvider icons={iconLibrary}>{children}</IconProvider>
-            </ToastProvider>
-          </DataThemeProvider>
-        </DatabaseSpotifyProvider>
+        <DataThemeProvider
+          variant={dataStyle.variant as ChartVariant}
+          mode={dataStyle.mode as ChartMode}
+          height={dataStyle.height}
+          axis={{
+            stroke: dataStyle.axis.stroke,
+          }}
+          tick={{
+            fill: dataStyle.tick.fill,
+            fontSize: dataStyle.tick.fontSize,
+            line: dataStyle.tick.line,
+          }}
+        >
+          <ToastProvider>
+            <IconProvider icons={iconLibrary}>{children}</IconProvider>
+          </ToastProvider>
+        </DataThemeProvider>
         <ToastContainer />
         {APP_CONFIG.IS_PRODUCTION && <Analytics />}
       </ThemeProvider>

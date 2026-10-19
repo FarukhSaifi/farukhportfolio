@@ -1,6 +1,6 @@
-import { HTTP_STATUS } from "@/lib/constants";
+import { AUTH_CONFIG, HTTP_STATUS } from "@/lib/constants";
 import { ApiUtils, EnvironmentUtils } from "@/lib/server-utils";
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
 /**
  * Admin credentials from environment (see .env.example).
@@ -69,12 +69,12 @@ export async function POST(request: NextRequest) {
       );
 
       // Set secure session cookie
-      response.cookies.set("auth-session", JSON.stringify(user), {
+      response.cookies.set(AUTH_CONFIG.SESSION_COOKIE, JSON.stringify(user), {
         httpOnly: true,
         secure: EnvironmentUtils.isProduction(),
-        sameSite: "lax",
-        maxAge: 86400, // 24 hours
-        path: "/",
+        sameSite: AUTH_CONFIG.SAME_SITE,
+        maxAge: AUTH_CONFIG.SESSION_MAX_AGE,
+        path: AUTH_CONFIG.COOKIE_PATH,
       });
 
       return response;

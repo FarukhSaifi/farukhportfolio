@@ -1,31 +1,58 @@
-import { HTTP_STATUS, SPOTIFY_CONFIG } from "@/lib/constants";
+import { DATABASE_CONFIG, ERROR_MESSAGES, HTTP_STATUS, LOG_MESSAGES, SPOTIFY_CONFIG } from "@/lib/constants";
 import { databaseService } from "@/lib/database";
-import { NowPlayingPayload } from "@/lib/interfaces";
+import type {
+  CurrentlyPlayingResult,
+  NowPlayingPayload,
+  PublicNowPlayingPayload,
+  SimplifiedTrack,
+} from "@/lib/interfaces";
 import { SpotifyUtils } from "@/lib/server-utils";
 
-type CurrentlyPlayingResult = { ok: true; payload: NowPlayingPayload } | { ok: false; status: number; error: string };
+function toSimplifiedTrack(doc: {
+  title: string;
+  artist: string;
+  album: string;
+  imageUrl: string;
+  songUrl: string;
+}): SimplifiedTrack {
+  return {
+    title: doc.title,
+    artist: doc.artist,
+    album: doc.album,
+    imageUrl: doc.imageUrl,
+    songUrl: doc.songUrl,
+  };
+}
 
 function emptyPayload(): NowPlayingPayload {
-  return { isPlaying: false, track: null };
+  return { isPlaying: false, isLastPlayed: false, track: null };
 }
 
 function isSpotifyAccessRestricted(status: number, body: string): boolean {
-  if (status !== HTTP_STATUS.FORBIDDEN) return false;
-  return /premium subscription required/i.test(body);
+  if (status !== HTTP_STATUS.FORBIDDEN) {
+    return false;
+  }
+  // Spotify returns 403 for Premium-only player features and some restricted accounts
+  return LOG_MESSAGES.SPOTIFY.ACCESS_RESTRICTED_PATTERN.test(body);
 }
 
 async function requestCurrentlyPlaying(accessToken: string): Promise<Response> {
-  return fetch(`${SPOTIFY_CONFIG.API_BASE_URL}/me/player/currently-playing`, {
+  const url = new URL(`${SPOTIFY_CONFIG.API_BASE_URL}${SPOTIFY_CONFIG.CURRENTLY_PLAYING_PATH}`);
+  url.searchParams.set("additional_types", SPOTIFY_CONFIG.CURRENTLY_PLAYING_ADDITIONAL_TYPES);
+
+  return fetch(url.toString(), {
     headers: {
-      Authorization: `Bearer ${accessToken}`,
-      "Content-Type": "application/json",
+      [SPOTIFY_CONFIG.HEADERS.AUTHORIZATION]: `${SPOTIFY_CONFIG.DEFAULT_TOKEN_TYPE} ${accessToken}`,
+      [SPOTIFY_CONFIG.HEADERS.CONTENT_TYPE]: SPOTIFY_CONFIG.HEADERS.JSON,
     },
   });
 }
 
 async function refreshAccessToken(refreshToken: string): Promise<string | null> {
   const refreshResult = await SpotifyUtils.refreshSpotifyToken(refreshToken);
-  if (!refreshResult) return null;
+  if (!refreshResult) {
+    return null;
+  }
 
   const updateResult = await databaseService.updateSpotifyToken({
     access_token: refreshResult.access_token,
@@ -34,7 +61,7 @@ async function refreshAccessToken(refreshToken: string): Promise<string | null> 
   });
 
   if (!updateResult.success) {
-    console.error("Failed to persist refreshed Spotify token:", updateResult.error);
+    console.error(LOG_MESSAGES.SPOTIFY.PERSIST_REFRESH_FAILED, updateResult.error);
   }
 
   return refreshResult.access_token;
@@ -48,7 +75,7 @@ async function parseSpotifyResponse(response: Response): Promise<CurrentlyPlayin
   const body = await response.text();
 
   if (isSpotifyAccessRestricted(response.status, body)) {
-    console.warn("Spotify currently-playing unavailable:", body.trim());
+    console.warn(LOG_MESSAGES.SPOTIFY.CURRENTLY_PLAYING_UNAVAILABLE, body.trim());
     return { ok: true, payload: emptyPayload() };
   }
 
@@ -56,7 +83,7 @@ async function parseSpotifyResponse(response: Response): Promise<CurrentlyPlayin
     return {
       ok: false,
       status: response.status,
-      error: "Failed to get current playing track from Spotify",
+      error: ERROR_MESSAGES.SPOTIFY.FETCH_PLAYING_FAILED,
     };
   }
 
@@ -71,7 +98,7 @@ export async function getCurrentlyPlaying(): Promise<CurrentlyPlayingResult> {
     return {
       ok: false,
       status: HTTP_STATUS.NOT_FOUND,
-      error: "No active Spotify token found",
+      error: ERROR_MESSAGES.SPOTIFY.NO_ACTIVE_TOKEN,
     };
   }
 
@@ -89,4 +116,43 @@ export async function getCurrentlyPlaying(): Promise<CurrentlyPlayingResult> {
   }
 
   return parseSpotifyResponse(response);
+}
+
+/**
+ * Public metadata payload for visitors.
+ * - Live playback → upsert last-played and return isPlaying: true
+ * - Idle / error → fall back to last-played (isLastPlayed: true)
+ * Never includes Spotify tokens.
+ */
+export async function getPublicNowPlayingPayload(): Promise<PublicNowPlayingPayload> {
+  const result = await getCurrentlyPlaying();
+  const spotify = DATABASE_CONFIG.MUSIC_SERVICES.SPOTIFY;
+
+  if (result.ok && result.payload.isPlaying && result.payload.track) {
+    // Update last-played on every live play (clears/replaces prior entry)
+    await databaseService.saveMusicLastPlayed(spotify, result.payload.track);
+    return {
+      isPlaying: true,
+      isLastPlayed: false,
+      track: result.payload.track,
+      timestamp: new Date().toISOString(),
+    };
+  }
+
+  const last = await databaseService.getMusicLastPlayed(spotify);
+  if (last) {
+    return {
+      isPlaying: false,
+      isLastPlayed: true,
+      track: toSimplifiedTrack(last),
+      timestamp: last.playedAt instanceof Date ? last.playedAt.toISOString() : new Date(last.playedAt).toISOString(),
+    };
+  }
+
+  return {
+    isPlaying: false,
+    isLastPlayed: false,
+    track: null,
+    timestamp: new Date().toISOString(),
+  };
 }

@@ -1,4 +1,4 @@
-export const EMAIL_MAX_LENGTH = 254;
+const EMAIL_MAX_LENGTH = 254;
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -18,8 +18,4 @@ export function getEmailValidationError(email: string): string | null {
   }
 
   return null;
-}
-
-export function isValidEmail(email: string): boolean {
-  return getEmailValidationError(email) === null;
 }

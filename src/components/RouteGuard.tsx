@@ -22,7 +22,7 @@ function isRouteEnabled(pathname: string): boolean {
     ROUTES.ADMIN,
     ROUTES.SPOTIFY_AUTH,
     ROUTES.SPOTIFY_SUCCESS,
-    ROUTES.SPOTIFY_TEST,
+    ROUTES.YOUTUBE_MUSIC_SUCCESS,
   ] as const;
 
   for (const route of dynamicRoutes) {
