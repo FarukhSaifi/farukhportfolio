@@ -201,9 +201,6 @@ export function trackPageEngagement(params: PageEngagementParams): void {
     event_action: GA_CUSTOM_EVENTS.PAGE_ENGAGEMENT,
     event_label: params.page_path ?? getPageContext().page_path,
     value: params.engagement_time_sec,
-    engagement_time_sec: params.engagement_time_sec,
-    page_title: params.page_title,
-    page_path: params.page_path,
     ...params,
   });
 }
@@ -347,15 +344,14 @@ export function trackScrollDepth(params: ScrollDepthParams): void {
     event_action: GA_CUSTOM_EVENTS.SCROLL_DEPTH,
     event_label: `${params.percent_scrolled}%`,
     value: params.percent_scrolled,
-    percent_scrolled: params.percent_scrolled,
     ...params,
   });
   trackEvent(GA_RECOMMENDED_EVENTS.SCROLL, {
     event_category: GA_EVENT_CATEGORIES.ENGAGEMENT,
     event_action: GA_RECOMMENDED_EVENTS.SCROLL,
     event_label: `${params.percent_scrolled}%`,
-    percent_scrolled: params.percent_scrolled,
     value: params.percent_scrolled,
+    ...params,
   });
 }
 
