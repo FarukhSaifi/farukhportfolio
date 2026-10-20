@@ -1,0 +1,12 @@
+---
+description: Always typecheck before commit or push
+alwaysApply: true
+---
+
+# Pre-commit / pre-push typecheck
+
+Always run the project's typecheck/lint (`npm run lint`, which is `tsc --noEmit`, or the equivalent script in `package.json`) on changed files and fix any TypeScript or type errors **before** committing or pushing.
+
+- Do not commit or push with known `tsc` failures.
+- Prefer fixing errors in the files you changed; do not weaken types or event contracts to silence errors unless explicitly requested.
+- If lint/typecheck exits non-zero, resolve the failures, re-run until clean, then commit/push.
