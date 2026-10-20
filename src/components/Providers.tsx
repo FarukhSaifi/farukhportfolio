@@ -1,7 +1,9 @@
 "use client";
 
+import { AnalyticsTracker } from "@/components/AnalyticsTracker";
 import { GoogleTagManager } from "@/components/GoogleTagManager";
 import { ToastContainer } from "@/components/ToastContainer";
+import { AnalyticsProvider } from "@/context/AnalyticsContext";
 import { APP_CONFIG } from "@/lib/constants";
 import {
   BorderStyle,
@@ -51,7 +53,10 @@ export function Providers({ children }: { children: React.ReactNode }) {
           }}
         >
           <ToastProvider>
-            <IconProvider icons={iconLibrary}>{children}</IconProvider>
+            <AnalyticsProvider>
+              <IconProvider icons={iconLibrary}>{children}</IconProvider>
+              <AnalyticsTracker />
+            </AnalyticsProvider>
           </ToastProvider>
         </DataThemeProvider>
         <ToastContainer />

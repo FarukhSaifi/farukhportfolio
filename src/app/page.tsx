@@ -32,7 +32,13 @@ export default function Home() {
           image: `${baseURL}${person.avatar}`,
         }}
       />
-      <Column fillWidth horizontal="center" gap="m">
+      <Column
+        fillWidth
+        horizontal="center"
+        gap="m"
+        data-analytics-section="hero"
+        data-analytics-section-name="Hero"
+      >
         <Column maxWidth="s" horizontal="center" align="center">
           {home.featured.display && (
             <RevealFx
@@ -51,6 +57,7 @@ export default function Home() {
                 textVariant="label-default-s"
                 arrow={false}
                 href={home.featured.href}
+                data-analytics-cta="featured"
               >
                 <Row paddingY="2">{home.featured.title}</Row>
               </Badge>
@@ -77,6 +84,7 @@ export default function Home() {
             <Button
               id="about"
               data-border="rounded"
+              data-analytics-cta="hero-about"
               href={about.path}
               variant="secondary"
               size="m"
@@ -94,7 +102,13 @@ export default function Home() {
         </Column>
       </Column>
       {routes[ROUTES.BLOG] && (
-        <Column fillWidth gap="24" marginBottom="l">
+        <Column
+          fillWidth
+          gap="24"
+          marginBottom="l"
+          data-analytics-section="blog"
+          data-analytics-section-name="Latest from the blog"
+        >
           <Row fillWidth s={{ hide: true }}>
             <Line maxWidth={48} />
           </Row>
@@ -113,7 +127,9 @@ export default function Home() {
           </Row>
         </Column>
       )}
-      <Mailchimp />
+      <Column data-analytics-section="newsletter" data-analytics-section-name="Newsletter" fillWidth>
+        <Mailchimp />
+      </Column>
     </Column>
   );
 }

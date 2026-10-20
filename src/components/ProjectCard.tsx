@@ -1,6 +1,7 @@
 "use client";
 
 import styles from "@/components/LazyMedia.module.scss";
+import { useAnalytics } from "@/context/AnalyticsContext";
 import { Carousel, Column, Flex, Heading, RevealFx, SmartLink, Text } from "@once-ui-system/core";
 import classNames from "classnames";
 import { useEffect, useRef, useState } from "react";
@@ -91,6 +92,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
   priority,
   index = 0,
 }) => {
+  const { trackProjectView } = useAnalytics();
   const revealDelay = Math.min(index * 0.08, 0.48);
 
   return (
@@ -120,7 +122,21 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
           {(content?.trim() || link) && (
             <Flex gap="24" wrap>
               {content?.trim() && (
-                <SmartLink suffixIcon="arrowRight" style={{ margin: "0", width: "fit-content" }} href={href}>
+                <SmartLink
+                  suffixIcon="arrowRight"
+                  style={{ margin: "0", width: "fit-content" }}
+                  href={href}
+                  data-analytics-tracked
+                  onClick={() =>
+                    trackProjectView({
+                      project_title: title,
+                      project_slug: href,
+                      link_url: href,
+                      element_text: "About this project",
+                      engagement_type: "about",
+                    })
+                  }
+                >
                   <Text variant="body-default-s">About this project</Text>
                 </SmartLink>
               )}
@@ -130,6 +146,15 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                   style={{ margin: "0", width: "fit-content" }}
                   href={link}
                   aria-label={`View project ${title}`}
+                  data-analytics-tracked
+                  onClick={() =>
+                    trackProjectView({
+                      project_title: title,
+                      link_url: link,
+                      element_text: "View project",
+                      engagement_type: "external",
+                    })
+                  }
                 >
                   <Text variant="body-default-s">View project</Text>
                 </SmartLink>

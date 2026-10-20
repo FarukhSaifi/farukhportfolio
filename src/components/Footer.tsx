@@ -28,7 +28,7 @@ export const Footer = () => {
             / Build your portfolio with <SmartLink href="https://farukh.me">Farukh Saifi 🧑🏻‍💻</SmartLink>
           </Text>
         </Text>
-        <Row gap="16">
+        <Row gap="16" data-analytics-contact="footer">
           {social.map(
             (item) =>
               item.link && (

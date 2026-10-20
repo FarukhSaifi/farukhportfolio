@@ -15,7 +15,12 @@ export async function generateMetadata() {
 
 export default function Work() {
   return (
-    <Column maxWidth="xl" paddingTop="24">
+    <Column
+      maxWidth="xl"
+      paddingTop="24"
+      data-analytics-section="projects"
+      data-analytics-section-name="Projects"
+    >
       <Schema
         as="webPage"
         baseURL={baseURL}

@@ -59,6 +59,7 @@ export const Header = () => {
         padding="8"
         horizontal="center"
         data-border="rounded"
+        data-analytics-nav="primary"
         s={{
           position: "fixed",
         }}

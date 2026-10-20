@@ -122,6 +122,9 @@ export default function About() {
             minHeight="160"
             vertical="center"
             marginBottom="32"
+            data-analytics-section="about-hero"
+            data-analytics-section-name="About intro"
+            data-analytics-contact="about"
           >
             {about.calendar.display && (
               <Row
@@ -205,7 +208,14 @@ export default function About() {
           </Column>
 
           {about.intro.display && (
-            <Column textVariant="body-default-l" fillWidth gap="m" marginBottom="xl">
+            <Column
+              textVariant="body-default-l"
+              fillWidth
+              gap="m"
+              marginBottom="xl"
+              data-analytics-section="about-bio"
+              data-analytics-section-name="About bio"
+            >
               {about.intro.description}
             </Column>
           )}
@@ -215,7 +225,13 @@ export default function About() {
               <Heading as="h2" id={about.work.title} variant="display-strong-s" marginBottom="m">
                 {about.work.title}
               </Heading>
-              <Column fillWidth gap="l" marginBottom="40">
+              <Column
+                fillWidth
+                gap="l"
+                marginBottom="40"
+                data-analytics-section="about-work"
+                data-analytics-section-name="Work experience"
+              >
                 {about.work.experiences.map((experience, index) => (
                   <Column key={`${experience.company}-${experience.role}-${index}`} fillWidth>
                     <Row fillWidth horizontal="between" vertical="end" marginBottom="4">

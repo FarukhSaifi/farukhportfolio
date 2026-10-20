@@ -1,5 +1,6 @@
 "use client";
 
+import { useAnalytics } from "@/context/AnalyticsContext";
 import { useToast } from "@/hooks/useToast";
 import { getEmailValidationError } from "@/lib/validation";
 import { mailchimp, newsletter } from "@/resources";
@@ -13,6 +14,7 @@ export const Mailchimp: React.FC<React.ComponentProps<typeof Column>> = ({ ...fl
   const [touched, setTouched] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { success, error: showError } = useToast();
+  const { trackNewsletterSubscribe } = useAnalytics();
 
   const validationError = useMemo(() => getEmailValidationError(email), [email]);
   const canSubmit = !validationError && !isSubmitting;
@@ -69,6 +71,7 @@ export const Mailchimp: React.FC<React.ComponentProps<typeof Column>> = ({ ...fl
       }
 
       success("Subscribed!", json.message || "Thanks for subscribing!");
+      trackNewsletterSubscribe({ event_label: "newsletter_form" });
       setEmail("");
       setError("");
       setTouched(false);

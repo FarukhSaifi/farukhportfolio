@@ -31,6 +31,9 @@ export default function Post({ post, thumbnail, direction, index = 0, priority =
         radius="l-4"
         gap={direction === "column" ? undefined : "24"}
         s={{ direction: "column" }}
+        data-analytics-post
+        data-analytics-post-slug={post.slug}
+        data-analytics-post-title={post.metadata.title}
       >
         {post.metadata.image && thumbnail && (
           <LazyMedia

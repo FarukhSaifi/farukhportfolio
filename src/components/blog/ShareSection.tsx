@@ -1,5 +1,6 @@
 "use client";
 
+import { useAnalytics } from "@/context/AnalyticsContext";
 import { socialSharing } from "@/resources";
 import { Button, Row, Text, useToast } from "@once-ui-system/core";
 
@@ -27,15 +28,13 @@ const socialPlatforms: Record<string, SocialPlatform> = {
     name: "linkedin",
     icon: "linkedin",
     label: "LinkedIn",
-    generateUrl: (title, url) =>
-      `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
+    generateUrl: (title, url) => `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
   },
   facebook: {
     name: "facebook",
     icon: "facebook",
     label: "Facebook",
-    generateUrl: (title, url) =>
-      `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
+    generateUrl: (title, url) => `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
   },
   pinterest: {
     name: "pinterest",
@@ -75,6 +74,7 @@ const socialPlatforms: Record<string, SocialPlatform> = {
 
 export function ShareSection({ title, url }: ShareSectionProps) {
   const { addToast } = useToast();
+  const { trackShare } = useAnalytics();
   // Don't render if sharing is disabled
   if (!socialSharing.display) {
     return null;
@@ -83,6 +83,12 @@ export function ShareSection({ title, url }: ShareSectionProps) {
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(url);
+      trackShare({
+        method: "copy_link",
+        content_type: "blog_post",
+        item_id: url,
+        element_text: "Copy link",
+      });
       addToast({
         variant: "success",
         message: "Link copied to clipboard",
@@ -119,6 +125,16 @@ export function ShareSection({ title, url }: ShareSectionProps) {
             href={platform.generateUrl(title, url)}
             prefixIcon={platform.icon}
             aria-label={`Share on ${platform.label}`}
+            data-analytics-tracked
+            onClick={() =>
+              trackShare({
+                method: platform.name,
+                content_type: "blog_post",
+                item_id: url,
+                link_url: platform.generateUrl(title, url),
+                element_text: platform.label,
+              })
+            }
           />
         ))}
 
