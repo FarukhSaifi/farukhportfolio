@@ -1,5 +1,6 @@
 "use client";
 
+import { GoogleTagManager } from "@/components/GoogleTagManager";
 import { ToastContainer } from "@/components/ToastContainer";
 import { APP_CONFIG } from "@/lib/constants";
 import {
@@ -55,6 +56,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
         </DataThemeProvider>
         <ToastContainer />
         {APP_CONFIG.IS_PRODUCTION && <Analytics />}
+        <GoogleTagManager />
       </ThemeProvider>
     </LayoutProvider>
   );

@@ -221,6 +221,23 @@ The easiest way to deploy is using [Vercel](https://vercel.com):
 2. Import your repository in Vercel
 3. Vercel will automatically detect Next.js and deploy
 
+### Google Tag Manager, GA4 & Search Console
+
+The site loads **Google Tag Manager** (`gtm.js`) in production. Configure **GA4 inside GTM** (not via a direct gtag snippet). Vercel Analytics remains separate for Vercel’s own traffic UI.
+
+Container ID in use: **`GTM-TZ7SLTFP`** (also defaulted in `src/lib/constants.ts`).
+
+1. Create a [GA4](https://analytics.google.com) Web stream for `https://farukh.me` if you do not have one; copy Measurement ID (`G-XXXXXXXX`).
+2. In [GTM](https://tagmanager.google.com) container `GTM-TZ7SLTFP`, add and publish:
+   - **GA4 Configuration** tag (Measurement ID `G-…`) with **Send page view = false**
+   - **GA4 Event** tag: event name `page_view`, trigger = Custom Event `page_view`  
+     (the app pushes `page_view` to `dataLayer` on every route, including blog posts)
+3. In Vercel → **Settings → Environment Variables** (Production), set:
+   - `NEXT_PUBLIC_GTM_ID=GTM-TZ7SLTFP` (optional if using the code default)
+   - `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION=…` (optional; Search Console HTML-tag token)
+4. Redeploy, then verify with **GTM Preview** on `https://farukh.me` and **GA4 Realtime**.
+5. Search Console: verify the property, submit `https://farukh.me/sitemap.xml`. See `.env.example` for details.
+
 ### Build for Production
 
 ```bash

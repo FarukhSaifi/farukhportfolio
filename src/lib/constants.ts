@@ -697,6 +697,17 @@ export const APP_CONFIG = {
   IS_PRODUCTION: process.env.NODE_ENV === "production",
 } as const;
 
+/** Default GTM Web container for farukh.me (public client ID; override via env) */
+export const GTM_CONTAINER_ID = "GTM-TZ7SLTFP" as const;
+
+/** Google Tag Manager + Search Console (set in Vercel / .env.production) */
+export const ANALYTICS = {
+  /** GTM container ID — configure GA4 tags inside GTM */
+  GTM_ID: process.env.NEXT_PUBLIC_GTM_ID || GTM_CONTAINER_ID,
+  /** Search Console HTML-tag verification content value */
+  GOOGLE_SITE_VERIFICATION: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION ?? "",
+} as const;
+
 // UI Configuration
 export const UI_CONFIG = {
   ANIMATION_DURATION: 300,

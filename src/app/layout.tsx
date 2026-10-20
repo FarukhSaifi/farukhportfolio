@@ -7,19 +7,31 @@ import "@once-ui-system/core/css/tokens.css";
 import classNames from "classnames";
 
 import { Footer, Header, Providers, RouteGuard } from "@/components";
+import { ANALYTICS, APP_CONFIG } from "@/lib/constants";
 import { baseURL, dataStyle, effects, fonts, home, person, style } from "@/resources";
 import type { OnceUiOpacity } from "@/types";
 import { Background, Column, Flex, Meta, RevealFx, SpacingToken } from "@once-ui-system/core";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export async function generateMetadata() {
-  return Meta.generate({
+  const meta = Meta.generate({
     title: home.title,
     description: home.description,
     baseURL: baseURL,
     path: home.path,
     image: home.image,
   });
+
+  if (!ANALYTICS.GOOGLE_SITE_VERIFICATION) {
+    return meta;
+  }
+
+  return {
+    ...meta,
+    verification: {
+      google: ANALYTICS.GOOGLE_SITE_VERIFICATION,
+    },
+  };
 }
 
 export const viewport: Viewport = {
@@ -97,6 +109,18 @@ export default async function RootLayout({
         />
       </head>
       <body suppressHydrationWarning style={{ margin: 0, minHeight: "100dvh" }}>
+        {/* Google Tag Manager (noscript) — immediately after <body> */}
+        {APP_CONFIG.IS_PRODUCTION && ANALYTICS.GTM_ID ? (
+          <noscript>
+            <iframe
+              src={`https://www.googletagmanager.com/ns.html?id=${ANALYTICS.GTM_ID}`}
+              height="0"
+              width="0"
+              style={{ display: "none", visibility: "hidden" }}
+              title="Google Tag Manager"
+            />
+          </noscript>
+        ) : null}
         <Providers>
           <Column
             background="page"
