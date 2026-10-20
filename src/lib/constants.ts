@@ -700,10 +700,12 @@ export const APP_CONFIG = {
 /** Default GTM Web container for farukh.me (public client ID; override via env) */
 export const GTM_CONTAINER_ID = "GTM-TZ7SLTFP" as const;
 
-/** Google Tag Manager + Search Console (set in Vercel / .env.production) */
+/** Google Tag Manager + GA4 Google tag + Search Console (set in Vercel / .env.production) */
 export const ANALYTICS = {
-  /** GTM container ID — configure GA4 tags inside GTM */
+  /** GTM container ID */
   GTM_ID: process.env.NEXT_PUBLIC_GTM_ID || GTM_CONTAINER_ID,
+  /** GA4 Measurement ID (G-XXXXXXXX) — SSR Google tag so Tag Assistant / gtag() work */
+  GA_MEASUREMENT_ID: process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? "",
   /** Search Console HTML-tag verification content value */
   GOOGLE_SITE_VERIFICATION: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION ?? "",
 } as const;

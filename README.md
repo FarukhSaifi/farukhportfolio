@@ -223,20 +223,16 @@ The easiest way to deploy is using [Vercel](https://vercel.com):
 
 ### Google Tag Manager, GA4 & Search Console
 
-The site loads **Google Tag Manager** (`gtm.js`) in production. Configure **GA4 inside GTM** (not via a direct gtag snippet). Vercel Analytics remains separate for Vercel’s own traffic UI.
+Production loads **GTM** (`GTM-TZ7SLTFP`) and, when configured, the **GA4 Google tag** (`gtag.js`) in SSR `<head>` so Tag Assistant detects a Google tag and `window.gtag` works for in-app events. Vercel Analytics remains separate.
 
-Container ID in use: **`GTM-TZ7SLTFP`** (also defaulted in `src/lib/constants.ts`).
-
-1. Create a [GA4](https://analytics.google.com) Web stream for `https://farukh.me` if you do not have one; copy Measurement ID (`G-XXXXXXXX`).
-2. In [GTM](https://tagmanager.google.com) container `GTM-TZ7SLTFP`, add and publish:
-   - **GA4 Configuration** tag (Measurement ID `G-…`) with **Send page view = false**
-   - **GA4 Event** tag: event name `page_view`, trigger = Custom Event `page_view`  
-     (the app pushes `page_view` to `dataLayer` on every route, including blog posts)
-3. In Vercel → **Settings → Environment Variables** (Production), set:
-   - `NEXT_PUBLIC_GTM_ID=GTM-TZ7SLTFP` (optional if using the code default)
-   - `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION=…` (optional; Search Console HTML-tag token)
-4. Redeploy, then verify with **GTM Preview** on `https://farukh.me` and **GA4 Realtime**.
-5. Search Console: verify the property, submit `https://farukh.me/sitemap.xml`. See `.env.example` for details.
+1. Create a [GA4](https://analytics.google.com) Web stream for `https://farukh.me`; copy Measurement ID (`G-XXXXXXXX`).
+2. In Vercel → **Settings → Environment Variables** (Production), set:
+   - `NEXT_PUBLIC_GTM_ID=GTM-TZ7SLTFP`
+   - `NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXX` (**required** for Tag Assistant / `gtag`)
+   - `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION=…` (optional)
+3. Redeploy. Verify: Tag Assistant on `https://farukh.me`, console `typeof gtag === "function"`, GA4 **Realtime**.
+4. Do **not** also publish a GA4 Configuration tag in GTM that sends page views (would double-count). Keep GTM for optional extra tags / Preview.
+5. Search Console: verify the property, submit `https://farukh.me/sitemap.xml`. See `.env.example`.
 
 ### Build for Production
 

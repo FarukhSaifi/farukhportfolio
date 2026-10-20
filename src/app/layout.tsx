@@ -84,6 +84,19 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             }}
           />
         ) : null}
+        {/* GA4 Google tag (gtag.js) — SSR so Tag Assistant detects a Google tag; enables window.gtag */}
+        {APP_CONFIG.IS_PRODUCTION && ANALYTICS.GA_MEASUREMENT_ID ? (
+          <>
+            <script async src={`https://www.googletagmanager.com/gtag/js?id=${ANALYTICS.GA_MEASUREMENT_ID}`} />
+            <script
+              id="ga4-gtag"
+              dangerouslySetInnerHTML={{
+                __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());gtag('config','${ANALYTICS.GA_MEASUREMENT_ID}',{send_page_view:false});`,
+              }}
+            />
+          </>
+        ) : null}
         <script
           id="theme-init"
           dangerouslySetInnerHTML={{
