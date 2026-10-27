@@ -2,6 +2,8 @@ import { MDXRemote, MDXRemoteProps } from "next-mdx-remote/rsc";
 import React, { ReactNode } from "react";
 import { slugify as transliterate } from "transliteration";
 
+import { MermaidDiagram } from "@/components/blog/MermaidDiagram";
+import { isMermaidLanguage } from "@/lib/mermaid";
 import {
   Accordion,
   AccordionGroup,
@@ -86,10 +88,7 @@ function slugify(str: string): string {
 }
 
 function createHeading(as: "h1" | "h2" | "h3" | "h4" | "h5" | "h6") {
-  const CustomHeading = ({
-    children,
-    ...props
-  }: Omit<React.ComponentProps<typeof HeadingLink>, "as" | "id">) => {
+  const CustomHeading = ({ children, ...props }: Omit<React.ComponentProps<typeof HeadingLink>, "as" | "id">) => {
     // Safely convert children to string for slugify
     const childrenString =
       typeof children === "string"
@@ -139,6 +138,12 @@ function createCodeBlock(props: any) {
     // Ensure className is a string before calling replace
     const classNameStr = typeof className === "string" ? className : String(className || "");
     const language = classNameStr.replace("language-", "");
+    const code = typeof children === "string" ? children : String(children ?? "");
+
+    if (isMermaidLanguage(language)) {
+      return <MermaidDiagram chart={code} />;
+    }
+
     const label = language.charAt(0).toUpperCase() + language.slice(1);
 
     return (
@@ -221,10 +226,6 @@ type CustomMDXProps = MDXRemoteProps & {
 
 export function CustomMDX(props: CustomMDXProps) {
   return (
-    <MDXRemote
-      options={{ blockJS: false }}
-      {...props}
-      components={{ ...components, ...(props.components || {}) }}
-    />
+    <MDXRemote options={{ blockJS: false }} {...props} components={{ ...components, ...(props.components || {}) }} />
   );
 }
