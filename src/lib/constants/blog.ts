@@ -14,3 +14,17 @@ export const BLOG_CONFIG = {
   SYNCAPP_PAGE_LIMIT: 50,
   INTERSECTION_ROOT_MARGIN: "200px",
 } as const;
+
+/** Fenced code language that should render as a diagram (Dev.to / SyncApp / MDX). */
+export const MERMAID_LANGUAGE = "mermaid";
+
+export const MERMAID_CONFIG = {
+  SECURITY_LEVEL: "strict",
+  THEME_DARK: "dark",
+  THEME_LIGHT: "default",
+} as const;
+
+export const MERMAID_MESSAGES = {
+  RENDER_FAILED: "Unable to render Mermaid diagram.",
+  LOADING: "Loading diagram…",
+} as const;

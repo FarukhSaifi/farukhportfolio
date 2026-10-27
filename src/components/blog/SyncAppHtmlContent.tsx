@@ -1,3 +1,5 @@
+import { MermaidDiagram } from "@/components/blog/MermaidDiagram";
+import { isMermaidLanguage } from "@/lib/mermaid";
 import { HeadingLink, InlineCode, List, ListItem, Media, SmartLink, Text } from "@once-ui-system/core";
 import { CodeBlock } from "@once-ui-system/core/code";
 import parse, { DOMNode, domToReact, Element, HTMLReactParserOptions } from "html-react-parser";
@@ -47,24 +49,33 @@ function createHtmlParserOptions(): HTMLReactParserOptions {
 
       const childNodes = domNode.children as DOMNode[];
 
+      // Dev.to / some processors emit `<div class="mermaid">graph TD...</div>`
+      if (domNode.name === "div") {
+        const divClass = domNode.attribs?.class || "";
+        if (/\bmermaid\b/i.test(divClass)) {
+          return <MermaidDiagram chart={getPlainText(childNodes)} />;
+        }
+      }
+
       if (domNode.name === "pre") {
-        const codeEl = childNodes.find(
-          (node): node is Element => node instanceof Element && node.name === "code",
-        );
+        const preClass = domNode.attribs?.class || "";
+        const codeEl = childNodes.find((node): node is Element => node instanceof Element && node.name === "code");
         if (codeEl) {
           const className = codeEl.attribs?.class || "";
           const language = className.replace(/^language-/, "") || "text";
           const code = getPlainText(codeEl.children as DOMNode[]);
+
+          if (isMermaidLanguage(language) || /\bmermaid\b/i.test(preClass)) {
+            return <MermaidDiagram chart={code} />;
+          }
+
           const label = language.charAt(0).toUpperCase() + language.slice(1);
 
-          return (
-            <CodeBlock
-              marginTop="8"
-              marginBottom="16"
-              codes={[{ code, language, label }]}
-              copyButton
-            />
-          );
+          return <CodeBlock marginTop="8" marginBottom="16" codes={[{ code, language, label }]} copyButton />;
+        }
+
+        if (/\bmermaid\b/i.test(preClass)) {
+          return <MermaidDiagram chart={getPlainText(childNodes)} />;
         }
       }
 
@@ -79,12 +90,7 @@ function createHtmlParserOptions(): HTMLReactParserOptions {
         case "h6": {
           const headingText = getPlainText(childNodes);
           return (
-            <HeadingLink
-              marginTop="24"
-              marginBottom="12"
-              as={domNode.name}
-              id={slugify(headingText)}
-            >
+            <HeadingLink marginTop="24" marginBottom="12" as={domNode.name} id={slugify(headingText)}>
               {children}
             </HeadingLink>
           );
