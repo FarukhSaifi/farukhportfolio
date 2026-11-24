@@ -1,5 +1,5 @@
 {
-  "name": "@once-ui-system/magic-portfolio",
+  "name": "farukhportfolio",
   "version": "2.3.0",
   "scripts": {
     "dev": "next dev",
