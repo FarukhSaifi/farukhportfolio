@@ -18,8 +18,8 @@ View the [demo here](https://farukh.me)
 **1. Clone the repository**
 
 ```bash
-git clone https://github.com/FarukhSaifi/magic-portfolio.git
-cd magic-portfolio
+git clone https://github.com/FarukhSaifi/farukhportfolio.git
+cd farukhportfolio
 ```
 
 **2. Install dependencies**
