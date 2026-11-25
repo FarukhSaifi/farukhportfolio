@@ -1,8 +1,8 @@
 "use client";
 
 import NotFound from "@/app/not-found";
-import { API_ENDPOINTS, ROUTES, ROUTE_GUARD_UI } from "@/lib/constants";
-import { protectedRoutes, routes } from "@/resources";
+import { API_ENDPOINTS, isAuthRequiredPath, ROUTE_GUARD_UI, ROUTES } from "@/lib/constants";
+import { routes } from "@/resources";
 import { Button, Column, Flex, Heading, PasswordInput, Spinner } from "@once-ui-system/core";
 import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
@@ -44,25 +44,25 @@ async function fetchAuthStatus(signal: AbortSignal): Promise<boolean> {
 
 const RouteGuard: React.FC<RouteGuardProps> = ({ children }) => {
   const rawPathname = usePathname();
-  // usePathname() may be null/"" during SSR (seen for `/` on Vercel prerender).
-  // Treating that as disabled prerendered <NotFound /> into `/` and caused React #418.
-  const pathname = rawPathname && rawPathname.length > 0 ? rawPathname : ROUTES.HOME;
+  // usePathname() can be null/"" during SSR / first client paint (especially `/` on Vercel).
+  // Do not treat an unresolved path as disabled — that flashed <NotFound /> before the real page.
+  const pathnameReady = Boolean(rawPathname && rawPathname.length > 0);
+  const pathname = pathnameReady ? rawPathname! : ROUTES.HOME;
 
   const routeEnabled = useMemo(() => isRouteEnabled(pathname), [pathname]);
-  const isPasswordRequired = useMemo(
-    () => Boolean(protectedRoutes[pathname as keyof typeof protectedRoutes]),
-    [pathname],
-  );
+  // Auth for admin + music OAuth pages only. Never require auth while pathname is unknown.
+  const isPasswordRequired = pathnameReady && isAuthRequiredPath(pathname);
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | undefined>(undefined);
-  const [authChecking, setAuthChecking] = useState(isPasswordRequired);
+  const [authChecking, setAuthChecking] = useState(false);
 
   useEffect(() => {
     if (!isPasswordRequired) {
       setAuthChecking(false);
       setIsAuthenticated(false);
+      setError(undefined);
       return;
     }
 
@@ -88,7 +88,7 @@ const RouteGuard: React.FC<RouteGuardProps> = ({ children }) => {
       window.clearTimeout(timeoutId);
       controller.abort();
     };
-  }, [isPasswordRequired, pathname]);
+  }, [isPasswordRequired]);
 
   const handlePasswordSubmit = async () => {
     const response = await fetch(API_ENDPOINTS.AUTH.AUTHENTICATE, {
@@ -105,11 +105,17 @@ const RouteGuard: React.FC<RouteGuardProps> = ({ children }) => {
     }
   };
 
-  if (!routeEnabled) {
+  // Only block with 404 once the path is known and the route is disabled in config.
+  if (pathnameReady && !routeEnabled) {
     return <NotFound />;
   }
 
-  if (isPasswordRequired && authChecking) {
+  // Public routes: no auth spinner / password gate.
+  if (!isPasswordRequired) {
+    return <>{children}</>;
+  }
+
+  if (authChecking) {
     return (
       <Flex fillWidth paddingY="128" horizontal="center">
         <Spinner />
@@ -117,7 +123,7 @@ const RouteGuard: React.FC<RouteGuardProps> = ({ children }) => {
     );
   }
 
-  if (isPasswordRequired && !isAuthenticated) {
+  if (!isAuthenticated) {
     return (
       <Column paddingY="128" maxWidth={24} gap="24" center>
         <Heading align="center" wrap="balance">
