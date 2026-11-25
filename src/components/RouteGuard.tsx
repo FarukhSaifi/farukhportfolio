@@ -88,7 +88,7 @@ const RouteGuard: React.FC<RouteGuardProps> = ({ children }) => {
       window.clearTimeout(timeoutId);
       controller.abort();
     };
-  }, [isPasswordRequired, pathname]);
+  }, [isPasswordRequired]);
 
   const handlePasswordSubmit = async () => {
     const response = await fetch(API_ENDPOINTS.AUTH.AUTHENTICATE, {
