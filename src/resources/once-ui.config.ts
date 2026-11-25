@@ -35,14 +35,14 @@ const display: DisplayConfig = {
   themeSwitcher: false,
 };
 
-// Enable password protection on selected routes
+// Password protection — admin + music OAuth callback/auth pages.
+// All other routes (home, about, blog, work, …) stay public.
 // Set password in the .env file, refer to .env.example
 const protectedRoutes: ProtectedRoutesConfig = {
   [ROUTES.ADMIN]: true,
   [ROUTES.SPOTIFY_AUTH]: true,
   [ROUTES.SPOTIFY_SUCCESS]: true,
   [ROUTES.YOUTUBE_MUSIC_SUCCESS]: true,
-  [`${ROUTES.WORK}/automate-design-handovers-with-a-figma-to-code-pipeline`]: true,
 };
 
 // Import and set font for each variant

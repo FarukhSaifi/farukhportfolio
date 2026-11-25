@@ -724,13 +724,29 @@ export const STORAGE_KEYS = {
   SPOTIFY_ACCESS_TOKEN: "spotify_access_token",
   SPOTIFY_TOKEN_EXPIRY: "spotify_access_token_expiry",
 } as const;
-// Route guard / password protection UI
+/**
+ * Paths that require RouteGuard password auth.
+ * Keep in sync with `protectedRoutes` in once-ui.config.ts.
+ * Public: home, about, blog, work, gallery, etc.
+ */
+export const AUTH_REQUIRED_ROUTE_PREFIXES = [
+  ROUTES.ADMIN,
+  ROUTES.SPOTIFY_AUTH,
+  ROUTES.SPOTIFY_SUCCESS,
+  ROUTES.YOUTUBE_MUSIC_SUCCESS,
+] as const;
+
 export const ROUTE_GUARD_UI = {
   PASSWORD_PROTECTED: "This page is password protected",
   PASSWORD_LABEL: "Password",
   SUBMIT: "Submit",
   INCORRECT_PASSWORD: "Incorrect password",
 } as const;
+
+/** True when pathname is exactly an auth-required prefix or a nested path under one. */
+export function isAuthRequiredPath(pathname: string): boolean {
+  return AUTH_REQUIRED_ROUTE_PREFIXES.some((prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`));
+}
 
 // Admin dashboard UI
 export const ADMIN_UI = {
